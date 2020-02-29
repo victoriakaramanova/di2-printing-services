@@ -1,0 +1,28 @@
+﻿@using Di2.Common
+@{
+    this.ViewData["Title"] = "Add Material";
+}
+
+    <form method="post">
+        <div class="form-group">
+            <label for="Name">Name</label>
+            <input type="text" class="form-control" id="#name" name="Name">
+        </div>
+        <div class="form-group">
+            <label for="MaterialType">MaterialType</label>
+            <input type="text" class="form-control" id="#materialType" name="MaterialType">
+        </div>
+        <div class="form-group">
+            <label for="Category">Category</label>
+            <input type="text" class="form-control" id="#category" name="Category">
+        </div>
+        <div class="form-group">
+            <label for="Description">Description</label>
+            <input type="text" class="form-control" id="#description" name="Description">
+        </div>
+        <div class="form-group">
+            <label for="Color">Color</label>
+            <input type="text" class="form-control" id="#color" name="Color">
+        </div>
+        <button type="submit" asp-action="Add" class="btn btn-primary">Submit</button>
+    </form>

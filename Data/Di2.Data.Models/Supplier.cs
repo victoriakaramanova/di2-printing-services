@@ -1,0 +1,29 @@
+﻿namespace Di2.Data.Models
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
+    using Di2.Data.Common.Models;
+
+    public class Supplier : BaseDeletableModel<int>
+    {
+        public Supplier()
+        {
+            this.PriceLists = new HashSet<PriceList>();
+            this.DeliveryBatches = new List<DeliveryBatch>();
+        }
+
+        public string Name { get; set; }
+
+        public string Address { get; set; }
+
+        public string Email { get; set; }
+
+        public string Phone { get; set; }
+
+        public virtual ICollection<PriceList> PriceLists { get; set; }
+
+        public virtual ICollection<DeliveryBatch> DeliveryBatches { get; set; }
+    }
+}
