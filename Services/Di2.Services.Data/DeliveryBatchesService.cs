@@ -29,7 +29,7 @@
             .ToArrayAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAllDeliveryBatchesPerSupplier<T>(string supplierId)
+        public async Task<IEnumerable<T>> GetAllDeliveryBatchesPerSupplier<T>(int supplierId)
         {
             return await this.deliveryBatchesRepository
             .AllAsNoTracking()
@@ -40,7 +40,7 @@
 
         public async Task CreateBatch(CreateBatchInputModel input)
         {
-            DeliveryBatch material = (DeliveryBatch) this.deliveryBatchesRepository
+            DeliveryBatch material = (DeliveryBatch)this.deliveryBatchesRepository
                 .AllAsNoTracking()
                 .FirstOrDefault(x => x.MaterialId == input.MaterialId);
             DeliveryBatch supplier = this.deliveryBatchesRepository

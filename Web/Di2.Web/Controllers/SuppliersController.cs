@@ -27,6 +27,11 @@
         [HttpPost]
         public async Task<IActionResult> Add(CreateSupplierInputModel input)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(input);
+            }
+
             await this.suppliersService.AddAsync(input.Name, input.Address, input.Email, input.Phone);
 
             return this.Redirect("/");

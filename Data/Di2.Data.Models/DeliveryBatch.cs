@@ -10,13 +10,13 @@
     public class DeliveryBatch : BaseDeletableModel<string>
     {
         [Key]
-        public string MaterialId { get; set; }
+        public int MaterialId { get; set; }
 
         [Required]
         public Material Material { get; set; }
 
         [Key]
-        public string SupplierId { get; set; }
+        public int SupplierId { get; set; }
 
         [Required]
         public Supplier Supplier { get; set; }

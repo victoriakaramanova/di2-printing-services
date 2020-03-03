@@ -1,16 +1,15 @@
-﻿namespace Di2.Data.Models
+﻿namespace Di2.Web.ViewModels.SubCategories.ViewModels
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Text;
 
-    using Di2.Data.Common.Models;
+    using Di2.Data.Models;
+    using Di2.Services.Mapping;
 
-    public class SubCategory : BaseDeletableModel<int>
+    public class SubCategoriesViewModel : IMapFrom<SubCategory>
     {
-        [Required]
-        [MaxLength(100)]
         public string Name { get; set; }
 
         public string Description { get; set; }
@@ -19,7 +18,5 @@
         public int CategoryId { get; set; }
 
         public Category Category { get; set; }
-
-        public virtual ICollection<Material> Materials { get; set; }
     }
 }

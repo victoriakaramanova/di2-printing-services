@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Di2.Data.Migrations
 {
-    public partial class InitialCommit : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -55,20 +55,20 @@ namespace Di2.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Materials",
+                name: "Categories",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     DeletedOn = table.Column<DateTime>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
-                    Color = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Materials", x => x.Id);
+                    table.PrimaryKey("PK_Categories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -93,7 +93,8 @@ namespace Di2.Data.Migrations
                 name: "Suppliers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
@@ -215,23 +216,72 @@ namespace Di2.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DeliveryBatches",
+                name: "SubCategories",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     DeletedOn = table.Column<DateTime>(nullable: true),
-                    MaterialId = table.Column<string>(nullable: true),
-                    SupplierId = table.Column<string>(nullable: true),
-                    Quantity = table.Column<long>(nullable: false),
-                    ReferenceKey = table.Column<string>(nullable: true),
-                    Cost = table.Column<decimal>(nullable: false)
+                    Name = table.Column<string>(maxLength: 100, nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    CategoryId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DeliveryBatches", x => x.Id);
+                    table.PrimaryKey("PK_SubCategories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SubCategories_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Materials",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedOn = table.Column<DateTime>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    ExtraInfo = table.Column<string>(nullable: true),
+                    SubCategoryId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Materials", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Materials_SubCategories_SubCategoryId",
+                        column: x => x.SubCategoryId,
+                        principalTable: "SubCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DeliveryBatches",
+                columns: table => new
+                {
+                    MaterialId = table.Column<int>(nullable: false),
+                    SupplierId = table.Column<int>(nullable: false),
+                    Id = table.Column<string>(nullable: true),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedOn = table.Column<DateTime>(nullable: true),
+                    Quantity = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeliveryBatches", x => new { x.MaterialId, x.SupplierId });
                     table.ForeignKey(
                         name: "FK_DeliveryBatches_Materials_MaterialId",
                         column: x => x.MaterialId,
@@ -240,6 +290,61 @@ namespace Di2.Data.Migrations
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_DeliveryBatches_Suppliers_SupplierId",
+                        column: x => x.SupplierId,
+                        principalTable: "Suppliers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Image",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedOn = table.Column<DateTime>(nullable: true),
+                    ImageUrl = table.Column<string>(nullable: true),
+                    MaterialId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Image", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Image_Materials_MaterialId",
+                        column: x => x.MaterialId,
+                        principalTable: "Materials",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PriceLists",
+                columns: table => new
+                {
+                    MaterialId = table.Column<int>(nullable: false),
+                    SupplierId = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedOn = table.Column<DateTime>(nullable: true),
+                    MinimumQuantityPerOrder = table.Column<double>(nullable: false),
+                    UnitPrice = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PriceLists", x => new { x.MaterialId, x.SupplierId });
+                    table.ForeignKey(
+                        name: "FK_PriceLists_Materials_MaterialId",
+                        column: x => x.MaterialId,
+                        principalTable: "Materials",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PriceLists_Suppliers_SupplierId",
                         column: x => x.SupplierId,
                         principalTable: "Suppliers",
                         principalColumn: "Id",
@@ -296,14 +401,14 @@ namespace Di2.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DeliveryBatches_IsDeleted",
-                table: "DeliveryBatches",
+                name: "IX_Categories_IsDeleted",
+                table: "Categories",
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DeliveryBatches_MaterialId",
+                name: "IX_DeliveryBatches_IsDeleted",
                 table: "DeliveryBatches",
-                column: "MaterialId");
+                column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DeliveryBatches_SupplierId",
@@ -311,13 +416,48 @@ namespace Di2.Data.Migrations
                 column: "SupplierId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Image_IsDeleted",
+                table: "Image",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Image_MaterialId",
+                table: "Image",
+                column: "MaterialId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Materials_IsDeleted",
                 table: "Materials",
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Materials_SubCategoryId",
+                table: "Materials",
+                column: "SubCategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PriceLists_IsDeleted",
+                table: "PriceLists",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PriceLists_SupplierId",
+                table: "PriceLists",
+                column: "SupplierId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Settings_IsDeleted",
                 table: "Settings",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SubCategories_CategoryId",
+                table: "SubCategories",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SubCategories_IsDeleted",
+                table: "SubCategories",
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
@@ -347,6 +487,12 @@ namespace Di2.Data.Migrations
                 name: "DeliveryBatches");
 
             migrationBuilder.DropTable(
+                name: "Image");
+
+            migrationBuilder.DropTable(
+                name: "PriceLists");
+
+            migrationBuilder.DropTable(
                 name: "Settings");
 
             migrationBuilder.DropTable(
@@ -360,6 +506,12 @@ namespace Di2.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Suppliers");
+
+            migrationBuilder.DropTable(
+                name: "SubCategories");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
         }
     }
 }

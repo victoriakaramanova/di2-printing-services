@@ -2,13 +2,20 @@
 {
     using System.Collections;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     using Di2.Data.Common.Models;
 
     public class Category : BaseDeletableModel<int>
     {
+        // public Category()
+        // {
+        //    this.SubCategories = new HashSet<SubCategory>();
+        //  }
+        [Required]
+        [MaxLength(50)]
         public string Name { get; set; }
 
-        public ICollection<SubCategory> SubCategories { get; set; }
+        public virtual ICollection<SubCategory> SubCategories { get; set; }
     }
 }

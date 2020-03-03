@@ -13,6 +13,6 @@
 
         Task<IEnumerable<T>> GetAllDeliveryBatches<T>();
 
-        Task<IEnumerable<T>> GetAllDeliveryBatchesPerSupplier<T>(string supplierId);
+        Task<IEnumerable<T>> GetAllDeliveryBatchesPerSupplier<T>(int supplierId);
     }
 }

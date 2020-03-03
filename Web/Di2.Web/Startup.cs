@@ -58,6 +58,8 @@
 
             // Application services
             services.AddTransient<IMaterialsService, MaterialsService>();
+            services.AddTransient<ICategoriesService, CategoriesService>();
+            services.AddTransient<ISubCategoriesService, SubCategoriesService>();
             services.AddTransient<ISuppliersService, SuppliersService>();
             services.AddTransient<IPriceListsService, PriceListsService>();
             services.AddTransient<IDeliveryBatchesService, DeliveryBatchesService>();

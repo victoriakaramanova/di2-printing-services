@@ -28,6 +28,11 @@
         [HttpPost]
         public async Task<IActionResult> Add(CreateMaterialInputModel input)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(input);
+            }
+
             await this.materialsService.AddAsync(input);
 
             return this.Redirect("/");

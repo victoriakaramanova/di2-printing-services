@@ -1,28 +1,45 @@
 ﻿@using Di2.Common
+@using Di2.Web.ViewModels.SubCategories.ViewModels
+@inject Di2.Services.Data.ISubCategoriesService  SubcategoriesService 
+@model Di2.Web.ViewModels.Materials.InputModels.CreateMaterialInputModel
 @{
     this.ViewData["Title"] = "Add Material";
+    var subCategories = await this.SubcategoriesService.GetAllSubCategories<SubCategoriesViewModel>(); //.Select(x => x.Name).ToList()
 }
 
-    <form method="post">
-        <div class="form-group">
-            <label for="Name">Name</label>
-            <input type="text" class="form-control" id="#name" name="Name">
-        </div>
-        <div class="form-group">
-            <label for="MaterialType">MaterialType</label>
-            <input type="text" class="form-control" id="#materialType" name="MaterialType">
-        </div>
-        <div class="form-group">
-            <label for="Category">Category</label>
-            <input type="text" class="form-control" id="#category" name="Category">
-        </div>
-        <div class="form-group">
-            <label for="Description">Description</label>
-            <input type="text" class="form-control" id="#description" name="Description">
-        </div>
-        <div class="form-group">
-            <label for="Color">Color</label>
-            <input type="text" class="form-control" id="#color" name="Color">
-        </div>
-        <button type="submit" asp-action="Add" class="btn btn-primary">Submit</button>
-    </form>
+<form asp-controller="Materials" asp-action="Add" method="post">
+    @*<div asp-validation-summary="All"></div>*@
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ExtraInfo"></label>
+        <input asp-for="ExtraInfo" class="form-control" />
+        <span asp-validation-for="ExtraInfo" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="SubCategory"></label>
+        <select asp-for="SubCategory" class="form-control">
+            <option selected />
+            @foreach (var sub in subCategories)
+            {
+                <option>@sub</option>
+            }
+        </select>
+        <span asp-validation-for="SubCategory" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Image"></label>
+        <input type="file" asp-for="Image" class="form-control" />
+        <span asp-validation-for="Image" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

@@ -6,9 +6,9 @@
 
     public class CreateBatchInputModel
     {
-        public string MaterialId { get; set; }
+        public int MaterialId { get; set; }
 
-        public string SupplierId { get; set; }
+        public int SupplierId { get; set; }
 
         public double Quantity { get; set; }
 
