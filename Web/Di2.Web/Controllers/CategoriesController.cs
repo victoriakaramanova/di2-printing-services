@@ -37,11 +37,11 @@
             return this.Redirect("/");
         }
 
-        public async Task<IActionResult> All()
+        public IActionResult All()
         {
-            var allCategories = await this.categoriesService.GetAllCategories<CategoryViewModel>();
+            var viewModel = this.categoriesService.GetAllCategories<CategoryViewModel>();
 
-            return this.View(allCategories);
+            return this.View(viewModel);
         }
     }
 }

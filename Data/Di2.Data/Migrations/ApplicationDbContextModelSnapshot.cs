@@ -205,40 +205,6 @@ namespace Di2.Data.Migrations
                     b.ToTable("DeliveryBatches");
                 });
 
-            modelBuilder.Entity("Di2.Data.Models.Image", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("MaterialId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.HasIndex("MaterialId");
-
-                    b.ToTable("Image");
-                });
-
             modelBuilder.Entity("Di2.Data.Models.Material", b =>
                 {
                     b.Property<int>("Id")
@@ -265,6 +231,7 @@ namespace Di2.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SubCategoryId")
@@ -541,15 +508,6 @@ namespace Di2.Data.Migrations
                     b.HasOne("Di2.Data.Models.Supplier", "Supplier")
                         .WithMany("DeliveryBatches")
                         .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Di2.Data.Models.Image", b =>
-                {
-                    b.HasOne("Di2.Data.Models.Material", "Material")
-                        .WithMany("Images")
-                        .HasForeignKey("MaterialId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

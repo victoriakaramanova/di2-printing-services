@@ -1,8 +1,8 @@
 ﻿namespace Di2.Services.Data
 {
     using System;
-    using System.Linq;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
 
@@ -12,6 +12,7 @@
     using Di2.Web.ViewModels.Categories.InputModels;
     using Di2.Web.ViewModels.SubCategories;
     using Di2.Web.ViewModels.SubCategories.InputModels;
+    using Di2.Web.ViewModels.SubCategories.ViewModels;
     using Microsoft.EntityFrameworkCore;
 
     public class SubCategoriesService : ISubCategoriesService
@@ -27,10 +28,18 @@
             this.categoriesRepository = categoriesRepository;
         }
 
+        public IEnumerable<T> GetCategories<T>()
+        {
+            IQueryable<Category> query =
+                this.categoriesRepository.All();
+            return query.To<T>().ToList();
+        }
+
         public async Task AddAsync(CreateSubCategoryInputModel input)
         {
+            //var catName = input.Categories.Select(x => x.Name).FirstOrDefault();
             var catId = this.categoriesRepository
-                .AllAsNoTracking()
+                .All()
                 .Where(x => x.Name == input.CategoryName)
                 .Select(x => x.Id)
                 .FirstOrDefault();
@@ -50,7 +59,6 @@
         {
             return await this.subCategoriesRepository
             .AllAsNoTracking()
-            //.Select(x => x.Name)
             .To<T>()
             .ToArrayAsync();
         }

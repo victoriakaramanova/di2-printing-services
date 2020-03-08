@@ -14,10 +14,12 @@
     public class MaterialsController : BaseController
     {
         private readonly IMaterialsService materialsService;
+        private readonly ISubCategoriesService subCategoriesService;
 
-        public MaterialsController(IMaterialsService materialsService)
+        public MaterialsController(IMaterialsService materialsService, ISubCategoriesService subCategoriesService)
         {
             this.materialsService = materialsService;
+            this.subCategoriesService = subCategoriesService;
         }
 
         public IActionResult Add()
@@ -38,9 +40,18 @@
             return this.Redirect("/");
         }
 
-        public async Task<IActionResult> All()
+        // Download file sample
+        public IActionResult Download(string filename)
         {
-            var allMaterials = await this.materialsService.GetAllMaterials<AllMaterialsViewModel>();
+            // System.IO.File.ReadAllBytesAsync(); - an alternative
+            // return this.File();
+            // FIND SANITIZE FILENAME ARTICLES to ignore xss etc!!!
+            return this.PhysicalFile(@$"D:\{filename}", "application/pdf");
+        }
+
+        public IActionResult All()
+        {
+            var allMaterials = this.materialsService.GetAllMaterials<MaterialsViewModel>();
 
             return this.View(allMaterials);
         }

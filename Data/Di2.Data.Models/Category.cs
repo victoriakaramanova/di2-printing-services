@@ -8,10 +8,11 @@
 
     public class Category : BaseDeletableModel<int>
     {
-        // public Category()
-        // {
-        //    this.SubCategories = new HashSet<SubCategory>();
-        //  }
+        public Category()
+        {
+            this.SubCategories = new HashSet<SubCategory>();
+        }
+
         [Required]
         [MaxLength(50)]
         public string Name { get; set; }

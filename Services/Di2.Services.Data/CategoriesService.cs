@@ -32,13 +32,11 @@
             await this.categoriesRepository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAllCategories<T>()
+        public IEnumerable<T> GetAllCategories<T>()
         {
-            return await this.categoriesRepository
-            .AllAsNoTracking()
-            //.Select(x => x.Name)
-            .To<T>()
-            .ToArrayAsync();
+            IQueryable<Category> query =
+                this.categoriesRepository.All().OrderBy(x => x.Name);
+            return query.To<T>().ToList();
         }
     }
 }

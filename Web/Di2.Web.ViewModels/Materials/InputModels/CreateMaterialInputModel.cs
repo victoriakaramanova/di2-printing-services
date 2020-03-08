@@ -1,13 +1,22 @@
-﻿using Di2.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-
-namespace Di2.Web.ViewModels.Materials.InputModels
+﻿namespace Di2.Web.ViewModels.Materials.InputModels
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.Text;
+
+    using Di2.Data.Models;
+    using Di2.Services.Mapping;
+    using Di2.Web.ViewModels.SubCategories.ViewModels;
+    using Microsoft.AspNetCore.Http;
+
     public class CreateMaterialInputModel
     {
+        // public IList<SubCategoriesViewModel> SubCategoriesViewModelList { get; set; }
+
+        // public SubCategoriesViewModel SubCategoriesViewModel { get; set; }
+
         [Required]
         public string Name { get; set; }
 
@@ -20,9 +29,9 @@ namespace Di2.Web.ViewModels.Materials.InputModels
 
         [Display(Name = "Подкатегория")]
         [Required]
-        public SubCategory SubCategory { get; set; }
+        public string SubCategoryName { get; set; }
 
-        [Required]
-        public string Image { get; set; }
+        // [Required]
+        // public IFormFile Image { get; set; }
     }
 }

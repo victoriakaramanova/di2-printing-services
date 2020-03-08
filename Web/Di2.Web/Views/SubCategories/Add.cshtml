@@ -3,7 +3,8 @@
 @inject Di2.Services.Data.ICategoriesService CategoriesService
 @{
     this.ViewData["Title"] = "Add SubCategory";
-    var categories = await this.CategoriesService.GetAllCategories<CategoryViewModel>();
+    var categories = this.CategoriesService.GetAllCategories<CategoryViewModel>();
+    
 }
 @model Di2.Web.ViewModels.SubCategories.InputModels.CreateSubCategoryInputModel
 
@@ -25,9 +26,9 @@
             <label asp-for="CategoryName"></label>
             <select asp-for="CategoryName" class="form-control">
                 <option selected />
-                @foreach (var category in categories)
+                @foreach (var c in categories)
                 {
-                    <option>@category.Name</option>
+                    <option>@c.Name</option>
                 }
             </select>
             <span asp-validation-for="CategoryName" class="text-danger"></span>

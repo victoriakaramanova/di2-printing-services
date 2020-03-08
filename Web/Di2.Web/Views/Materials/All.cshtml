@@ -1,5 +1,5 @@
 ﻿@using Di2.Web.ViewModels.Materials.ViewModels
-@model IEnumerable<AllMaterialsViewModel>
+@model IEnumerable<MaterialsViewModel>
 
 @using Di2.Common
 @{
@@ -9,5 +9,9 @@
 @foreach (var item in Model)
 {
     <h3>@item.Name</h3>
+    <h4>@item.Description</h4>
+    <h4>@item.ExtraInfo</h4>
+   
+    <h4>@item.SubCategory</h4>
 }
 

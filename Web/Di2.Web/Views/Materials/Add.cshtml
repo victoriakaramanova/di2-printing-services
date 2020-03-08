@@ -1,13 +1,15 @@
 ﻿@using Di2.Common
 @using Di2.Web.ViewModels.SubCategories.ViewModels
-@inject Di2.Services.Data.ISubCategoriesService  SubcategoriesService 
+@inject Di2.Services.Data.ISubCategoriesService SubCategoriesService
 @model Di2.Web.ViewModels.Materials.InputModels.CreateMaterialInputModel
+
 @{
-    this.ViewData["Title"] = "Add Material";
-    var subCategories = await this.SubcategoriesService.GetAllSubCategories<SubCategoriesViewModel>(); //.Select(x => x.Name).ToList()
+    ViewData["Title"] = "Add Material";
+    var allSubCat = await this.SubCategoriesService.GetAllSubCategories<SubCategoriesViewModel>(); 
 }
 
-<form asp-controller="Materials" asp-action="Add" method="post">
+<form asp-controller="Materials" asp-action="Add" method="post"
+      enctype="multipart/form-data">
     @*<div asp-validation-summary="All"></div>*@
 
     <div class="form-group">
@@ -26,20 +28,22 @@
         <span asp-validation-for="ExtraInfo" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="SubCategory"></label>
-        <select asp-for="SubCategory" class="form-control">
+        <label asp-for="SubCategoryName"></label>
+        <select asp-for="SubCategoryName" class="form-control">
             <option selected />
-            @foreach (var sub in subCategories)
+            @foreach (var sub in allSubCat)
             {
-                <option>@sub</option>
+                <option>@sub.Name</option>
             }
         </select>
-        <span asp-validation-for="SubCategory" class="text-danger"></span>
+        <span asp-validation-for="SubCategoryName" class="text-danger"></span>
     </div>
-    <div class="form-group">
+    @*<div class="form-group">
         <label asp-for="Image"></label>
         <input type="file" asp-for="Image" class="form-control" />
         <span asp-validation-for="Image" class="text-danger"></span>
-    </div>
+    </div>*@
+
+
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>

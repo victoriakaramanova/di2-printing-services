@@ -39,7 +39,7 @@
 
         public async Task<IActionResult> All()
         {
-            var allSuppliers = await this.suppliersService.GetAllSuppliers<AllSuppliersViewModel>();
+            var allSuppliers = await this.suppliersService.GetAllSuppliers<SuppliersViewModel>();
 
             return this.View(allSuppliers);
         }

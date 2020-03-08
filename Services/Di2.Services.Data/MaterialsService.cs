@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -25,33 +26,44 @@
 
         public async Task AddAsync(CreateMaterialInputModel input)
         {
-            /*var subCatId = this.subCategoryRepository
+            // using (var fileStream = new FileStream(@"D:\img.jpg", FileMode.Create))
+            // {
+            /*var expectedFileExt = new[] { ".pdf", ".doc", ".docx", ".jpg", ".png" };
+            if (expectedFileExt.Any(x => input.Image.First().FileName.EndsWith(x)))
+            {
+            }*/
+            // await input.Image.CopyToAsync(fileStream);
+            // }
+            var subCategoryId = this.subCategoryRepository
                 .AllAsNoTracking()
-                .Select(x => x.Id)
-                .FirstOrDefault(x => x.ToString() == input.SubCategory.ToString());
-            */
+                .Where(y => y.Name == input.SubCategoryName)
+                .Select(x => x.Id).FirstOrDefault();
 
-            // var subCat = (SubCategory)System.Convert.ChangeType(input.SubCategory, typeof(SubCategory));
+            var categoryId = this.subCategoryRepository
+                .AllAsNoTracking()
+                .Where(y => y.Id == subCategoryId)
+                .Select(x => x.CategoryId)
+                .FirstOrDefault();
+
             var material = new Material
             {
                 Name = input.Name,
                 Description = input.Description,
                 ExtraInfo = input.ExtraInfo,
-               // SubCategoryId = subCatId,
-                SubCategory = input.SubCategory,
-                Image = input.Image,
+                SubCategoryId = subCategoryId,
+                // Image = input.Image,
             };
 
             await this.materialRepository.AddAsync(material);
             await this.materialRepository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAllMaterials<T>()
+        public IEnumerable<T> GetAllMaterials<T>()
         {
-            return await this.materialRepository
-            .AllAsNoTracking()
+            return this.materialRepository
+            .All().OrderBy(x => x.SubCategory)
             .To<T>()
-            .ToArrayAsync();
+            .ToList();
         }
     }
 }

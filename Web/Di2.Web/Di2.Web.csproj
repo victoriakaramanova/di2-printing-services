@@ -44,8 +44,4 @@
     <ProjectReference Include="..\Di2.Web.Infrastructure\Di2.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\Di2.Web.ViewModels\Di2.Web.ViewModels.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\PriceLists\" />
-  </ItemGroup>
 </Project>

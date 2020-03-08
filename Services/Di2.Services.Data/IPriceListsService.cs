@@ -9,12 +9,16 @@
 
     public interface IPriceListsService
     {
-        Task CreateAsync(CreateInputModel input);
+        Task CreateAsync(CreatePriceListInputModel input);
 
-        Task<IEnumerable<T>> GetAPriceListPerSupplier<T>(int supplierId);
+        Task<IEnumerable<T>> GetMaterialsPerSupplier<T>(string supplier);
 
-        Task<IEnumerable<T>> GetAPriceListPerMaterial<T>(int materialId);
+        Task<IEnumerable<T>> GetSupplierstPerMaterial<T>(string material);
 
-        Task<IEnumerable<T>> GetAllPriceLists<T>();
+        IEnumerable<T> GetAllPriceLists<T>();
+
+        Task<IEnumerable<Material>> GetAllMaterials<Material>();
+
+        Task<IEnumerable<Supplier>> GetAllSuppliers<Supplier>();
     }
 }

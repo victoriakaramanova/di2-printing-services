@@ -12,6 +12,6 @@
     {
         Task AddAsync(CreateMaterialInputModel input);
 
-        Task<IEnumerable<T>> GetAllMaterials<T>();
+        IEnumerable<T> GetAllMaterials<T>();
     }
 }
