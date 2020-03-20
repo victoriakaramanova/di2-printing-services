@@ -6,8 +6,10 @@
 
     using Di2.Data.Models;
     using Di2.Services.Mapping;
+    using Microsoft.AspNetCore.Authorization;
 
-    public class CreateCategoryInputModel
+    [Authorize]
+    public class CreateCategoryInputModel : IMapFrom<Category>, IMapTo<Category>
     {
         public string Name { get; set; }
     }

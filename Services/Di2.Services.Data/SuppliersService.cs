@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
 
@@ -34,12 +35,16 @@
             await this.supplierRepository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAllSuppliers<T>()
+        public async Task<IEnumerable<T>> GetAllSuppliers<T>(int? supplierId = null)
         {
-            return await this.supplierRepository
-            .AllAsNoTracking()
-            .To<T>()
-            .ToArrayAsync();
+            IQueryable<Supplier> query = this.supplierRepository
+                    .All();
+            if (supplierId.HasValue)
+            {
+                query = query.Where(x => x.Id == supplierId); //!!!WRONG IDEA
+            }
+
+            return await query.To<T>().ToListAsync();
         }
     }
 }

@@ -22,6 +22,10 @@
 
         public string Phone { get; set; }
 
+        public string UserId { get; set; }
+
+        public virtual ApplicationUser User { get; set; }
+
         public virtual ICollection<PriceList> PriceLists { get; set; }
 
         public virtual ICollection<DeliveryBatch> DeliveryBatches { get; set; }

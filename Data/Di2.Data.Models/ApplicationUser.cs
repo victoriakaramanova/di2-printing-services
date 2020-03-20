@@ -7,6 +7,7 @@ namespace Di2.Data.Models
     using Di2.Data.Common.Models;
 
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.SqlServer.Management.Smo;
 
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
     {
@@ -16,6 +17,9 @@ namespace Di2.Data.Models
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
+            this.Categories = new HashSet<Category>();
+            this.SubCategories = new HashSet<SubCategory>();
+            this.Materials = new HashSet<Material>();
         }
 
         // Audit info
@@ -33,5 +37,11 @@ namespace Di2.Data.Models
         public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }
 
         public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
+
+        public virtual ICollection<Material> Materials { get; set; }
+
+        public virtual ICollection<Category> Categories { get; set; }
+
+        public virtual ICollection<SubCategory> SubCategories { get; set; }
     }
 }

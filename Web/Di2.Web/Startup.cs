@@ -2,12 +2,14 @@
 {
     using System.Reflection;
 
+    using CloudinaryDotNet;
     using Di2.Data;
     using Di2.Data.Common;
     using Di2.Data.Common.Repositories;
     using Di2.Data.Models;
     using Di2.Data.Repositories;
     using Di2.Data.Seeding;
+    using Di2.Services;
     using Di2.Services.Data;
     using Di2.Services.Mapping;
     using Di2.Services.Messaging;
@@ -16,6 +18,7 @@
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -37,7 +40,8 @@
                 options => options.UseSqlServer(this.configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
-                .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddRoles<ApplicationRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.Configure<CookiePolicyOptions>(
                 options =>
@@ -46,7 +50,10 @@
                         options.MinimumSameSitePolicy = SameSiteMode.None;
                     });
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(configure =>
+            {
+                configure.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            });
             services.AddRazorPages();
 
             services.AddSingleton(this.configuration);
@@ -57,14 +64,25 @@
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             // Application services
+            services.AddTransient<IUsersService, UsersService>();
             services.AddTransient<IMaterialsService, MaterialsService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<ISubCategoriesService, SubCategoriesService>();
             services.AddTransient<ISuppliersService, SuppliersService>();
             services.AddTransient<IPriceListsService, PriceListsService>();
             services.AddTransient<IDeliveryBatchesService, DeliveryBatchesService>();
-            services.AddTransient<IEmailSender, NullMessageSender>();
+            services.AddTransient<ICloudinaryService, CloudinaryService>();
+            services.AddTransient<IEmailSender>(x => new SendGridEmailSender("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"));
             services.AddTransient<ISettingsService, SettingsService>();
+
+            CloudinaryDotNet.Account cloudinaryCredentials = new Account(
+                this.configuration["Cloudinary:ApiName"],
+                this.configuration["Cloudinary:ApiKey"],
+                this.configuration["Cloudinary:ApiSecret"]);
+
+            CloudinaryDotNet.Cloudinary cloudinary = new Cloudinary(cloudinaryCredentials);
+
+            services.AddSingleton(cloudinary);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

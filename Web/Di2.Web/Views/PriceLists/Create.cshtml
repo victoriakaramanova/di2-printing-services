@@ -1,0 +1,56 @@
+﻿@using Di2.Common
+@using Di2.Web.ViewModels.PriceLists.InputModels
+@using Di2.Web.ViewModels.Materials.ViewModels
+@using Di2.Web.ViewModels.Suppliers.ViewModels
+@inject Di2.Services.Data.IPriceListsService PriceListsService
+
+@model Di2.Web.ViewModels.PriceLists.InputModels.CreatePriceListInputModel
+
+@{
+    ViewData["Title"] = "Create A Price Per Supplier For A Material";
+    //var material = Model.Materials.Select(x => x.Name);
+    //var supplier = Model.Suppliers.Select(x => x.Name);
+    //var minimumQuantityPerOrder = Model.AllPriceLists.Select(x => x.MinimumQuantityPerOrder);
+    //var unitPrice = Model.AllPriceLists.Select(x => x.UnitPrice);
+    //var allPriceLists = await this.PriceListsService.GetAllPriceLists<MaterialsPerSupplierViewModel>();
+    //var supplierId = await this.PriceListsService.;
+    var allMaterials = await this.PriceListsService.GetAllMaterials<MaterialViewModel>();
+    var allSuppliers = await this.PriceListsService.GetAllSuppliers<SupplierViewModel>();
+}
+
+<form asp-controller="PriceLists" asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Material.Name"></label>
+        <select asp-for="Material.Name" class="form-control">
+            <option selected />
+            @foreach (var m in allMaterials)
+            {
+                <option>@m.Name</option>
+            }
+        </select>
+        <span asp-validation-for="Material.Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Supplier.Name"></label>
+        <select asp-for="Supplier.Name" class="form-control">
+            <option selected />
+            @foreach (var s in allSuppliers)
+            {
+                <option>@s.Name</option>
+            }
+        </select>
+        <span asp-validation-for="Supplier.Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="MinimumQuantityPerOrder"></label>
+        <input asp-for="MinimumQuantityPerOrder" class="form-control" />
+        <span asp-validation-for="MinimumQuantityPerOrder" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="UnitPrice"></label>
+        <input asp-for="UnitPrice" class="form-control" />
+        <span asp-validation-for="UnitPrice" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

@@ -6,8 +6,9 @@
     this.ViewData["Title"] = "List All Categories";
 }
 
-@foreach (var item in Model)
+@foreach (var category in Model)
 {
-    <h3 >@item.Name</h3>
-    <button ahref="@item.Id" value="Delete?"/>
+    <h3>@category.Name</h3>
+    <h5>@category.UserUsername</h5>
+    <h5>@category.CreatedOn</h5>
 }

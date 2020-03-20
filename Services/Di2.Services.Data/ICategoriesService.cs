@@ -6,10 +6,11 @@
     using System.Threading.Tasks;
 
     using Di2.Web.ViewModels.Categories.InputModels;
+    using Microsoft.AspNetCore.Mvc.Rendering;
 
     public interface ICategoriesService
     {
-        Task AddAsync(CreateCategoryInputModel input);
+        Task AddAsync(CreateCategoryInputModel input, string userId);
 
         IEnumerable<T> GetAllCategories<T>();
     }

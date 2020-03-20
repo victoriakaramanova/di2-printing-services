@@ -1,10 +1,10 @@
 ﻿@using Di2.Common;
 @using Di2.Web.ViewModels.Categories.ViewModels;
-@inject Di2.Services.Data.ICategoriesService CategoriesService
+@*@inject Di2.Services.Data.ICategoriesService CategoriesService*@
 @{
     this.ViewData["Title"] = "Add SubCategory";
-    var categories = this.CategoriesService.GetAllCategories<CategoryViewModel>();
-    
+    //var categories = this.CategoriesService.GetAllCategories<CategoryViewModel>();
+
 }
 @model Di2.Web.ViewModels.SubCategories.InputModels.CreateSubCategoryInputModel
 
@@ -23,15 +23,11 @@
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="CategoryName"></label>
-            <select asp-for="CategoryName" class="form-control">
-                <option selected />
-                @foreach (var c in categories)
-                {
-                    <option>@c.Name</option>
-                }
+            <label asp-for="Category"></label>
+            <select asp-for="Category" class="form-control" asp-items="@Model.Categories">
+                <option value="">Select Category</option>
             </select>
-            <span asp-validation-for="CategoryName" class="text-danger"></span>
+            <span asp-validation-for="Category" class="text-danger"></span>
         </div>
         <input type="submit" class="btn btn-primary" value="Submit" />
     </form>

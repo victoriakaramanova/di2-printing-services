@@ -6,9 +6,11 @@
     this.ViewData["Title"] = "List All SubCategories";
 }
 
-@foreach (var item in Model)
+@foreach (var subCategory in Model)
 {
-    <h3>@item.Name</h3>
-    <h5>@item.Description</h5>
-    <h5>@item.Category.Name</h5>
+    <h3>@subCategory.Name</h3>
+    <h5>@subCategory.Description</h5>
+    <h5>@subCategory.Category.Name</h5>
+    <h5>@subCategory.UserUsername</h5>
+    <h5>@subCategory.CreatedOn</h5>
 }

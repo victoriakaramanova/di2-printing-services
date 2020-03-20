@@ -28,7 +28,11 @@
 
         public SubCategory SubCategory { get; set; }
 
-        // public IFormFile Image { get; set; }
+        public string Image { get; set; }
+
+        public string UserId { get; set; }
+
+        public virtual ApplicationUser User { get; set; }
 
         public virtual ICollection<PriceList> PriceLists { get; set; }
 

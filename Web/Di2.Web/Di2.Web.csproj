@@ -19,7 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -41,6 +46,7 @@
     <ProjectReference Include="..\..\Services\Di2.Services.Mapping\Di2.Services.Mapping.csproj" />
     <ProjectReference Include="..\..\Services\Di2.Services.Messaging\Di2.Services.Messaging.csproj" />
     <ProjectReference Include="..\..\Services\Di2.Services\Di2.Services.csproj" />
+    <ProjectReference Include="..\..\Tests\Sandbox\Sandbox.csproj" />
     <ProjectReference Include="..\Di2.Web.Infrastructure\Di2.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\Di2.Web.ViewModels\Di2.Web.ViewModels.csproj" />
   </ItemGroup>

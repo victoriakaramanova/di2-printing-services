@@ -32,23 +32,20 @@
         {
             IQueryable<Category> query =
                 this.categoriesRepository.All();
-            return query.To<T>().ToList();
+            return query.To<T>();
         }
 
-        public async Task AddAsync(CreateSubCategoryInputModel input)
+        public async Task AddAsync(CreateSubCategoryInputModel input, string userId)
         {
-            //var catName = input.Categories.Select(x => x.Name).FirstOrDefault();
-            var catId = this.categoriesRepository
-                .All()
-                .Where(x => x.Name == input.CategoryName)
-                .Select(x => x.Id)
-                .FirstOrDefault();
+            var category = this.categoriesRepository.All()
+                .FirstOrDefault(x => x.Name == input.Category) as Category;
 
             var subCategory = new SubCategory
             {
                 Name = input.Name,
-                CategoryId = catId,
+                Category = category,
                 Description = input.Description,
+                UserId = userId,
             };
 
             await this.subCategoriesRepository.AddAsync(subCategory);
@@ -58,7 +55,7 @@
         public async Task<IEnumerable<T>> GetAllSubCategories<T>()
         {
             return await this.subCategoriesRepository
-            .AllAsNoTracking()
+            .All()
             .To<T>()
             .ToArrayAsync();
         }

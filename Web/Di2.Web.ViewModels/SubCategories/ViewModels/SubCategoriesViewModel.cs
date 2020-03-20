@@ -7,7 +7,9 @@
 
     using Di2.Data.Models;
     using Di2.Services.Mapping;
+    using Microsoft.AspNetCore.Authorization;
 
+    [Authorize]
     public class SubCategoriesViewModel : IMapFrom<SubCategory>
     {
         public string Name { get; set; }
@@ -18,5 +20,9 @@
         public int CategoryId { get; set; }
 
         public Category Category { get; set; }
+
+        public string UserUsername { get; set; }
+
+        public DateTime CreatedOn { get; set; }
     }
 }

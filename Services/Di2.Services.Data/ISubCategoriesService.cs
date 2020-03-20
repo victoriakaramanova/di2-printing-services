@@ -8,7 +8,7 @@
 
     public interface ISubCategoriesService
     {
-        Task AddAsync(CreateSubCategoryInputModel input);
+        Task AddAsync(CreateSubCategoryInputModel input, string userId);
 
         Task<IEnumerable<T>> GetAllSubCategories<T>();
 

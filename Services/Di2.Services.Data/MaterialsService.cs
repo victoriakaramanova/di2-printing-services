@@ -24,7 +24,7 @@
             this.subCategoryRepository = subCategoryRepository;
         }
 
-        public async Task AddAsync(CreateMaterialInputModel input)
+        public async Task<int> AddAsync(string name, string description, string extraInfo, string subCategoryName, string imageUrl, string userId)
         {
             // using (var fileStream = new FileStream(@"D:\img.jpg", FileMode.Create))
             // {
@@ -36,7 +36,7 @@
             // }
             var subCategoryId = this.subCategoryRepository
                 .AllAsNoTracking()
-                .Where(y => y.Name == input.SubCategoryName)
+                .Where(y => y.Name == subCategoryName)
                 .Select(x => x.Id).FirstOrDefault();
 
             var categoryId = this.subCategoryRepository
@@ -47,15 +47,17 @@
 
             var material = new Material
             {
-                Name = input.Name,
-                Description = input.Description,
-                ExtraInfo = input.ExtraInfo,
+                Name = name,
+                Description = description,
+                ExtraInfo = extraInfo,
                 SubCategoryId = subCategoryId,
-                // Image = input.Image,
+                Image = imageUrl,
+                UserId = userId,
             };
 
             await this.materialRepository.AddAsync(material);
             await this.materialRepository.SaveChangesAsync();
+            return material.Id;
         }
 
         public IEnumerable<T> GetAllMaterials<T>()

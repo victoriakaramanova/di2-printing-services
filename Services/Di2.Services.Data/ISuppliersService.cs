@@ -9,6 +9,6 @@
     {
         Task AddAsync(string name, string address, string email, string phone);
 
-        Task<IEnumerable<T>> GetAllSuppliers<T>();
+        Task<IEnumerable<T>> GetAllSuppliers<T>(int? supplierId);
     }
 }

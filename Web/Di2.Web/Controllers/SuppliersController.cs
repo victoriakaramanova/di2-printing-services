@@ -37,9 +37,9 @@
             return this.Redirect("/");
         }
 
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All(int? supplierId = null)
         {
-            var allSuppliers = await this.suppliersService.GetAllSuppliers<SuppliersViewModel>();
+            var allSuppliers = await this.suppliersService.GetAllSuppliers<SuppliersViewModel>(supplierId);
 
             return this.View(allSuppliers);
         }

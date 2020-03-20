@@ -6,11 +6,18 @@
 
     using Di2.Data.Models;
     using Di2.Services.Mapping;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc.Rendering;
 
+    [Authorize]
     public class CategoryViewModel : IMapFrom<Category>
     {
         public int Id { get; set; }
 
         public string Name { get; set; }
+
+        public DateTime CreatedOn { get; set; }
+
+        public string UserUsername { get; set; }
     }
 }

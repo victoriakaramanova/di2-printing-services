@@ -229,6 +229,9 @@ namespace Di2.Data.Migrations
                     b.Property<string>("ExtraInfo")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
