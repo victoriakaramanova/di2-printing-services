@@ -34,7 +34,7 @@
             return this.priceListsRepository
             .All().OrderBy(x => x.Material.SubCategory)
             .ThenBy(x => x.Material.Name)
-            .ThenBy(x=>x.CheapRatio)//.ThenBy(x => x.UnitPrice)
+            .ThenBy(x => x.CheapRatio)//.ThenBy(x => x.UnitPrice)
             .To<T>()
             .ToArray();
         }
@@ -81,6 +81,14 @@
             //    .Include(x => x.Supplier)
             //    .To<T>()
             //    .ToListAsync();
+        }
+
+        public T GetById<T>(int id)
+        {
+            var priceList = this.priceListsRepository.All()
+                .Where(x => x.Id == id)
+                .To<T>().FirstOrDefault();
+            return priceList;
         }
     }
 }

@@ -16,5 +16,7 @@
         Task<IEnumerable<Material>> GetAllMaterials<Material>();
 
         Task<IEnumerable<Supplier>> GetAllSuppliers<Supplier>();
+
+        T GetById<T>(int id);
     }
 }

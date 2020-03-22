@@ -52,7 +52,8 @@
             var user = await this.userManager.GetUserAsync(this.User);
 
             await this.priceListsService.CreateAsync(input, user.Id);
-            return this.RedirectToAction(nameof(this.All));
+
+            return this.RedirectToAction(nameof(this.ById));
         }
 
         public IActionResult All()
@@ -60,6 +61,17 @@
             var allPriceLists = this.priceListsService.GetAllPriceLists<PriceListViewModel>();
 
             return this.View(allPriceLists);
+        }
+
+        public IActionResult ById(int id)
+        {
+            var priceListViewModel = this.priceListsService.GetById<PriceListViewModel>(id);
+            if (priceListViewModel == null)
+            {
+                return this.NotFound();
+            }
+
+            return this.View(priceListViewModel);
         }
     }
 }
