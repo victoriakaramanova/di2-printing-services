@@ -36,6 +36,10 @@
 
         public DbSet<PriceList> PriceLists { get; set; }
 
+        public DbSet<OrderSupplier> OrderSuppliers { get; set; }
+
+        public DbSet<OrderStatus> OrderStatuses { get; set; }
+
         public DbSet<DeliveryBatch> DeliveryBatches { get; set; }
 
         public DbSet<Setting> Settings { get; set; }

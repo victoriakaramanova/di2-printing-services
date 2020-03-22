@@ -10,18 +10,23 @@
     using Di2.Web.ViewModels.PriceLists.InputModels;
     using Di2.Web.ViewModels.PriceLists.ViewModels;
     using Di2.Web.ViewModels.Suppliers.ViewModels;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Single = ViewModels.PriceLists.ViewModels.SingleViewModel;
 
     public class PriceListsController : BaseController
     {
         private readonly IPriceListsService priceListsService;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public PriceListsController(IPriceListsService priceListsService)
+        public PriceListsController(IPriceListsService priceListsService, UserManager<ApplicationUser> userManager)
         {
             this.priceListsService = priceListsService;
+            this.userManager = userManager;
         }
 
+        [Authorize]
         public async Task<IActionResult> Create()
         {
             var materials = await this.priceListsService.GetAllMaterials<MaterialsViewModel>();
@@ -35,6 +40,7 @@
             return this.View();
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(CreatePriceListInputModel input)
         {
@@ -43,20 +49,17 @@
                 return this.View(input);
             }
 
-            await this.priceListsService.CreateAsync(input);
-            return this.Redirect("/");
+            var user = await this.userManager.GetUserAsync(this.User);
+
+            await this.priceListsService.CreateAsync(input, user.Id);
+            return this.RedirectToAction(nameof(this.All));
         }
 
-        public async Task<IActionResult> MaterialsPerSupplier(string supplier)
+        public IActionResult All()
         {
-            var viewModel = await this.priceListsService.GetMaterialsPerSupplier<MaterialsPerSupplierViewModel>(supplier);
-            return this.View(viewModel);
-        }
+            var allPriceLists = this.priceListsService.GetAllPriceLists<PriceListViewModel>();
 
-        public async Task<IActionResult> SuppliersPerMaterial(string material)
-        {
-            var viewModel = await this.priceListsService.GetSupplierstPerMaterial<SuppliersPerMaterialViewModel>(material);
-            return this.View(viewModel);
+            return this.View(allPriceLists);
         }
     }
 }

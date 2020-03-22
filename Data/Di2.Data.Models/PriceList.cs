@@ -24,5 +24,6 @@
 
         public virtual ApplicationUser User { get; set; }
 
+        public double CheapRatio { get; set; }
     }
 }

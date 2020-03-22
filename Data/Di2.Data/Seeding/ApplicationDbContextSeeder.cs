@@ -31,6 +31,7 @@
                               new SubCategoriesSeeder(),
                               new SuppliersSeeder(),
                               new MaterialsSeeder(),
+                              new OrderStatusSeeder(),
                           };
 
             foreach (var seeder in seeders)

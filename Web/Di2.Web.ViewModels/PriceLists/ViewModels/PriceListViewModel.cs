@@ -10,9 +10,13 @@ namespace Di2.Web.ViewModels.PriceLists.ViewModels
 {
     public class PriceListViewModel : IMapFrom<PriceList>
     {
-        public IEnumerable<MaterialsViewModel> Materials { get; set; }
+        public int MaterialId { get; set; }
 
-        public IEnumerable<SuppliersViewModel> Suppliers { get; set; }
+        public Material Material { get; set; }
+
+        public int SupplierId { get; set; }
+
+        public Supplier Supplier { get; set; }
 
         public double MinimumQuantityPerOrder { get; set; }
 

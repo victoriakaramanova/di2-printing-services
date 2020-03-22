@@ -50,9 +50,13 @@
                         options.MinimumSameSitePolicy = SameSiteMode.None;
                     });
 
-            services.AddControllersWithViews(configure =>
+            services.AddControllersWithViews(options =>
             {
-                configure.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()); // CSRF
+            });
+            services.AddAntiforgery(options =>
+            {
+                options.HeaderName = "X-CSRF-TOKEN";
             });
             services.AddRazorPages();
 
@@ -71,6 +75,7 @@
             services.AddTransient<ISuppliersService, SuppliersService>();
             services.AddTransient<IPriceListsService, PriceListsService>();
             services.AddTransient<IDeliveryBatchesService, DeliveryBatchesService>();
+            services.AddTransient<IOrderSupplierService, OrderSupplierService>();
             services.AddTransient<ICloudinaryService, CloudinaryService>();
             services.AddTransient<IEmailSender>(x => new SendGridEmailSender("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"));
             services.AddTransient<ISettingsService, SettingsService>();

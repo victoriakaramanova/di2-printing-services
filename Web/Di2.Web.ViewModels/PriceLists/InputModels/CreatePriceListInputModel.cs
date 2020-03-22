@@ -26,5 +26,7 @@
          public double MinimumQuantityPerOrder { get; set; }
 
          public decimal UnitPrice { get; set; }
+
+         public double CheapRatio => (double)this.UnitPrice / this.MinimumQuantityPerOrder;
     }
 }
