@@ -29,6 +29,6 @@
 
         public virtual ApplicationUser User { get; set; }
 
-        public virtual ICollection<Material> Materials { get; set; }
+        public virtual ICollection<Material> Materials { get; }
     }
 }

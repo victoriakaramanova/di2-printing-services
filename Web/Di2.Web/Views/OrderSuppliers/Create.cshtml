@@ -1,0 +1,16 @@
+﻿@using Di2.Web.ViewModels.PriceLists.ViewModels
+@model Di2.Web.ViewModels.OrderSuppliers.OrderSuppliersListViewModel
+@{
+    this.ViewData["Title"] = "Поръчка на материали";
+}
+<h1 class="display-3">@this.ViewData["Title"]</h1>
+
+<form method="post" asp-action="Create">
+    <div class="row">
+        @foreach (var priceList in Model.OrderSuppliers)
+        {
+            @priceList.PriceList.Material.Name @priceList.PriceList.Supplier.Name @priceList.PriceList.MinimumQuantityPerOrder @priceList.PriceList.UnitPrice
+        }
+        @* @Model.PriceLists.Select(x => x.Material.Name) @Model.PriceLists.Select(x => x.Material.Description) @Model.PriceLists.Select(x => x.Supplier.Name) @Model.PriceLists.Select(x => x.UnitPrice) @Model.PriceLists.Select(x => x.MinimumQuantityPerOrder)*@
+    </div>
+</form>

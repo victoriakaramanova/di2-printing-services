@@ -34,7 +34,7 @@
             return this.priceListsRepository
             .All().OrderBy(x => x.Material.SubCategory)
             .ThenBy(x => x.Material.Name)
-            .ThenBy(x => x.CheapRatio)//.ThenBy(x => x.UnitPrice)
+            .ThenBy(x => x.CheapRatio)
             .To<T>()
             .ToArray();
         }
@@ -65,22 +65,12 @@
         {
             return await this.materialsRepository.All()
                 .To<T>().ToListAsync();
-            //return await this.priceListsRepository
-            //    .All()
-            //    .Include(x => x.Material)
-            //    .To<T>()
-            //    .ToListAsync();
         }
 
         public async Task<IEnumerable<T>> GetAllSuppliers<T>()
         {
             return await this.suppliersRepository.All()
                 .To<T>().ToListAsync();
-            //return await this.priceListsRepository
-            //    .All()
-            //    .Include(x => x.Supplier)
-            //    .To<T>()
-            //    .ToListAsync();
         }
 
         public T GetById<T>(int id)

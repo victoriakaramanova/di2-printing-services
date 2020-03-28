@@ -56,7 +56,7 @@
 
             int materialId = await this.materialsService.AddAsync(input.Name, input.Description, input.ExtraInfo, input.SubCategoryName, imageUrl, user.Id);
 
-            return this.RedirectToAction(nameof(this.All), new { id = materialId });
+            return this.RedirectToAction(nameof(this.ById), new { id = materialId });
         }
 
         // Download file sample
@@ -73,6 +73,17 @@
             var allMaterials = this.materialsService.GetAllMaterials<MaterialsViewModel>();
 
             return this.View(allMaterials);
+        }
+
+        public IActionResult ById(int id)
+        {
+            var materialViewModel = this.materialsService.GetById<MaterialsViewModel>(id);
+            if (materialViewModel == null)
+            {
+                return this.NotFound();
+            }
+
+            return this.View(materialViewModel);
         }
     }
 }

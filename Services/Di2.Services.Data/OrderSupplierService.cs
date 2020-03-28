@@ -9,32 +9,44 @@
     using Di2.Data.Common.Repositories;
     using Di2.Data.Models;
     using Di2.Services.Mapping;
-    using Di2.Web.ViewModels.OrderSupplier;
+    using Di2.Web.ViewModels.OrderSuppliers;
+    using Di2.Web.ViewModels.PriceLists.ViewModels;
     using Microsoft.EntityFrameworkCore;
 
     public class OrderSupplierService : IOrderSupplierService
     {
         private readonly IDeletableEntityRepository<OrderSupplier> orderSuppliersRepository;
         private readonly IDeletableEntityRepository<OrderStatus> orderStatusRepository;
+        private readonly IDeletableEntityRepository<PriceList> priceListRepository;
 
         public OrderSupplierService(
             IDeletableEntityRepository<OrderSupplier> orderSuppliersRepository,
-            IDeletableEntityRepository<OrderStatus> orderStatusRepository)
+            IDeletableEntityRepository<OrderStatus> orderStatusRepository,
+            IDeletableEntityRepository<PriceList> priceListRepository)
         {
             this.orderSuppliersRepository = orderSuppliersRepository;
             this.orderStatusRepository = orderStatusRepository;
+            this.priceListRepository = priceListRepository;
         }
 
-        public async Task<int> CreateAsync(DateTime orderDate, int materialId, int supplierId, double quantity, decimal unitPrice, decimal totalPrice, string userId)
+        public async Task<int> CreateAsync(CreateOrderSupplierInputModel input, string userId)
         {
+            // var priceLists = this.priceListRepository.All().To<PriceListViewModel>().ToList();
+            var priceList = this.priceListRepository.All().FirstOrDefault(x => x.Id == input.PriceListId);
+            var materialId = priceList.Material.Id;
+            var supplierId = priceList.Supplier.Id;
+            var unitPrice = priceList.UnitPrice;
+            var minimumQty = priceList.MinimumQuantityPerOrder;
+           
             var orderSupplier = new OrderSupplier
             {
-                OrderDate = orderDate,
-                MaterialId = materialId,
-                SupplierId = supplierId,
-                Quantity = quantity,
+                PriceListId = input.PriceListId,
+                OrderDate = DateTime.UtcNow,
+                // MaterialId = materialId,
+                // SupplierId = supplierId,
+                Quantity = minimumQty,
                 UnitPrice = unitPrice,
-                TotalPrice = totalPrice,
+                TotalPrice = unitPrice * (decimal)minimumQty,
                 UserId = userId,
             };
             orderSupplier.Status = await this.orderStatusRepository
@@ -49,9 +61,9 @@
         public IEnumerable<T> GetAllOrderSuppliers<T>()
         {
             return this.orderSuppliersRepository
-           .All().OrderBy(x => x.Supplier.Name)
+           .All().OrderByDescending(x => x.Quantity)
            .To<T>()
-           .ToArray();
+           .ToList();
         }
     }
 }

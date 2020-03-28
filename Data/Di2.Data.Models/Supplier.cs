@@ -26,8 +26,8 @@
 
         public virtual ApplicationUser User { get; set; }
 
-        public virtual ICollection<PriceList> PriceLists { get; set; }
+        public virtual ICollection<PriceList> PriceLists { get; }
 
-        public virtual ICollection<DeliveryBatch> DeliveryBatches { get; set; }
+        public virtual ICollection<DeliveryBatch> DeliveryBatches { get; }
     }
 }

@@ -13,5 +13,7 @@
         Task<int> AddAsync(string name, string description, string extraInfo, string subCategoryName, string imageUrl, string userId);
 
         IEnumerable<T> GetAllMaterials<T>();
+
+        T GetById<T>(int id);
     }
 }

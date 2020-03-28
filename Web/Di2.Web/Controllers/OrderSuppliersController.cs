@@ -1,17 +1,18 @@
-﻿using Di2.Data.Models;
-using Di2.Services.Data;
-using Di2.Web.ViewModels.OrderSupplier;
-using Di2.Web.ViewModels.PriceLists.ViewModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Di2.Web.Controllers
+﻿namespace Di2.Web.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using Di2.Data.Models;
+    using Di2.Services.Data;
+    using Di2.Web.ViewModels.OrderSuppliers;
+    using Di2.Web.ViewModels.PriceLists.ViewModels;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+
     public class OrderSuppliersController : BaseController
     {
         private readonly IOrderSupplierService orderSupplierService;
@@ -34,10 +35,17 @@ namespace Di2.Web.Controllers
             this.priceListsService = priceListsService;
         }
 
+        // TODO: ASK!!!
         [Authorize]
         public IActionResult Create()
         {
-            var viewModel = this.priceListsService.GetAllPriceLists<PriceListViewModel>();
+            // var orderSuppliers = this.orderSupplierService.GetAllOrderSuppliers<OrderSupplierViewModel>();
+            // var priceLists = this.priceListsService.GetAllPriceLists<PriceListViewModel>();
+            var viewModel = new CreateOrderSupplierInputModel
+            {
+
+            };
+
             return this.View(viewModel);
         }
 
@@ -51,10 +59,16 @@ namespace Di2.Web.Controllers
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
-            var orderSupplier = await this.orderSupplierService.CreateAsync(input.OrderDate, input.MaterialId, input.SupplierId, input.Quantity, input.UnitPrice, input.TotalPrice, user.Id);
-            return this.Redirect("/");
+            var orderSupplier = await this.orderSupplierService.CreateAsync(input, user.Id);
+            return this.RedirectToAction(nameof(this.All));
         }
 
+        public IActionResult All()
+        {
+            var viewModel = this.orderSupplierService
+                .GetAllOrderSuppliers<OrderSupplierViewModel>();
 
+            return this.View(viewModel);
+        }
     }
 }

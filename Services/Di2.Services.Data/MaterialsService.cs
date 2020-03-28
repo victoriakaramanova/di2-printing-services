@@ -67,5 +67,12 @@
             .To<T>()
             .ToList();
         }
+
+        public T GetById<T>(int id)
+        {
+            var material = this.materialRepository.All().Where(x => x.Id == id)
+                .To<T>().FirstOrDefault();
+            return material;
+        }
     }
 }

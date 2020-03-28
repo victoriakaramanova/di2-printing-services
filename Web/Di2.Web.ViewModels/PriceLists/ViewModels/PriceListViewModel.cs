@@ -8,8 +8,10 @@ using System.Text;
 
 namespace Di2.Web.ViewModels.PriceLists.ViewModels
 {
-    public class PriceListViewModel : IMapFrom<PriceList>
+    public class PriceListViewModel : IMapFrom<PriceList>, IMapTo<PriceList>
     {
+        public int Id { get; set; }
+
         public int MaterialId { get; set; }
 
         public Material Material { get; set; }

@@ -50,9 +50,7 @@
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
-
             await this.priceListsService.CreateAsync(input, user.Id);
-
             return this.RedirectToAction(nameof(this.ById));
         }
 

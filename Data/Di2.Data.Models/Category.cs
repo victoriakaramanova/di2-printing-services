@@ -21,6 +21,6 @@
 
         public virtual ApplicationUser User { get; set; }
 
-        public virtual ICollection<SubCategory> SubCategories { get; set; }
+        public virtual ICollection<SubCategory> SubCategories { get; }
     }
 }

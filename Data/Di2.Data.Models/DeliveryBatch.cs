@@ -22,6 +22,5 @@
         public Supplier Supplier { get; set; }
 
         public double Quantity { get; set; }
-
     }
 }

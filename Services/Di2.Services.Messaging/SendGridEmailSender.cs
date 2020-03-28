@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
 
     using SendGrid;
@@ -31,8 +32,12 @@
             {
                 foreach (var attachment in attachments)
                 {
-                    message.AddAttachment(attachment.FileName, Convert.ToBase64String(attachment.Content), attachment.MimeType);
+                    //var conv = Convert.ToBase64String(attachment.Content);
+                   // message.AddAttachment(attachment.FileName, Convert.ToBase64String(attachment.Content), attachment.MimeType);
+                   message.AddAttachment(attachment.FileName, Convert.ToBase64String(attachment.Content), attachment.MimeType);
+
                 }
+                ;
             }
 
             try

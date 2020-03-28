@@ -77,7 +77,7 @@
             services.AddTransient<IDeliveryBatchesService, DeliveryBatchesService>();
             services.AddTransient<IOrderSupplierService, OrderSupplierService>();
             services.AddTransient<ICloudinaryService, CloudinaryService>();
-            services.AddTransient<IEmailSender>(x => new SendGridEmailSender("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"));
+            services.AddTransient<IEmailSender>(x => new SendGridEmailSender(this.configuration["Sendgrid:ApiSecret"]));
             services.AddTransient<ISettingsService, SettingsService>();
 
             CloudinaryDotNet.Account cloudinaryCredentials = new Account(
