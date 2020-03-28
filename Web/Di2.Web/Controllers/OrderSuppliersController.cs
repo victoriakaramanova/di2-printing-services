@@ -40,10 +40,11 @@
         public IActionResult Create()
         {
             // var orderSuppliers = this.orderSupplierService.GetAllOrderSuppliers<OrderSupplierViewModel>();
-            // var priceLists = this.priceListsService.GetAllPriceLists<PriceListViewModel>();
-            var viewModel = new CreateOrderSupplierInputModel
+            var priceLists = this.priceListsService.GetAllPriceLists<PriceListViewModel>();
+            var viewModel = new OrderSuppliersListViewModel
             {
-
+                Pricelists = priceLists,
+                Orderpart = new CreateOrderSupplierInputModel(),
             };
 
             return this.View(viewModel);

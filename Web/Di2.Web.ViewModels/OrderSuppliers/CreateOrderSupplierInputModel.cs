@@ -10,9 +10,9 @@
 
     public class CreateOrderSupplierInputModel : IMapFrom<OrderSupplier>, IMapFrom<PriceList>, IMapTo<OrderSupplier>
     {
-        public int PriceListId { get; set; }
+        //public int PriceListId { get; set; }
 
-        public PriceListViewModel PriceList { get; set; }
+        //public PriceListViewModel PriceList { get; set; }
 
         // public int MaterialId { get; set; }
 
@@ -25,7 +25,7 @@
         // public double MinimumQuantityPerOrder { get; set; }
 
         // public decimal UnitPrice { get; set; }
-        public DateTime OrderDate { get; set; }
+        public DateTime OrderDate => DateTime.UtcNow;
 
         public double Quantity { get; set; }
 

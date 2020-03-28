@@ -87,7 +87,8 @@
             var attchList = new List<EmailAttachment>();
             attchList.Add(attch);
 
-            await this.sender.SendEmailAsync(GlobalConstants.Email, "Я сега", "e_karamanova@abv.bg", $"Поръчка за {DateTime.UtcNow.ToShortDateString()}", $"Здравейте, приложена е поръчката. Поздрави - {GlobalConstants.SystemName}", attchList);
+            //UNMARK HERE TO SEND EMAIL!
+            //await this.sender.SendEmailAsync(GlobalConstants.Email, "Я сега", "victoriakaramanova@gmail.com", $"Поръчка за {DateTime.UtcNow.ToShortDateString()}", $"Здравейте, приложена е поръчката. Поздрави - {GlobalConstants.SystemName}", attchList);
 
 
 

@@ -11,7 +11,7 @@ namespace Di2.Data.Models
 
         public virtual PriceList PriceList { get; set; }
 
-        public DateTime OrderDate { get; set; }
+        public DateTime OrderDate => DateTime.UtcNow;
 
         //public int MaterialId { get; set; }
 

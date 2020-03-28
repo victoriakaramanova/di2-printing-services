@@ -7,10 +7,14 @@
 
 <form method="post" asp-action="Create">
     <div class="row">
-        @foreach (var priceList in Model.OrderSuppliers)
+        @foreach (var p in Model.Pricelists)
         {
-            @priceList.PriceList.Material.Name @priceList.PriceList.Supplier.Name @priceList.PriceList.MinimumQuantityPerOrder @priceList.PriceList.UnitPrice
-        }
+        <div>
+            @p.Material.Name @p.Supplier.Name @p.MinimumQuantityPerOrder @p.UnitPrice
+            <input type="date" asp-for="@Model.Orderpart.OrderDate)" />
+            <input type="number" step="10" asp-for="@Model.Orderpart.Quantity)" />
+        </div>
+                }
         @* @Model.PriceLists.Select(x => x.Material.Name) @Model.PriceLists.Select(x => x.Material.Description) @Model.PriceLists.Select(x => x.Supplier.Name) @Model.PriceLists.Select(x => x.UnitPrice) @Model.PriceLists.Select(x => x.MinimumQuantityPerOrder)*@
     </div>
 </form>

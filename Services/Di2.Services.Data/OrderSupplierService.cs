@@ -32,13 +32,13 @@
         public async Task<int> CreateAsync(CreateOrderSupplierInputModel input, string userId)
         {
             // var priceLists = this.priceListRepository.All().To<PriceListViewModel>().ToList();
-            var priceList = this.priceListRepository.All().FirstOrDefault(x => x.Id == input.PriceListId);
+            /*var priceList = this.priceListRepository.All().FirstOrDefault(x => x.Id == input.PriceListId);
             var materialId = priceList.Material.Id;
             var supplierId = priceList.Supplier.Id;
             var unitPrice = priceList.UnitPrice;
-            var minimumQty = priceList.MinimumQuantityPerOrder;
-           
-            var orderSupplier = new OrderSupplier
+            var minimumQty = priceList.MinimumQuantityPerOrder;*/
+
+            /*var orderSupplier = new OrderSupplier
             {
                 PriceListId = input.PriceListId,
                 OrderDate = DateTime.UtcNow,
@@ -54,8 +54,8 @@
                 .FirstOrDefaultAsync(x => x.Name == "Sent");
 
             await this.orderSuppliersRepository.AddAsync(orderSupplier);
-            await this.orderSuppliersRepository.SaveChangesAsync();
-            return orderSupplier.Id;
+            await this.orderSuppliersRepository.SaveChangesAsync();*/
+            return 0; //orderSupplier.Id;
         }
 
         public IEnumerable<T> GetAllOrderSuppliers<T>()

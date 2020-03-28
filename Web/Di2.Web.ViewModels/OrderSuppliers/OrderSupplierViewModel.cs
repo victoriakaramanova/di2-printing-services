@@ -10,11 +10,11 @@
 
     public class OrderSupplierViewModel : IMapFrom<OrderSupplier>, IMapFrom<PriceList>
     {
-        public PriceListViewModel PriceList { get; set; }
+        // public PriceListViewModel PriceList { get; set; }
 
         public DateTime OrderDate { get; set; }
 
-        /*public int MaterialId { get; set; }
+        public int MaterialId { get; set; }
 
         public Material Material { get; set; }
 
@@ -22,11 +22,11 @@
 
         public Supplier Supplier { get; set; }
 
-        public double MinimumQuantityPerOrder { get; set; }*/
+        public double MinimumQuantityPerOrder { get; set; }
 
         public double Quantity { get; set; }
 
-        //public decimal UnitPrice { get; set; }
+        public decimal UnitPrice { get; set; }
 
         public decimal TotalPrice { get; set; }
 

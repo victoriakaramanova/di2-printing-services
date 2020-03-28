@@ -10,8 +10,8 @@
 
     public class OrderSuppliersListViewModel : IMapFrom<OrderSupplier>, IMapFrom<PriceList>, IMapTo<OrderSupplier>,IMapTo<PriceList>
     {
-        // public IEnumerable<PriceList> Pricelist { get; set; }
+        public IEnumerable<PriceListViewModel> Pricelists { get; set; }
 
-        public IEnumerable<OrderSupplierViewModel> OrderSuppliers { get; set; }
+        public CreateOrderSupplierInputModel Orderpart { get; set; }
     }
 }
