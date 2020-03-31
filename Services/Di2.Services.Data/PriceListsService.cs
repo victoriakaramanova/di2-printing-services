@@ -10,6 +10,7 @@
     using Di2.Data.Models;
     using Di2.Services.Mapping;
     using Di2.Web.ViewModels;
+    using Di2.Web.ViewModels.Materials.ViewModels;
     using Di2.Web.ViewModels.PriceLists.InputModels;
     using Microsoft.EntityFrameworkCore;
 
@@ -29,28 +30,28 @@
             this.suppliersRepository = suppliersRepository;
         }
 
-        public IEnumerable<T> GetAllPriceLists<T>()
+        public List<T> GetAllPriceLists<T>()
         {
             return this.priceListsRepository
             .All().OrderBy(x => x.Material.SubCategory)
             .ThenBy(x => x.Material.Name)
             .ThenBy(x => x.CheapRatio)
             .To<T>()
-            .ToArray();
+            .ToList();
         }
 
         public async Task CreateAsync(CreatePriceListInputModel input, string userId)
         {
-            var mId = this.materialsRepository.All()
+            /*var mId = this.materialsRepository.All()
                 .Where(x => x.Name == input.Material.Name)
                 .Select(x => x.Id).FirstOrDefault();
             var sId = this.suppliersRepository.All()
                 .Where(x => x.Name == input.Supplier.Name)
-                .Select(x => x.Id).FirstOrDefault();
+                .Select(x => x.Id).FirstOrDefault();*/
             var priceList = new PriceList
             {
-                MaterialId = mId,
-                SupplierId = sId,
+                MaterialId = input.MaterialId,
+                SupplierId = input.SupplierId,
                 MinimumQuantityPerOrder = input.MinimumQuantityPerOrder,
                 UnitPrice = input.UnitPrice,
                 UserId = userId,
@@ -61,24 +62,35 @@
             await this.priceListsRepository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAllMaterials<T>()
+        public IEnumerable<T> GetAllMaterials<T>()
         {
-            return await this.materialsRepository.All()
-                .To<T>().ToListAsync();
+            IQueryable<Material> query = this.materialsRepository
+                .All();
+
+            return query.To<T>().ToList();
         }
 
-        public async Task<IEnumerable<T>> GetAllSuppliers<T>()
+        public IEnumerable<T> GetAllSuppliers<T>()
         {
-            return await this.suppliersRepository.All()
-                .To<T>().ToListAsync();
+            IQueryable<Supplier> query = this.suppliersRepository.All();
+            return query.To<T>().ToList();
         }
 
-        public T GetById<T>(int id)
+        // WRONG!!!!!!!!!!!!!
+        public T GetById<T>()
         {
             var priceList = this.priceListsRepository.All()
-                .Where(x => x.Id == id)
-                .To<T>().FirstOrDefault();
+                //.LastOrDefault(x=>x.CreatedOn)
+                .To<T>().LastOrDefault();
             return priceList;
+        }
+
+        public T GetByElements<T>(int materialId, int supplierId, double minQty, decimal unitPrice)
+            {
+             var priceList = this.priceListsRepository.All()
+                .Where(x => x.MaterialId == materialId && x.SupplierId == supplierId && x.MinimumQuantityPerOrder == minQty && x.UnitPrice == unitPrice)
+                .To<T>().FirstOrDefault();
+             return priceList;
         }
     }
 }

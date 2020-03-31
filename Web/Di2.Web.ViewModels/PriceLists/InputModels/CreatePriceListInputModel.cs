@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -10,23 +11,28 @@
     using Di2.Web.ViewModels.Materials.ViewModels;
     using Di2.Web.ViewModels.Suppliers.ViewModels;
 
-    public class CreatePriceListInputModel : IMapFrom<MaterialViewModel>, IMapFrom<SupplierViewModel>
+    public class CreatePriceListInputModel : IMapTo<PriceList> //IMapFrom<Material>, IMapFrom<Supplier>
     {
-        //public IList<MaterialsViewModel> MaterialsViewModelList { get; set; }
+        // public Material Material { get; set; }
+        [Range(1, int.MaxValue)]
+        [Display(Name = "Материал")]
+        public int MaterialId { get; set; }
 
-        //public IList<SuppliersViewModel> SuppliersViewModelList { get; set; }
-         public Material Material { get; set; }
+        // public Supplier Supplier { get; set; }
+        [Range(1, int.MaxValue)]
+        [Display(Name = "Доставчик")]
+        public int SupplierId { get; set; }
 
-         public int MaterialId { get; set; }
+        [Required]
+        public double MinimumQuantityPerOrder { get; set; }
 
-         public Supplier Supplier { get; set; }
+        [Required]
+        public decimal UnitPrice { get; set; }
 
-         public int SupplierId { get; set; }
+        public double CheapRatio => (double)this.UnitPrice / this.MinimumQuantityPerOrder;
 
-         public double MinimumQuantityPerOrder { get; set; }
+        public IEnumerable<MaterialViewModel> Materials { get; set; }
 
-         public decimal UnitPrice { get; set; }
-
-         public double CheapRatio => (double)this.UnitPrice / this.MinimumQuantityPerOrder;
+        public IEnumerable<SupplierViewModel> Suppliers { get; set; }
     }
 }

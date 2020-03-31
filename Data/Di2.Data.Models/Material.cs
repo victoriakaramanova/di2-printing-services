@@ -14,7 +14,6 @@
         public Material()
         {
             this.PriceLists = new HashSet<PriceList>();
-            this.DeliveryBatches = new HashSet<DeliveryBatch>();
         }
 
         [Required]
@@ -36,6 +35,5 @@
 
         public virtual ICollection<PriceList> PriceLists { get; }
 
-        public virtual ICollection<DeliveryBatch> DeliveryBatches { get; }
     }
 }

@@ -41,12 +41,12 @@
         [HttpPost]
         public async Task<IActionResult> Add(CreateMaterialInputModel input)
         {
-            var material = AutoMapperConfig.MapperInstance.Map<Material>(input);
             if (!this.ModelState.IsValid)
             {
                 return this.View(input);
             }
 
+            var material = AutoMapperConfig.MapperInstance.Map<Material>(input);
             string imageUrl = await this.cloudinaryService.UploadPictureAsync(input.Image, input.Name);
             var user = await this.userManager.GetUserAsync(this.User);
 

@@ -20,7 +20,7 @@
             this.supplierRepository = supplierRepository;
         }
 
-        public async Task AddAsync(string name, string address, string email, string phone)
+        public async Task<int> AddAsync(string name, string address, string email, string phone, string userId)
         {
             var supplier = new Supplier
             {
@@ -29,22 +29,27 @@
                 Address = address,
                 Email = email,
                 Phone = phone,
+                UserId = userId,
             };
 
             await this.supplierRepository.AddAsync(supplier);
             await this.supplierRepository.SaveChangesAsync();
+            return supplier.Id;
         }
 
-        public async Task<IEnumerable<T>> GetAllSuppliers<T>(int? supplierId = null)
+        public IEnumerable<T> GetAllSuppliers<T>()
         {
             IQueryable<Supplier> query = this.supplierRepository
                     .All();
-            if (supplierId.HasValue)
-            {
-                query = query.Where(x => x.Id == supplierId); //!!!WRONG IDEA
-            }
-
-            return await query.To<T>().ToListAsync();
+            return query.To<T>().ToList();
         }
+
+        public T GetById<T>(int id)
+        {
+            var supplier = this.supplierRepository.All().Where(x => x.Id == id)
+                .To<T>().FirstOrDefault();
+            return supplier;
+        }
+
     }
 }

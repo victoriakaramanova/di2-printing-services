@@ -8,6 +8,11 @@
 
     public class PriceList : BaseDeletableModel<int>
     {
+        public PriceList()
+        {
+            this.OrderSuppliers = new HashSet<OrderSupplier>();
+        }
+
         public int MaterialId { get; set; }
 
         public virtual Material Material { get; set; }
@@ -25,5 +30,7 @@
         public virtual ApplicationUser User { get; set; }
 
         public double CheapRatio { get; set; }
+
+        public IEnumerable<OrderSupplier> OrderSuppliers { get; set; }
     }
 }

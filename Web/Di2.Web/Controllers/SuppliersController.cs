@@ -4,44 +4,64 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
+    using Di2.Data.Models;
     using Di2.Services.Data;
+    using Di2.Services.Mapping;
     using Di2.Web.ViewModels.Suppliers.InputModels;
     using Di2.Web.ViewModels.Suppliers.ViewModels;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
     public class SuppliersController : BaseController
     {
         private readonly ISuppliersService suppliersService;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public SuppliersController(ISuppliersService suppliersService)
+        public SuppliersController(ISuppliersService suppliersService, UserManager<ApplicationUser> userManager)
         {
             this.suppliersService = suppliersService;
+            this.userManager = userManager;
         }
 
+        [Authorize]
         public IActionResult Add()
         {
             return this.View();
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Add(CreateSupplierInputModel input)
         {
+            var supplier = AutoMapperConfig.MapperInstance.Map<Supplier>(input);
             if (!this.ModelState.IsValid)
             {
                 return this.View(input);
             }
 
-            await this.suppliersService.AddAsync(input.Name, input.Address, input.Email, input.Phone);
-
-            return this.Redirect("/");
+            var user = await this.userManager.GetUserAsync(this.User);
+            int supplierId = await this.suppliersService.AddAsync(input.Name, input.Address, input.Email, input.Phone, user.Id);
+            return this.RedirectToAction(nameof(this.ById), new { id = supplierId });
         }
 
-        public async Task<IActionResult> All(int? supplierId = null)
+        public IActionResult All()
         {
-            var allSuppliers = await this.suppliersService.GetAllSuppliers<SuppliersViewModel>(supplierId);
+            var allSuppliers = this.suppliersService.GetAllSuppliers<SupplierViewModel>();
 
             return this.View(allSuppliers);
+        }
+
+
+        public IActionResult ById(int id)
+        {
+            var supplierViewModel = this.suppliersService.GetById<SupplierViewModel>(id);
+            if (supplierViewModel == null)
+            {
+                return this.NotFound();
+            }
+
+            return this.View(supplierViewModel);
         }
     }
 }

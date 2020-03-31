@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using Di2.Data.Models;
     using Di2.Services.Data;
+    using Di2.Services.Mapping;
     using Di2.Web.ViewModels.Materials.ViewModels;
     using Di2.Web.ViewModels.PriceLists.InputModels;
     using Di2.Web.ViewModels.PriceLists.ViewModels;
@@ -19,31 +20,36 @@
     {
         private readonly IPriceListsService priceListsService;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IMaterialsService materialsService;
+        private readonly ISuppliersService suppliersService;
 
-        public PriceListsController(IPriceListsService priceListsService, UserManager<ApplicationUser> userManager)
+        public PriceListsController(IPriceListsService priceListsService, UserManager<ApplicationUser> userManager, IMaterialsService materialsService, ISuppliersService suppliersService)
         {
             this.priceListsService = priceListsService;
             this.userManager = userManager;
+            this.materialsService = materialsService;
+            this.suppliersService = suppliersService;
         }
 
         [Authorize]
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
-            var materials = await this.priceListsService.GetAllMaterials<MaterialsViewModel>();
-            var suppliers = await this.priceListsService.GetAllSuppliers<SuppliersViewModel>();
-            //var viewModel = new CreatePriceListInputModel
-            //{
-            //    MaterialId = materialId,
-            //    SupplierId = supplierId,
-            //};
+            var materials = this.materialsService.GetAllMaterials<MaterialViewModel>();
+            var suppliers = this.suppliersService.GetAllSuppliers<SupplierViewModel>();
+            var viewModel = new CreatePriceListInputModel
+            {
+                Materials = materials,
+                Suppliers = suppliers,
+            };
 
-            return this.View();
+            return this.View(viewModel);
         }
 
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(CreatePriceListInputModel input)
         {
+            // var priceList = AutoMapperConfig.MapperInstance.Map<PriceList>(input);
             if (!this.ModelState.IsValid)
             {
                 return this.View(input);
@@ -51,7 +57,7 @@
 
             var user = await this.userManager.GetUserAsync(this.User);
             await this.priceListsService.CreateAsync(input, user.Id);
-            return this.RedirectToAction(nameof(this.ById));
+            return this.RedirectToAction(nameof(this.All));
         }
 
         public IActionResult All()
@@ -61,9 +67,9 @@
             return this.View(allPriceLists);
         }
 
-        public IActionResult ById(int id)
+        public IActionResult ById()
         {
-            var priceListViewModel = this.priceListsService.GetById<PriceListViewModel>(id);
+            var priceListViewModel = this.priceListsService.GetById<PriceListViewModel>();
             if (priceListViewModel == null)
             {
                 return this.NotFound();

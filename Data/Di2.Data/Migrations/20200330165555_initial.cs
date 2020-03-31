@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Di2.Data.Migrations
 {
-    public partial class initialcommit : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,6 +52,23 @@ namespace Di2.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderStatuses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedOn = table.Column<DateTime>(nullable: true),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderStatuses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -296,6 +313,7 @@ namespace Di2.Data.Migrations
                     Description = table.Column<string>(nullable: true),
                     ExtraInfo = table.Column<string>(nullable: true),
                     SubCategoryId = table.Column<int>(nullable: false),
+                    Image = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -358,7 +376,8 @@ namespace Di2.Data.Migrations
                     DeletedOn = table.Column<DateTime>(nullable: true),
                     MinimumQuantityPerOrder = table.Column<double>(nullable: false),
                     UnitPrice = table.Column<decimal>(nullable: false),
-                    UserId = table.Column<string>(nullable: true)
+                    UserId = table.Column<string>(nullable: true),
+                    CheapRatio = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -380,6 +399,49 @@ namespace Di2.Data.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderSuppliers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedOn = table.Column<DateTime>(nullable: true),
+                    PriceListId = table.Column<int>(nullable: false),
+                    PriceListMaterialId = table.Column<int>(nullable: false),
+                    PriceListSupplierId = table.Column<int>(nullable: false),
+                    OrderDate = table.Column<DateTime>(nullable: false),
+                    UnitPrice = table.Column<decimal>(nullable: false),
+                    Quantity = table.Column<double>(nullable: false),
+                    TotalPrice = table.Column<decimal>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    StatusId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderSuppliers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderSuppliers_OrderStatuses_StatusId",
+                        column: x => x.StatusId,
+                        principalTable: "OrderStatuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_OrderSuppliers_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_OrderSuppliers_PriceLists_PriceListMaterialId_PriceListSupplierId",
+                        columns: x => new { x.PriceListMaterialId, x.PriceListSupplierId },
+                        principalTable: "PriceLists",
+                        principalColumns: new[] { "MaterialId", "SupplierId" },
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -483,6 +545,31 @@ namespace Di2.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderStatuses_IsDeleted",
+                table: "OrderStatuses",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderSuppliers_IsDeleted",
+                table: "OrderSuppliers",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderSuppliers_StatusId",
+                table: "OrderSuppliers",
+                column: "StatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderSuppliers_UserId",
+                table: "OrderSuppliers",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderSuppliers_PriceListMaterialId_PriceListSupplierId",
+                table: "OrderSuppliers",
+                columns: new[] { "PriceListMaterialId", "PriceListSupplierId" });
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PriceLists_IsDeleted",
                 table: "PriceLists",
                 column: "IsDeleted");
@@ -549,13 +636,19 @@ namespace Di2.Data.Migrations
                 name: "DeliveryBatches");
 
             migrationBuilder.DropTable(
-                name: "PriceLists");
+                name: "OrderSuppliers");
 
             migrationBuilder.DropTable(
                 name: "Settings");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "OrderStatuses");
+
+            migrationBuilder.DropTable(
+                name: "PriceLists");
 
             migrationBuilder.DropTable(
                 name: "Materials");

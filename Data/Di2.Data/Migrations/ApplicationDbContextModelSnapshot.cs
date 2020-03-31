@@ -175,41 +175,6 @@ namespace Di2.Data.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Di2.Data.Models.DeliveryBatch", b =>
-                {
-                    b.Property<int>("MaterialId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SupplierId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<double>("Quantity")
-                        .HasColumnType("float");
-
-                    b.HasKey("MaterialId", "SupplierId");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.HasIndex("SupplierId");
-
-                    b.ToTable("DeliveryBatches");
-                });
-
             modelBuilder.Entity("Di2.Data.Models.Material", b =>
                 {
                     b.Property<int>("Id")
@@ -638,21 +603,6 @@ namespace Di2.Data.Migrations
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("Di2.Data.Models.DeliveryBatch", b =>
-                {
-                    b.HasOne("Di2.Data.Models.Material", "Material")
-                        .WithMany("DeliveryBatches")
-                        .HasForeignKey("MaterialId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Di2.Data.Models.Supplier", "Supplier")
-                        .WithMany("DeliveryBatches")
-                        .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Di2.Data.Models.Material", b =>
                 {
                     b.HasOne("Di2.Data.Models.SubCategory", "SubCategory")
@@ -679,7 +629,7 @@ namespace Di2.Data.Migrations
                         .HasForeignKey("UserId");
 
                     b.HasOne("Di2.Data.Models.PriceList", "PriceList")
-                        .WithMany()
+                        .WithMany("OrderSuppliers")
                         .HasForeignKey("PriceListMaterialId", "PriceListSupplierId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();

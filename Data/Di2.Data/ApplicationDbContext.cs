@@ -40,8 +40,6 @@
 
         public DbSet<OrderStatus> OrderStatuses { get; set; }
 
-        public DbSet<DeliveryBatch> DeliveryBatches { get; set; }
-
         public DbSet<Setting> Settings { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
@@ -91,17 +89,17 @@
                 foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
             }
 
-            builder.Entity<DeliveryBatch>().HasKey(k => new
-            { k.MaterialId, k.SupplierId, });
+            //builder.Entity<DeliveryBatch>().HasKey(k => new
+           // { k.MaterialId, k.SupplierId, });
 
             builder.Entity<PriceList>().HasKey(k => new
             { k.MaterialId, k.SupplierId, });
 
-            builder.Entity<DeliveryBatch>().HasOne(k => k.Material)
-                .WithMany(s => s.DeliveryBatches).HasForeignKey(k => k.MaterialId);
+            //builder.Entity<DeliveryBatch>().HasOne(k => k.Material)
+           //     .WithMany(s => s.DeliveryBatches).HasForeignKey(k => k.MaterialId);
 
-            builder.Entity<DeliveryBatch>().HasOne(k => k.Supplier)
-                .WithMany(s => s.DeliveryBatches).HasForeignKey(k => k.SupplierId);
+            //builder.Entity<DeliveryBatch>().HasOne(k => k.Supplier)
+            //    .WithMany(s => s.DeliveryBatches).HasForeignKey(k => k.SupplierId);
 
             builder.Entity<PriceList>().HasOne(k => k.Material)
                 .WithMany(s => s.PriceLists).HasForeignKey(k => k.MaterialId);

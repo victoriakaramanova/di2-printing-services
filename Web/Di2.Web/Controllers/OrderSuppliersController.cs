@@ -35,32 +35,61 @@
             this.priceListsService = priceListsService;
         }
 
-        // TODO: ASK!!!
+        // TODO: COLLECTION INITIALIZATION!!!!!!!!!!!!
         [Authorize]
         public IActionResult Create()
         {
-            // var orderSuppliers = this.orderSupplierService.GetAllOrderSuppliers<OrderSupplierViewModel>();
             var priceLists = this.priceListsService.GetAllPriceLists<PriceListViewModel>();
+            var orderSub = new CreateOrderSupplierInputModel [priceLists.Count];
+            for (int i = 0; i < orderSub.Length; i++)
+            {
+                orderSub[i].OrderDate = DateTime.UtcNow;
+                orderSub[i].Quantity = 0;
+                orderSub[i].TotalPrice = 0;
+            }
+
+            // var orderSuppliers = this.orderSupplierService.GetAllOrderSuppliers<OrderSupplierViewModel>();
             var viewModel = new OrderSuppliersListViewModel
             {
                 Pricelists = priceLists,
-                Orderpart = new CreateOrderSupplierInputModel(),
+                OrderSub = orderSub.ToList(),
             };
+
 
             return this.View(viewModel);
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Create(CreateOrderSupplierInputModel input)
+        public async Task<IActionResult> Create(OrderSuppliersListViewModel input)
         {
+            var priceLists = input.Pricelists;
+            var orderSub = input.OrderSub;
             if (!this.ModelState.IsValid)
             {
                 return this.View(input);
             }
 
-            var user = await this.userManager.GetUserAsync(this.User);
-            var orderSupplier = await this.orderSupplierService.CreateAsync(input, user.Id);
+            int materialId;
+            int supplierId;
+            double minQty;
+            decimal unitPrice;
+            var priceListsDb = this.priceListsService.GetAllPriceLists<PriceListViewModel>();
+            for (int i = 0; i < priceListsDb.Count; i++)
+            {
+                if (input.OrderSub.Select(x => x.Quantity).ToList()[i] > 0)
+                {
+                    materialId = input.Pricelists.Select(x => x.MaterialId).ToList()[i];
+                    supplierId = input.Pricelists.Select(x => x.SupplierId).ToList()[i];
+                    minQty = input.Pricelists.Select(x => x.MinimumQuantityPerOrder).ToList()[i];
+                    unitPrice = input.Pricelists.Select(x => x.UnitPrice).ToList()[i];
+
+                    var priceList = this.priceListsService.GetByElements<PriceListViewModel>(materialId, supplierId, minQty, unitPrice);
+                    var user = await this.userManager.GetUserAsync(this.User);
+                    OrderSupplier orderSupplier = await this.orderSupplierService.CreateAsync(input.OrderSub.ToList()[i], priceList, user.Id);
+                }
+            }
+
             return this.RedirectToAction(nameof(this.All));
         }
 

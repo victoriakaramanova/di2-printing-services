@@ -8,10 +8,11 @@
     using Di2.Services.Mapping;
     using Di2.Web.ViewModels.PriceLists.ViewModels;
 
-    public class OrderSuppliersListViewModel : IMapFrom<OrderSupplier>, IMapFrom<PriceList>, IMapTo<OrderSupplier>,IMapTo<PriceList>
+    public class OrderSuppliersListViewModel : IMapFrom<OrderSupplier>, IMapTo<OrderSupplier>,IMapTo<PriceList>,IMapFrom<PriceList>
     {
-        public IEnumerable<PriceListViewModel> Pricelists { get; set; }
+        public List<PriceListViewModel> Pricelists { get; set; }
 
-        public CreateOrderSupplierInputModel Orderpart { get; set; }
+        public List<CreateOrderSupplierInputModel> OrderSub { get; set; }
+        // public CreateOrderSupplierInputModel Orderpart { get; set; }
     }
 }

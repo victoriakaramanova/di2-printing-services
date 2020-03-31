@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Di2.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200325234626_6")]
-    partial class _6
+    [Migration("20200330165555_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -306,22 +306,25 @@ namespace Di2.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("MaterialId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("PriceListId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PriceListMaterialId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PriceListSupplierId")
+                        .HasColumnType("int");
+
                     b.Property<double>("Quantity")
                         .HasColumnType("float");
 
                     b.Property<int>("StatusId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SupplierId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalPrice")
@@ -337,13 +340,11 @@ namespace Di2.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.HasIndex("MaterialId");
-
                     b.HasIndex("StatusId");
 
-                    b.HasIndex("SupplierId");
-
                     b.HasIndex("UserId");
+
+                    b.HasIndex("PriceListMaterialId", "PriceListSupplierId");
 
                     b.ToTable("OrderSuppliers");
                 });
@@ -669,27 +670,21 @@ namespace Di2.Data.Migrations
 
             modelBuilder.Entity("Di2.Data.Models.OrderSupplier", b =>
                 {
-                    b.HasOne("Di2.Data.Models.Material", "Material")
-                        .WithMany()
-                        .HasForeignKey("MaterialId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("Di2.Data.Models.OrderStatus", "Status")
                         .WithMany()
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Di2.Data.Models.Supplier", "Supplier")
-                        .WithMany()
-                        .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("Di2.Data.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
+
+                    b.HasOne("Di2.Data.Models.PriceList", "PriceList")
+                        .WithMany("OrderSuppliers")
+                        .HasForeignKey("PriceListMaterialId", "PriceListSupplierId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Di2.Data.Models.PriceList", b =>

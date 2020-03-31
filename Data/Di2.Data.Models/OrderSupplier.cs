@@ -7,11 +7,9 @@ namespace Di2.Data.Models
 {
     public class OrderSupplier : BaseDeletableModel<int>
     {
-        public int PriceListId { get; set; }
-
         public virtual PriceList PriceList { get; set; }
 
-        public DateTime OrderDate => DateTime.UtcNow;
+        public DateTime OrderDate { get; set; }
 
         //public int MaterialId { get; set; }
 

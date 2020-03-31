@@ -1,11 +1,13 @@
 ﻿namespace Di2.Web.ViewModels.Suppliers.InputModels
 {
+    using Di2.Data.Models;
+    using Di2.Services.Mapping;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Text;
 
-    public class CreateSupplierInputModel
+    public class CreateSupplierInputModel : IMapTo<Supplier>
     {
         [Required]
         public string Name { get; set; }

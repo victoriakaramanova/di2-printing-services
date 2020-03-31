@@ -62,10 +62,9 @@
 
         public IEnumerable<T> GetAllMaterials<T>()
         {
-            return this.materialRepository
-            .All().OrderBy(x => x.SubCategory)
-            .To<T>()
-            .ToList();
+            IQueryable<Material> query = this.materialRepository
+            .All();
+            return query.To<T>().ToList();
         }
 
         public T GetById<T>(int id)

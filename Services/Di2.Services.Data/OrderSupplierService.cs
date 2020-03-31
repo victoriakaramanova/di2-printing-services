@@ -29,24 +29,28 @@
             this.priceListRepository = priceListRepository;
         }
 
-        public async Task<int> CreateAsync(CreateOrderSupplierInputModel input, string userId)
+        public async Task<OrderSupplier> CreateAsync(CreateOrderSupplierInputModel orderSupplierInput, PriceListViewModel priceListInput,string userId)
         {
-            // var priceLists = this.priceListRepository.All().To<PriceListViewModel>().ToList();
-            /*var priceList = this.priceListRepository.All().FirstOrDefault(x => x.Id == input.PriceListId);
-            var materialId = priceList.Material.Id;
-            var supplierId = priceList.Supplier.Id;
-            var unitPrice = priceList.UnitPrice;
-            var minimumQty = priceList.MinimumQuantityPerOrder;*/
-
-            /*var orderSupplier = new OrderSupplier
+            if (orderSupplierInput.OrderDate == null)
             {
-                PriceListId = input.PriceListId,
-                OrderDate = DateTime.UtcNow,
-                // MaterialId = materialId,
-                // SupplierId = supplierId,
-                Quantity = minimumQty,
-                UnitPrice = unitPrice,
-                TotalPrice = unitPrice * (decimal)minimumQty,
+                return null;
+            }
+
+            var priceList = new PriceList
+            {
+                MaterialId = priceListInput.MaterialId,
+                SupplierId = priceListInput.SupplierId,
+                MinimumQuantityPerOrder = priceListInput.MinimumQuantityPerOrder,
+                UnitPrice = priceListInput.UnitPrice,
+            };
+            double number;
+            double.TryParse(orderSupplierInput.Quantity.ToString(), out number);
+            var orderSupplier = new OrderSupplier
+            {
+                PriceList = priceList,
+                OrderDate = orderSupplierInput.OrderDate,
+                Quantity = number,
+                TotalPrice = priceListInput.UnitPrice * (decimal)orderSupplierInput.Quantity,
                 UserId = userId,
             };
             orderSupplier.Status = await this.orderStatusRepository
@@ -54,8 +58,20 @@
                 .FirstOrDefaultAsync(x => x.Name == "Sent");
 
             await this.orderSuppliersRepository.AddAsync(orderSupplier);
-            await this.orderSuppliersRepository.SaveChangesAsync();*/
-            return 0; //orderSupplier.Id;
+            await this.orderSuppliersRepository.SaveChangesAsync();
+            return orderSupplier;
+        }
+
+        public void Populate(List<CreateOrderSupplierInputModel> input)
+        {
+            var qty = this.priceListRepository.All().Count();
+            //CreateOrderSupplierInputModel orderDefaults = input;
+            //for (int i = 0; i < qty; i++)
+            //{
+            //    input[i].OrderDate = DateTime.UtcNow;
+            //    input[i].Quantity = 0;
+            //    input[i].TotalPrice = 0;
+            //};
         }
 
         public IEnumerable<T> GetAllOrderSuppliers<T>()

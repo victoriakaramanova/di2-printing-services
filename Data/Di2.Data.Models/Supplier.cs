@@ -11,7 +11,6 @@
         public Supplier()
         {
             this.PriceLists = new HashSet<PriceList>();
-            this.DeliveryBatches = new List<DeliveryBatch>();
         }
 
         public string Name { get; set; }
@@ -28,6 +27,5 @@
 
         public virtual ICollection<PriceList> PriceLists { get; }
 
-        public virtual ICollection<DeliveryBatch> DeliveryBatches { get; }
     }
 }

@@ -7,8 +7,10 @@
 
     public interface ISuppliersService
     {
-        Task AddAsync(string name, string address, string email, string phone);
+        Task<int> AddAsync(string name, string address, string email, string phone, string userId);
 
-        Task<IEnumerable<T>> GetAllSuppliers<T>(int? supplierId);
+        IEnumerable<T> GetAllSuppliers<T>();
+
+        T GetById<T>(int id);
     }
 }

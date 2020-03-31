@@ -4,19 +4,22 @@
     using System.Collections.Generic;
     using System.Text;
     using System.Threading.Tasks;
-
+    using Di2.Data.Models;
+    using Di2.Web.ViewModels.Materials.ViewModels;
     using Di2.Web.ViewModels.PriceLists.InputModels;
 
     public interface IPriceListsService
     {
         Task CreateAsync(CreatePriceListInputModel input, string userId);
 
-        IEnumerable<T> GetAllPriceLists<T>();
+        List<T> GetAllPriceLists<T>();
 
-        Task<IEnumerable<Material>> GetAllMaterials<Material>();
+        //IEnumerable<Material> GetAllMaterials<T>();
 
-        Task<IEnumerable<Supplier>> GetAllSuppliers<Supplier>();
+        //IEnumerable<Supplier> GetAllSuppliers<T>();
 
-        T GetById<T>(int id);
+        T GetById<T>();
+
+        T GetByElements<T>(int materialId, int supplierId, double minQty, decimal unitPrice);
     }
 }
