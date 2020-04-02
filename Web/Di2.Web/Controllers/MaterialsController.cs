@@ -54,6 +54,7 @@
             //var material = Mapper.Map<Material>(input);
             //material.Image = imageUrl;
 
+            //int materialId = await this.materialsService.AddAsync(input.Name, input.Description, input.ExtraInfo, input.SubCategoryName, imageUrl, user.Id);
             int materialId = await this.materialsService.AddAsync(input.Name, input.Description, input.ExtraInfo, input.SubCategoryName, imageUrl, user.Id);
 
             return this.RedirectToAction(nameof(this.ById), new { id = materialId });
@@ -77,7 +78,8 @@
 
         public IActionResult ById(int id)
         {
-            var materialViewModel = this.materialsService.GetById<MaterialsViewModel>(id);
+            var materialViewModel = this.materialsService
+                .GetById(id);
             if (materialViewModel == null)
             {
                 return this.NotFound();

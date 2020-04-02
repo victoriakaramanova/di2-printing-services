@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Di2.Data.Migrations
 {
-    public partial class initial : Migration
+    public partial class initialCommit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -334,36 +334,6 @@ namespace Di2.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DeliveryBatches",
-                columns: table => new
-                {
-                    MaterialId = table.Column<int>(nullable: false),
-                    SupplierId = table.Column<int>(nullable: false),
-                    Id = table.Column<string>(nullable: true),
-                    CreatedOn = table.Column<DateTime>(nullable: false),
-                    ModifiedOn = table.Column<DateTime>(nullable: true),
-                    IsDeleted = table.Column<bool>(nullable: false),
-                    DeletedOn = table.Column<DateTime>(nullable: true),
-                    Quantity = table.Column<double>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DeliveryBatches", x => new { x.MaterialId, x.SupplierId });
-                    table.ForeignKey(
-                        name: "FK_DeliveryBatches_Materials_MaterialId",
-                        column: x => x.MaterialId,
-                        principalTable: "Materials",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_DeliveryBatches_Suppliers_SupplierId",
-                        column: x => x.SupplierId,
-                        principalTable: "Suppliers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "PriceLists",
                 columns: table => new
                 {
@@ -412,23 +382,36 @@ namespace Di2.Data.Migrations
                     ModifiedOn = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     DeletedOn = table.Column<DateTime>(nullable: true),
-                    PriceListId = table.Column<int>(nullable: false),
-                    PriceListMaterialId = table.Column<int>(nullable: false),
-                    PriceListSupplierId = table.Column<int>(nullable: false),
                     OrderDate = table.Column<DateTime>(nullable: false),
+                    MaterialId = table.Column<int>(nullable: false),
+                    SupplierId = table.Column<int>(nullable: false),
                     UnitPrice = table.Column<decimal>(nullable: false),
                     Quantity = table.Column<double>(nullable: false),
                     TotalPrice = table.Column<decimal>(nullable: false),
                     UserId = table.Column<string>(nullable: true),
-                    StatusId = table.Column<int>(nullable: false)
+                    StatusId = table.Column<int>(nullable: false),
+                    PriceListMaterialId = table.Column<int>(nullable: true),
+                    PriceListSupplierId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrderSuppliers", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_OrderSuppliers_Materials_MaterialId",
+                        column: x => x.MaterialId,
+                        principalTable: "Materials",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_OrderSuppliers_OrderStatuses_StatusId",
                         column: x => x.StatusId,
                         principalTable: "OrderStatuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_OrderSuppliers_Suppliers_SupplierId",
+                        column: x => x.SupplierId,
+                        principalTable: "Suppliers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -520,16 +503,6 @@ namespace Di2.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DeliveryBatches_IsDeleted",
-                table: "DeliveryBatches",
-                column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DeliveryBatches_SupplierId",
-                table: "DeliveryBatches",
-                column: "SupplierId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Materials_IsDeleted",
                 table: "Materials",
                 column: "IsDeleted");
@@ -555,9 +528,19 @@ namespace Di2.Data.Migrations
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderSuppliers_MaterialId",
+                table: "OrderSuppliers",
+                column: "MaterialId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrderSuppliers_StatusId",
                 table: "OrderSuppliers",
                 column: "StatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderSuppliers_SupplierId",
+                table: "OrderSuppliers",
+                column: "SupplierId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderSuppliers_UserId",
@@ -631,9 +614,6 @@ namespace Di2.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
-
-            migrationBuilder.DropTable(
-                name: "DeliveryBatches");
 
             migrationBuilder.DropTable(
                 name: "OrderSuppliers");

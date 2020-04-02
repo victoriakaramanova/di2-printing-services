@@ -7,6 +7,7 @@
 
     using Di2.Data.Models;
     using Di2.Web.ViewModels.Materials.InputModels;
+    using Di2.Web.ViewModels.Materials.ViewModels;
 
     public interface IMaterialsService
     {
@@ -14,6 +15,8 @@
 
         IEnumerable<T> GetAllMaterials<T>();
 
-        T GetById<T>(int id);
+        MaterialsViewModel GetById(int id);
+
+        MaterialsViewModel GetByName(string name);
     }
 }

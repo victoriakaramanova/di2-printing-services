@@ -2,8 +2,6 @@
 @model Di2.Web.ViewModels.OrderSuppliers.OrderSuppliersListViewModel
 @{
     this.ViewData["Title"] = "Поръчка на материали";
-    //var orderDate = Model.OrderSub.Select(x => DateTime.UtcNow);
-    //var quantity = Model.OrderSub.Select(x=>0);
 }
 <h1 class="display-3">@this.ViewData["Title"]</h1>
 
@@ -11,11 +9,16 @@
     <div class="row">
         @for (int i = 0; i < Model.Pricelists.Count; i++)
         {
-            <div>
-                @Model.Pricelists[i].Material.Name @Model.Pricelists[i].Supplier.Name @Model.Pricelists[i].MinimumQuantityPerOrder @Model.Pricelists[i].UnitPrice
-                <input type="date" asp-for="@Model.OrderSub[i].OrderDate orderDate" />
-                <input type="number" step="10" asp-for="@Model.OrderSub[i].Quantity" />
-            </div>
+        <div>
+            @Model.Pricelists[i].Material.Name
+            @Model.Pricelists[i].Supplier.Name
+            @Model.Pricelists[i].MinimumQuantityPerOrder
+            @Model.Pricelists[i].UnitPrice лв
+            
+            <input type="date" asp-for="@Model.OrderSub[i].OrderDate" />
+            <input type="number" step="10" asp-for="@Model.OrderSub[i].Quantity" />
+            <input type="number" asp-for="@Model.OrderSub[i].TotalPrice" />
+        </div>
         }
     </div>
     <hr />

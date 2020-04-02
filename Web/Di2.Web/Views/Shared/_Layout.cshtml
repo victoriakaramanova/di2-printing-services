@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@this.ViewData["Title"] - @GlobalConstants.SystemName</title>
+    <title>@this.ViewData["Title"] </title>
+    @*- @GlobalConstants.SystemName*@
 
     <link href="~/lib/fontawesome/css/all.css" rel="stylesheet" asp-append-version="true" />
     <environment names="Development">
@@ -62,7 +63,7 @@
         <script src="~/lib/jquery-validation/dist/jquery.validate.js" asp-append-version="true"></script>
         <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js" asp-append-version="true"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/lib/moment/min/moment-with-locales.min.js" asp-append-version="true"></script>
         <script src="~/js/jquery-3.3.1.min.js" asp-append-version="true"></script>
         <script src="~/js/bootstrap.min.js" asp-append-version="true"></script>
         <script src="~/js/jquery.magnific-popup.min.js" asp-append-version="true"></script>
@@ -71,13 +72,14 @@
         <script src="~/js/jquery.nice-select.min.js" asp-append-version="true"></script>
         <script src="~/js/mixitup.min.js" asp-append-version="true"></script>
         <script src="~/js/main.js" asp-append-version="true"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
         <script src="~/lib/jquery-validation/dist/jquery.validate.min.js" asp-append-version="true"></script>
         <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
+        <script src="~/lib/moment/min/moment-with-locales.min.js" asp-append-version="true"></script>
         <script src="~/js/jquery-3.3.1.min.js" asp-append-version="true"></script>
         <script src="~/js/bootstrap.min.js" asp-append-version="true"></script>
         <script src="~/js/jquery.magnific-popup.min.js" asp-append-version="true"></script>
@@ -86,6 +88,7 @@
         <script src="~/js/jquery.nice-select.min.js" asp-append-version="true"></script>
         <script src="~/js/mixitup.min.js" asp-append-version="true"></script>
         <script src="~/js/main.js" asp-append-version="true"></script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 
     @this.RenderSection("Scripts", required: false)

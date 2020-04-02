@@ -55,7 +55,7 @@
 
         public IActionResult ById(int id)
         {
-            var supplierViewModel = this.suppliersService.GetById<SupplierViewModel>(id);
+            var supplierViewModel = this.suppliersService.GetById(id);
             if (supplierViewModel == null)
             {
                 return this.NotFound();

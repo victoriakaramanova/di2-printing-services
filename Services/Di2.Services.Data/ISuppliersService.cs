@@ -1,5 +1,7 @@
 ﻿namespace Di2.Services.Data
 {
+    using Di2.Data.Models;
+    using Di2.Web.ViewModels.Suppliers.ViewModels;
     using System;
     using System.Collections.Generic;
     using System.Text;
@@ -11,6 +13,8 @@
 
         IEnumerable<T> GetAllSuppliers<T>();
 
-        T GetById<T>(int id);
+        SupplierViewModel GetById(int id);
+
+        SupplierViewModel GetByName(string name);
     }
 }

@@ -11,6 +11,7 @@
     using Di2.Data.Models;
     using Di2.Services.Mapping;
     using Di2.Web.ViewModels.Materials.InputModels;
+    using Di2.Web.ViewModels.Materials.ViewModels;
     using Microsoft.EntityFrameworkCore;
 
     public class MaterialsService : IMaterialsService
@@ -67,10 +68,19 @@
             return query.To<T>().ToList();
         }
 
-        public T GetById<T>(int id)
+        public MaterialsViewModel GetById(int id)
         {
-            var material = this.materialRepository.All().Where(x => x.Id == id)
-                .To<T>().FirstOrDefault();
+            var material = this.materialRepository.All()
+                .Where(x => x.Id == id).To<MaterialsViewModel>()
+                .FirstOrDefault();
+            return material;
+        }
+
+        public MaterialsViewModel GetByName(string name)
+        {
+            var material = this.materialRepository.All()
+                .Where(x => x.Name == name).To<MaterialsViewModel>()
+                .FirstOrDefault();
             return material;
         }
     }

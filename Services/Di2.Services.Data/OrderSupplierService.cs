@@ -36,23 +36,26 @@
                 return null;
             }
 
-            var priceList = new PriceList
+            /*var priceList = new PriceList
             {
                 MaterialId = priceListInput.MaterialId,
                 SupplierId = priceListInput.SupplierId,
                 MinimumQuantityPerOrder = priceListInput.MinimumQuantityPerOrder,
                 UnitPrice = priceListInput.UnitPrice,
-            };
+            };*/
             double number;
             double.TryParse(orderSupplierInput.Quantity.ToString(), out number);
             var orderSupplier = new OrderSupplier
             {
-                PriceList = priceList,
+                MaterialId = priceListInput.MaterialId,
+                SupplierId = priceListInput.SupplierId,
                 OrderDate = orderSupplierInput.OrderDate,
                 Quantity = number,
+                UnitPrice = priceListInput.UnitPrice,
                 TotalPrice = priceListInput.UnitPrice * (decimal)orderSupplierInput.Quantity,
                 UserId = userId,
             };
+
             orderSupplier.Status = await this.orderStatusRepository
                 .All()
                 .FirstOrDefaultAsync(x => x.Name == "Sent");
@@ -76,10 +79,9 @@
 
         public IEnumerable<T> GetAllOrderSuppliers<T>()
         {
-            return this.orderSuppliersRepository
-           .All().OrderByDescending(x => x.Quantity)
-           .To<T>()
-           .ToList();
+            // var supplier = AutoMapperConfig.MapperInstance.Map<OrderSuppliersListViewModel>();
+            IQueryable<OrderSupplier> query = this.orderSuppliersRepository.All();
+            return query.To<T>().ToList();
         }
     }
 }

@@ -9,6 +9,7 @@
     using Di2.Data.Common.Repositories;
     using Di2.Data.Models;
     using Di2.Services.Mapping;
+    using Di2.Web.ViewModels.Suppliers.ViewModels;
     using Microsoft.EntityFrameworkCore;
 
     public class SuppliersService : ISuppliersService
@@ -44,12 +45,22 @@
             return query.To<T>().ToList();
         }
 
-        public T GetById<T>(int id)
+        public SupplierViewModel GetById(int id)
         {
-            var supplier = this.supplierRepository.All().Where(x => x.Id == id)
-                .To<T>().FirstOrDefault();
+            var supplier = this.supplierRepository.All()
+                .Where(x => x.Id == id)
+                .To<SupplierViewModel>()
+                .FirstOrDefault();
             return supplier;
         }
 
+        public SupplierViewModel GetByName(string name)
+        {
+            var supplier = this.supplierRepository.All()
+                .Where(x => x.Name == name)
+                .To<SupplierViewModel>()
+                .FirstOrDefault();
+            return supplier;
+        }
     }
 }
