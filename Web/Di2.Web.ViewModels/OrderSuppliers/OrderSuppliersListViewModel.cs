@@ -13,6 +13,5 @@
         public List<PriceListViewModel> Pricelists { get; set; }
 
         public List<CreateOrderSupplierInputModel> OrderSub { get; set; }
-        // public CreateOrderSupplierInputModel Orderpart { get; set; }
     }
 }

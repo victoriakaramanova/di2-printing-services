@@ -6,18 +6,23 @@
     //var orderSuppliers = Model.OrderSub.ToList();
 }
 
-    <div class="text-center">
-        <h2 class="display-3">@this.ViewData["Title"]</h2>
+<div class="text-center">
+    <h2 class="display-3">@this.ViewData["Title"]</h2>
 </div>
 <hr />
-<div class="row">
-    @foreach (var order in Model)
-    {
-    <div>
-        @order.Material.Name @order.Material.Description 
-        @order.OrderDate.ToString("dd.MM.yyyy HH:mm")
-        @order.Supplier.Name @order.UnitPrice @order.Quantity
-        @order.TotalPrice @order.Status.Name
+
+@foreach (var order in Model)
+{
+    <div class="row">
+        <div>@order.Material.Name</div>
+        <div>@order.Material.Description</div>
+        @*@order.OrderDate.ToString("dd.MM.yyyy HH:mm")*@
+        <div><time datetime="@order.OrderDate.ToString("O")">@order.OrderDate.ToString("O")</time></div>
+        <div>@order.Supplier.Name</div>
+        <div>@order.UnitPrice</div>
+        <div>@order.Quantity</div>
+        <div>@order.TotalPrice</div>
+        <div>@order.Status.Name</div>
     </div>
-    }
-</div>
+}
+

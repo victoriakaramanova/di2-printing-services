@@ -40,6 +40,8 @@
 
         public DbSet<OrderStatus> OrderStatuses { get; set; }
 
+        public DbSet<Total> Totals { get; set; }
+
         public DbSet<Setting> Settings { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
