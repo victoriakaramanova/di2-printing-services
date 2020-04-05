@@ -25,6 +25,7 @@
     <ProjectReference Include="..\..\Di2.Common\Di2.Common.csproj" />
     <ProjectReference Include="..\..\Web\Di2.Web.ViewModels\Di2.Web.ViewModels.csproj" />
     <ProjectReference Include="..\Di2.Services.Mapping\Di2.Services.Mapping.csproj" />
+    <ProjectReference Include="..\Di2.Services.Messaging\Di2.Services.Messaging.csproj" />
   </ItemGroup>
 
 </Project>

@@ -36,7 +36,6 @@
             this.priceListsService = priceListsService;
         }
 
-        // TODO: COLLECTION INITIALIZATION!!!!!!!!!!!!
         [Authorize]
         public IActionResult Create()
         {
@@ -79,6 +78,7 @@
             int supplierIdInput;
             int materialIdInput;
             var priceListsDb = this.priceListsService.GetAllPriceLists<PriceListViewModel>();
+            List<OrderSupplier> emailSuppliers = new List<OrderSupplier>();
             for (int i = 0; i < priceLists.Count; i++)
             {
                 if (input.OrderSub.Select(x => x.Quantity).ToList()[i] > 0)
@@ -95,9 +95,11 @@
                     var priceList = this.priceListsService.GetByElements<PriceListViewModel>(materialId, supplierId, minQty, unitPrice);
                     var user = await this.userManager.GetUserAsync(this.User);
                     OrderSupplier orderSupplier = await this.orderSupplierService.CreateAsync(input.OrderSub[i], priceList, user.Id);
+                    emailSuppliers.Add(orderSupplier);
                 }
             }
 
+            await this.orderSupplierService.SendMailSupplier(emailSuppliers);
             return this.RedirectToAction(nameof(this.All));
         }
 

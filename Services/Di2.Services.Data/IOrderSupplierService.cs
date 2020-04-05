@@ -15,6 +15,6 @@
         // Task<int> CreateAsync(DateTime orderDate, int materialId, int supplierId, double quantity, decimal unitPrice, decimal totalPrice, string userId);
         IEnumerable<T> GetAllOrderSuppliers<T>();
 
-        void Populate(List<CreateOrderSupplierInputModel> input);
+        Task SendMailSupplier(List<OrderSupplier> orderSuppliers);
     }
 }

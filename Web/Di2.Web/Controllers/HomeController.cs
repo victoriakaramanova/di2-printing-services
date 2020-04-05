@@ -88,7 +88,7 @@
             attchList.Add(attch);
 
             //UNMARK HERE TO SEND EMAIL!
-            //await this.sender.SendEmailAsync(GlobalConstants.Email, "Я сега", "victoriakaramanova@gmail.com", $"Поръчка за {DateTime.UtcNow.ToShortDateString()}", $"Здравейте, приложена е поръчката. Поздрави - {GlobalConstants.SystemName}", attchList);
+            // await this.sender.SendEmailAsync(GlobalConstants.Email, "Я сега", "victoriakaramanova@gmail.com", $"Поръчка за {DateTime.UtcNow.ToShortDateString()}", $"Здравейте, приложена е поръчката. Поздрави - {GlobalConstants.SystemName}", attchList);
 
 
 

@@ -5,12 +5,14 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-
+    using Di2.Common;
     using Di2.Data.Common.Repositories;
     using Di2.Data.Models;
     using Di2.Services.Mapping;
+    using Di2.Services.Messaging;
     using Di2.Web.ViewModels.OrderSuppliers;
     using Di2.Web.ViewModels.PriceLists.ViewModels;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
 
     public class OrderSupplierService : IOrderSupplierService
@@ -18,31 +20,27 @@
         private readonly IDeletableEntityRepository<OrderSupplier> orderSuppliersRepository;
         private readonly IDeletableEntityRepository<OrderStatus> orderStatusRepository;
         private readonly IDeletableEntityRepository<PriceList> priceListRepository;
+        private readonly IEmailSender sender;
 
         public OrderSupplierService(
             IDeletableEntityRepository<OrderSupplier> orderSuppliersRepository,
             IDeletableEntityRepository<OrderStatus> orderStatusRepository,
-            IDeletableEntityRepository<PriceList> priceListRepository)
+            IDeletableEntityRepository<PriceList> priceListRepository,
+            IEmailSender sender)
         {
             this.orderSuppliersRepository = orderSuppliersRepository;
             this.orderStatusRepository = orderStatusRepository;
             this.priceListRepository = priceListRepository;
+            this.sender = sender;
         }
 
-        public async Task<OrderSupplier> CreateAsync(CreateOrderSupplierInputModel orderSupplierInput, PriceListViewModel priceListInput,string userId)
+        public async Task<OrderSupplier> CreateAsync(CreateOrderSupplierInputModel orderSupplierInput, PriceListViewModel priceListInput, string userId)
         {
             if (orderSupplierInput.OrderDate == null)
             {
                 return null;
             }
 
-            /*var priceList = new PriceList
-            {
-                MaterialId = priceListInput.MaterialId,
-                SupplierId = priceListInput.SupplierId,
-                MinimumQuantityPerOrder = priceListInput.MinimumQuantityPerOrder,
-                UnitPrice = priceListInput.UnitPrice,
-            };*/
             double number;
             double.TryParse(orderSupplierInput.Quantity.ToString(), out number);
             var orderSupplier = new OrderSupplier
@@ -62,19 +60,50 @@
 
             await this.orderSuppliersRepository.AddAsync(orderSupplier);
             await this.orderSuppliersRepository.SaveChangesAsync();
+
             return orderSupplier;
         }
 
-        public void Populate(List<CreateOrderSupplierInputModel> input)
+        public async Task SendMailSupplier(List<OrderSupplier> orderSuppliers)
         {
-            var qty = this.priceListRepository.All().Count();
-            //CreateOrderSupplierInputModel orderDefaults = input;
-            //for (int i = 0; i < qty; i++)
-            //{
-            //    input[i].OrderDate = DateTime.UtcNow;
-            //    input[i].Quantity = 0;
-            //    input[i].TotalPrice = 0;
-            //};
+            foreach (var supplier in orderSuppliers.GroupBy(x => x.SupplierId))
+            {
+                // var materials = supplier.Select(x => x.SupplierId)
+                // .ToList();
+
+                StringBuilder sb = new StringBuilder();
+                sb.Append("Дата за изпълнение;Име на материал;Описание на материал;Количество;Единична цена;Крайна цена" + Environment.NewLine);
+
+                foreach (var material in supplier)
+                {
+                    sb.AppendFormat(
+                            "{0};{1};{2};{3};{4};{5};{6}",
+                            material.OrderDate,
+                            material.Material.Name,
+                            material.Material.Description,
+                            material.Quantity,
+                            material.UnitPrice,
+                            material.TotalPrice,
+                            Environment.NewLine
+                    );
+                }
+
+                var data = Encoding.UTF8.GetBytes(sb.ToString());
+                var res = Encoding.UTF8.GetPreamble().Concat(data).ToArray();
+                var attachmentFileName = $"{GlobalConstants.SystemName} - {DateTime.UtcNow.ToShortDateString()}.csv";
+                var mimeType = "text/csv"; // charset=UTF-8
+
+                var attch = new EmailAttachment
+                {
+                    MimeType = mimeType,
+                    FileName = attachmentFileName,
+                    Content = res,
+                };
+                var attchList = new List<EmailAttachment>();
+                attchList.Add(attch);
+
+                await this.sender.SendEmailAsync(GlobalConstants.Email, GlobalConstants.SystemName, supplier.Select(x => x.Supplier.Email).FirstOrDefault(), $"Поръчка за {DateTime.UtcNow.ToShortDateString()}", $"Здравейте, приложена е поръчката. Поздрави - {GlobalConstants.SystemName}", attchList);
+            }
         }
 
         public IEnumerable<T> GetAllOrderSuppliers<T>()
