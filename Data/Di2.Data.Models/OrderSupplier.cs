@@ -1,4 +1,5 @@
 ﻿using Di2.Data.Common.Models;
+using Di2.Data.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,8 +27,6 @@ namespace Di2.Data.Models
         public string UserId { get; set; }
 
         public virtual ApplicationUser User { get; set; }
-
-        public int StatusId { get; set; }
 
         public OrderStatus Status { get; set; }
     }

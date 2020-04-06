@@ -6,8 +6,8 @@ namespace Di2.Web.ViewModels.Totals
 {
     public class TotalsInputModel
     {
-        public double Quantity { get; set; }
+        public int OrderId { get; set; }
 
-        public decimal UnitPrice { get; set; }
+        public bool IsCompleted { get; set; }
     }
 }

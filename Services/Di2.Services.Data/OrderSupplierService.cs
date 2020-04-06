@@ -8,6 +8,7 @@
     using Di2.Common;
     using Di2.Data.Common.Repositories;
     using Di2.Data.Models;
+    using Di2.Data.Models.Enums;
     using Di2.Services.Mapping;
     using Di2.Services.Messaging;
     using Di2.Web.ViewModels.OrderSuppliers;
@@ -18,18 +19,15 @@
     public class OrderSupplierService : IOrderSupplierService
     {
         private readonly IDeletableEntityRepository<OrderSupplier> orderSuppliersRepository;
-        private readonly IDeletableEntityRepository<OrderStatus> orderStatusRepository;
         private readonly IDeletableEntityRepository<PriceList> priceListRepository;
         private readonly IEmailSender sender;
 
         public OrderSupplierService(
             IDeletableEntityRepository<OrderSupplier> orderSuppliersRepository,
-            IDeletableEntityRepository<OrderStatus> orderStatusRepository,
             IDeletableEntityRepository<PriceList> priceListRepository,
             IEmailSender sender)
         {
             this.orderSuppliersRepository = orderSuppliersRepository;
-            this.orderStatusRepository = orderStatusRepository;
             this.priceListRepository = priceListRepository;
             this.sender = sender;
         }
@@ -54,9 +52,7 @@
                 UserId = userId,
             };
 
-            orderSupplier.Status = await this.orderStatusRepository
-                .All()
-                .FirstOrDefaultAsync(x => x.Name == "Sent");
+            orderSupplier.Status = OrderStatus.Sent;
 
             await this.orderSuppliersRepository.AddAsync(orderSupplier);
             await this.orderSuppliersRepository.SaveChangesAsync();
@@ -78,14 +74,13 @@
                 {
                     sb.AppendFormat(
                             "{0};{1};{2};{3};{4};{5};{6}",
-                            material.OrderDate,
+                            material.OrderDate.ToShortDateString(),
                             material.Material.Name,
                             material.Material.Description,
                             material.Quantity,
                             material.UnitPrice,
                             material.TotalPrice,
-                            Environment.NewLine
-                    );
+                            Environment.NewLine);
                 }
 
                 var data = Encoding.UTF8.GetBytes(sb.ToString());

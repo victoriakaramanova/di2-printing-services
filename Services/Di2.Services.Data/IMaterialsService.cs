@@ -11,7 +11,7 @@
 
     public interface IMaterialsService
     {
-        Task<int> AddAsync(string name, string description, string extraInfo, string subCategoryName, string imageUrl, string userId);
+        Task<int> AddAsync(CreateMaterialInputModel input, string imageUrl, string userId);
 
         IEnumerable<T> GetAllMaterials<T>();
 

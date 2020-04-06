@@ -9,8 +9,10 @@
     using Di2.Services;
     using Di2.Services.Data;
     using Di2.Services.Mapping;
+    using Di2.Web.ViewModels.Categories.ViewModels;
     using Di2.Web.ViewModels.Materials.InputModels;
     using Di2.Web.ViewModels.Materials.ViewModels;
+    using Di2.Web.ViewModels.SubCategories.ViewModels;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -22,19 +24,28 @@
         private readonly ISubCategoriesService subCategoriesService;
         private readonly ICloudinaryService cloudinaryService;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly ICategoriesService categoriesService;
 
-        public MaterialsController(IMaterialsService materialsService, ISubCategoriesService subCategoriesService, ICloudinaryService cloudinaryService, UserManager<ApplicationUser> userManager)
+        public MaterialsController(IMaterialsService materialsService, ISubCategoriesService subCategoriesService, ICloudinaryService cloudinaryService, UserManager<ApplicationUser> userManager, ICategoriesService categoriesService)
         {
             this.materialsService = materialsService;
             this.subCategoriesService = subCategoriesService;
             this.cloudinaryService = cloudinaryService;
             this.userManager = userManager;
+            this.categoriesService = categoriesService;
         }
 
         [Authorize]
         public IActionResult Add()
         {
-            return this.View();
+            var categories = this.categoriesService.GetAllCategories<CategoryViewModel>();
+            var subCategories = this.subCategoriesService.GetAllSubCategories<SubCategoryViewModel>();
+            var viewModel = new CreateMaterialInputModel
+            {
+                Categories = categories,
+                SubCategories = subCategories,
+            };
+            return this.View(viewModel);
         }
 
         [Authorize]
@@ -55,7 +66,7 @@
             //material.Image = imageUrl;
 
             //int materialId = await this.materialsService.AddAsync(input.Name, input.Description, input.ExtraInfo, input.SubCategoryName, imageUrl, user.Id);
-            int materialId = await this.materialsService.AddAsync(input.Name, input.Description, input.ExtraInfo, input.SubCategoryName, imageUrl, user.Id);
+            int materialId = await this.materialsService.AddAsync(input, imageUrl, user.Id);
 
             return this.RedirectToAction(nameof(this.ById), new { id = materialId });
         }

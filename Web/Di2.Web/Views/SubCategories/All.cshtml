@@ -12,5 +12,5 @@
     <h5>@subCategory.Description</h5>
     <h5>@subCategory.Category.Name</h5>
     <h5>@subCategory.UserUsername</h5>
-    <h5>@subCategory.CreatedOn</h5>
+    <time datetime="@subCategory.CreatedOn.ToString("O")">@subCategory.CreatedOn.ToString("dd.MM.yyyy HH:mm")</time>
 }

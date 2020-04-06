@@ -8,6 +8,7 @@
 
     using Di2.Data.Models;
     using Di2.Services.Mapping;
+    using Di2.Web.ViewModels.Categories.ViewModels;
     using Di2.Web.ViewModels.Materials.ViewModels;
     using Di2.Web.ViewModels.SubCategories.ViewModels;
     using Microsoft.AspNetCore.Authorization;
@@ -30,13 +31,23 @@
         [Display(Name = "Допълнителна информация")]
         public string ExtraInfo { get; set; }
 
-        public int SubCategoryId { get; set; }
+        [Display(Name = "Категория")]
+        [Required]
+        public int CategoryId { get; set; }
+
+        public string CategoryName { get; set; }
 
         [Display(Name = "Подкатегория")]
         [Required]
+        public int SubCategoryId { get; set; }
+
         public string SubCategoryName { get; set; }
 
         [Required]
         public IFormFile Image { get; set; }
+
+        public IEnumerable<CategoryViewModel> Categories { get; set; }
+
+        public IEnumerable<SubCategoryViewModel> SubCategories { get; set; }
     }
 }

@@ -8,18 +8,19 @@
     <h1 class="display-5">@this.ViewData["Title"]</h1>
 </div>
 
-<div class="row">
-    @foreach (var material in Model.Materials)
-    {
+
+@foreach (var material in Model.Materials)
+{
+    <div class="row">
         @*<img src="@material.ImageUrl" width="100" class="mr-3" alt="@category.Title">*@
-        <div class="col-md-4 media-m4">
-            <h5 class="mt-0">
-                @*<a href="@category.Url">*@
-                @material.Name, @material.Description
-                @material.UserUserName
-                @*</a>*@
-            </h5>
-            @material.SubCategory.Name
-        </div>
-    }
-</div>
+
+
+        @material.Name, @material.Description
+        @*@material.Image*@
+        <img src="@material.Image" />
+
+        @material.Category.Name
+        @material.SubCategory.Name
+    </div>
+}
+

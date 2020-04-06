@@ -28,10 +28,9 @@
                               new RolesSeeder(),
                               new SettingsSeeder(),
                               new CategoriesSeeder(),
-                              new SubCategoriesSeeder(),
+                             // new SubCategoriesSeeder(),
                               new SuppliersSeeder(),
-                              new MaterialsSeeder(),
-                              new OrderStatusSeeder(),
+                              // new MaterialsSeeder(),
                           };
 
             foreach (var seeder in seeders)

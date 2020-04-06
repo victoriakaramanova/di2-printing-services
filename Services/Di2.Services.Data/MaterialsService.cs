@@ -18,14 +18,19 @@
     {
         private readonly IDeletableEntityRepository<Material> materialRepository;
         private readonly IDeletableEntityRepository<SubCategory> subCategoryRepository;
+        private readonly IDeletableEntityRepository<Category> categoryRepository;
 
-        public MaterialsService(IDeletableEntityRepository<Material> materialRepository, IDeletableEntityRepository<SubCategory> subCategoryRepository)
+        public MaterialsService(
+            IDeletableEntityRepository<Material> materialRepository, 
+            IDeletableEntityRepository<SubCategory> subCategoryRepository,
+            IDeletableEntityRepository<Category> categoryRepository)
         {
             this.materialRepository = materialRepository;
             this.subCategoryRepository = subCategoryRepository;
+            this.categoryRepository = categoryRepository;
         }
 
-        public async Task<int> AddAsync(string name, string description, string extraInfo, string subCategoryName, string imageUrl, string userId)
+        public async Task<int> AddAsync(CreateMaterialInputModel input, string imageUrl, string userId)
         {
             // using (var fileStream = new FileStream(@"D:\img.jpg", FileMode.Create))
             // {
@@ -36,22 +41,26 @@
             // await input.Image.CopyToAsync(fileStream);
             // }
             var subCategoryId = this.subCategoryRepository
-                .AllAsNoTracking()
-                .Where(y => y.Name == subCategoryName)
+                .All()
+                .Where(y => y.Id == input.SubCategoryId)
                 .Select(x => x.Id).FirstOrDefault();
 
-            var categoryId = this.subCategoryRepository
-                .AllAsNoTracking()
-                .Where(y => y.Id == subCategoryId)
-                .Select(x => x.CategoryId)
-                .FirstOrDefault();
+            var categoryId = this.subCategoryRepository.All()
+                .Where(x => x.Id == subCategoryId)
+                .Select(x => x.CategoryId).FirstOrDefault();
+                //int.Parse(this.categoryRepository
+                //.All()
+                //.Select(y => y.SubCategories
+                //.Select(z => z.Id == subCategoryId)
+                //.FirstOrDefault()).FirstOrDefault().ToString());
 
             var material = new Material
             {
-                Name = name,
-                Description = description,
-                ExtraInfo = extraInfo,
-                SubCategoryId = subCategoryId,
+                Name = input.Name,
+                Description = input.Description,
+                ExtraInfo = input.ExtraInfo,
+                SubCategoryId = input.SubCategoryId,
+                CategoryId = input.CategoryId,
                 Image = imageUrl,
                 UserId = userId,
             };
@@ -83,5 +92,7 @@
                 .FirstOrDefault();
             return material;
         }
+
+        
     }
 }

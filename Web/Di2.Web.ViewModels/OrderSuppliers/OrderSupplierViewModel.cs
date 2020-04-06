@@ -5,12 +5,14 @@
     using System.Text;
 
     using Di2.Data.Models;
+    using Di2.Data.Models.Enums;
     using Di2.Services.Mapping;
     using Di2.Web.ViewModels.PriceLists.ViewModels;
 
     public class OrderSupplierViewModel : IMapFrom<OrderSupplier>, IMapFrom<PriceList>
     {
         // public PriceListViewModel PriceList { get; set; }
+        public int Id { get; set; }
 
         public DateTime OrderDate { get; set; }
 
@@ -37,7 +39,5 @@
         public int StatusId { get; set; }
 
         public OrderStatus Status { get; set; }
-
-
     }
 }

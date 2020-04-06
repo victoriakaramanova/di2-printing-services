@@ -18,7 +18,8 @@
         private readonly ISubCategoriesService subCategoriesService;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public SubCategoriesController(ISubCategoriesService subCategoriesService,
+        public SubCategoriesController(
+            ISubCategoriesService subCategoriesService,
             Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager)
         {
             this.subCategoriesService = subCategoriesService;
@@ -49,9 +50,9 @@
             return this.RedirectToAction(nameof(this.All));
         }
 
-        public async Task<IActionResult> All()
+        public IActionResult All()
         {
-            var allSubCategories = await this
+            var allSubCategories = this
                 .subCategoriesService
                 .GetAllSubCategories<SubCategoriesViewModel>();
 

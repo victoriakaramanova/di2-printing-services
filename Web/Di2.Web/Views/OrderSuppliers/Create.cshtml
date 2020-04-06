@@ -3,7 +3,6 @@
 @model Di2.Web.ViewModels.OrderSuppliers.OrderSuppliersListViewModel
 @{
     this.ViewData["Title"] = "Поръчка на материали";
-    //var total = ViewBag.amt;
 }
 <h1 class="display-3">@this.ViewData["Title"]</h1>
 
@@ -25,7 +24,6 @@
         <span asp-validation-for="@Model.OrderSub[i].Quantity" class="text-danger"></span>*@
 
             <input type="number" asp-for="@Model.OrderSub[i].Quantity" class="qty" onchange="sendQty()" />
-            @*<input type="number" asp-for="@Model.OrderSub[i].TotalPrice" />*@
 
         </div>
         }
@@ -46,8 +44,6 @@
                 let domQty = +$($(order).children()[5]).val(); 
                 bigTotal += domQty * domUnitPrice;
             }
-            //@ViewBag.amt =bigTotal;
-            //$('#bigTotal').text ==@ViewBag.amt;
             $('#bigTotal').text('Total: ' + bigTotal.toFixed(2));
         }
     </script>

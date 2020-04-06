@@ -49,7 +49,7 @@
             //    list.Add(new SelectListItem { Value = category.Id.ToString(), Text = category.Name });
             //}
 
-            return query.To<T>().ToList(); //list;
+            return query.To<T>().ToList(); 
         }
     }
 }

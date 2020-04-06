@@ -22,12 +22,14 @@ namespace Di2.Data.Seeding
                 {
                     Name = "100x50 полугланц, силнолепнещ",
                     Description = "f76 x 1 x 3 000",
+                    CategoryId=1,
                     SubCategoryId = 1,
                 },
                 new Material
                 {
                     Name = "80x300 m OUT AWX FH черна",
                     Description = "Wax Premium FH",
+                    CategoryId=2,
                     SubCategoryId = 2,
                 },
             };

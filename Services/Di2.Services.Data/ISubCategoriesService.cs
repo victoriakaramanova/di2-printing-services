@@ -10,7 +10,7 @@
     {
         Task AddAsync(CreateSubCategoryInputModel input, string userId);
 
-        Task<IEnumerable<T>> GetAllSubCategories<T>();
+        IEnumerable<T> GetAllSubCategories<T>(int? count = null);
 
         IEnumerable<T> GetCategories<T>();
     }

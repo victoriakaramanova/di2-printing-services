@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Di2.Data.Migrations
 {
-    public partial class initialCommit : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -55,23 +55,6 @@ namespace Di2.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderStatuses",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedOn = table.Column<DateTime>(nullable: false),
-                    ModifiedOn = table.Column<DateTime>(nullable: true),
-                    IsDeleted = table.Column<bool>(nullable: false),
-                    DeletedOn = table.Column<DateTime>(nullable: true),
-                    Name = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OrderStatuses", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Settings",
                 columns: table => new
                 {
@@ -87,6 +70,23 @@ namespace Di2.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Settings", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Totals",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    UnitPrice = table.Column<decimal>(nullable: false),
+                    Quantity = table.Column<double>(nullable: false),
+                    TotalPrice = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Totals", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -312,6 +312,7 @@ namespace Di2.Data.Migrations
                     Name = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: true),
                     ExtraInfo = table.Column<string>(nullable: true),
+                    CategoryId = table.Column<int>(nullable: false),
                     SubCategoryId = table.Column<int>(nullable: false),
                     Image = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true)
@@ -319,6 +320,12 @@ namespace Di2.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Materials", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Materials_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Materials_SubCategories_SubCategoryId",
                         column: x => x.SubCategoryId,
@@ -389,7 +396,7 @@ namespace Di2.Data.Migrations
                     Quantity = table.Column<double>(nullable: false),
                     TotalPrice = table.Column<decimal>(nullable: false),
                     UserId = table.Column<string>(nullable: true),
-                    StatusId = table.Column<int>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
                     PriceListMaterialId = table.Column<int>(nullable: true),
                     PriceListSupplierId = table.Column<int>(nullable: true)
                 },
@@ -400,12 +407,6 @@ namespace Di2.Data.Migrations
                         name: "FK_OrderSuppliers_Materials_MaterialId",
                         column: x => x.MaterialId,
                         principalTable: "Materials",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_OrderSuppliers_OrderStatuses_StatusId",
-                        column: x => x.StatusId,
-                        principalTable: "OrderStatuses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -503,6 +504,11 @@ namespace Di2.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Materials_CategoryId",
+                table: "Materials",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Materials_IsDeleted",
                 table: "Materials",
                 column: "IsDeleted");
@@ -518,11 +524,6 @@ namespace Di2.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderStatuses_IsDeleted",
-                table: "OrderStatuses",
-                column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_OrderSuppliers_IsDeleted",
                 table: "OrderSuppliers",
                 column: "IsDeleted");
@@ -531,11 +532,6 @@ namespace Di2.Data.Migrations
                 name: "IX_OrderSuppliers_MaterialId",
                 table: "OrderSuppliers",
                 column: "MaterialId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrderSuppliers_StatusId",
-                table: "OrderSuppliers",
-                column: "StatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderSuppliers_SupplierId",
@@ -622,10 +618,10 @@ namespace Di2.Data.Migrations
                 name: "Settings");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "Totals");
 
             migrationBuilder.DropTable(
-                name: "OrderStatuses");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "PriceLists");

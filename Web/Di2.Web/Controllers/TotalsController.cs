@@ -23,10 +23,10 @@ namespace Di2.Web.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult<TotalsResponseModel> Post(TotalsInputModel input)
+        public async Task<ActionResult<int>> Post(TotalsInputModel input)
         {
-            var totalPrice = this.totalsService.CalculateTotalPrice(input.Quantity, input.UnitPrice);
-            return new TotalsResponseModel { TotalPrice = totalPrice };
+            var statusId = await this.totalsService.ChangeOrderStatus(input.OrderId, input.IsCompleted);
+            return statusId;
         }
     }
 }

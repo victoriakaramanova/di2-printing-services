@@ -52,12 +52,14 @@
             await this.subCategoriesRepository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAllSubCategories<T>()
+        public IEnumerable<T> GetAllSubCategories<T>(int? categoryId = null)
         {
-            return await this.subCategoriesRepository
-            .All()
-            .To<T>()
-            .ToArrayAsync();
+            IQueryable<SubCategory> query = this.subCategoriesRepository.All();
+            if(categoryId.HasValue)
+            {
+                query = query.Where(x => x.CategoryId == categoryId);
+            }
+            return query.To<T>().ToList();
         }
     }
 }
