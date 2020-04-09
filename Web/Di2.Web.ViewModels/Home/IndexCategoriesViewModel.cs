@@ -1,4 +1,4 @@
-﻿namespace Di2.Web.ViewModels.Categories.InputModels
+﻿namespace Di2.Web.ViewModels.Home
 {
     using System;
     using System.Collections.Generic;
@@ -6,13 +6,13 @@
 
     using Di2.Data.Models;
     using Di2.Services.Mapping;
-    using Microsoft.AspNetCore.Authorization;
 
-    [Authorize]
-    public class CreateCategoryInputModel : IMapFrom<Category>, IMapTo<Category>
+    public class IndexCategoriesViewModel : IMapFrom<Category>
     {
         public string Name { get; set; }
 
         public string NameEng { get; set; }
+
+        public string Url => $"/{this.Name}";
     }
 }

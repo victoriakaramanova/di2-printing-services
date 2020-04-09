@@ -11,12 +11,16 @@
         public Category()
         {
             this.SubCategories = new HashSet<SubCategory>();
-            
+
         }
 
         [Required]
         [MaxLength(50)]
         public string Name { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        public string NameEng { get; set; }
 
         public string UserId { get; set; }
 

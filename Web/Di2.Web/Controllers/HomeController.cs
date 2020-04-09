@@ -21,32 +21,37 @@
     using System.Net.Http;
     using System.Net;
     using System.Linq;
+    using Microsoft.AspNetCore.Authorization;
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
 
     public class HomeController : BaseController
     {
-        private readonly IMaterialsService materialsService;
-        private readonly Cloudinary cloudinary;
-        private readonly IEmailSender sender;
+        private readonly ICategoriesService categoriesService;
 
         public HomeController(
-            IMaterialsService materialsService,
-            Cloudinary cloudinary,
-            IEmailSender sender)
+            ICategoriesService categoriesService)
         {
-            this.materialsService = materialsService;
-            this.cloudinary = cloudinary;
-            this.sender = sender;
+            this.categoriesService = categoriesService;
         }
 
-        public async Task<IActionResult> Index()
+        [AllowAnonymous]
+        public IActionResult Index()
         {
             var viewModel = new IndexViewModel
             {
-                Materials = this.materialsService
-                    .GetAllMaterials<IndexMaterialViewModel>(),
+                Categories = this.categoriesService.GetAllCategories<IndexCategoriesViewModel>(),
             };
+            return this.View(viewModel);
 
-            StringBuilder sb = new StringBuilder();
+            // return this.RedirectToAction("All", "Materials");
+            /* var viewModel = new IndexViewModel
+             {
+                 Materials = this.materialsService
+                     .GetAllMaterials<IndexMaterialViewModel>(),
+             };*/
+
+            /*StringBuilder sb = new StringBuilder();
             IEnumerable<IndexMaterialViewModel> materials = this.materialsService.GetAllMaterials<IndexMaterialViewModel>();
             foreach (var material in materials)
             {
@@ -58,26 +63,10 @@
                     material.SubCategory.Name,
                     Environment.NewLine);
             }
-            /*MemoryStream stream = new MemoryStream();
-            StreamWriter writer = new StreamWriter(stream);
-            writer.Write(sb.ToString());
-            writer.Flush();
-            stream.Position = 0;
-            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
-            result.Content = new StreamContent(stream);
-            result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/csv");
-            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment") { FileName = $"materials-{DateTime.UtcNow}" };
-            //result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/csv");
-            var content = await result.Content.ReadAsByteArrayAsync();
-           */
-
             var data = Encoding.UTF8.GetBytes(sb.ToString());
             var res = Encoding.UTF8.GetPreamble().Concat(data).ToArray();
-
-            //var content = System.IO.File.ReadAllBytes(@"..\\..\\Book1.csv");
             var attachmentFileName = $"materials-{DateTime.UtcNow.ToShortDateString()}.csv";
             var mimeType = "text/csv"; // charset=UTF-8
-            
             var attch = new EmailAttachment
             {
                 MimeType = mimeType,
@@ -85,42 +74,31 @@
                 Content = res,
             };
             var attchList = new List<EmailAttachment>();
-            attchList.Add(attch);
+            attchList.Add(attch);*/
 
             //UNMARK HERE TO SEND EMAIL!
             // await this.sender.SendEmailAsync(GlobalConstants.Email, "Я сега", "victoriakaramanova@gmail.com", $"Поръчка за {DateTime.UtcNow.ToShortDateString()}", $"Здравейте, приложена е поръчката. Поздрави - {GlobalConstants.SystemName}", attchList);
-
-
-
-            /*var content = System.IO.File.ReadAllBytes(@"..\\..\\Book1.csv");
-            var attachmentFileName = "Book1.csv";
-            var memeType = "text/csv";
-            var attch = new EmailAttachment
-            {
-                Content = result.Content,
-                FileName = attachmentFileName,
-                MimeType = memeType,
-            };
-            var attchList = new List<EmailAttachment>();
-            attchList.Add(attch);
-
-            await this.sender.SendEmailAsync(GlobalConstants.Email, "Познай от кого", "e_karamanova@abv.bg", ":)", "<li>А аз съм на върха на света :D!</li>", attchList);
-            */
-
-            return this.View(viewModel);
-
+            // return this.View(viewModel);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Upload(ICollection<IFormFile> files)
-        {
-            var result = await CloudinaryExtension.Upload(this.cloudinary, files);
+        //[HttpPost]
+        //public async Task<IActionResult> Upload(ICollection<IFormFile> files)
+        //{
+        //    var result = await CloudinaryExtension.Upload(this.cloudinary, files);
 
-            this.ViewBag.Links = result;
-            return this.Redirect("/");
-        }
+        //    this.ViewBag.Links = result;
+        //    return this.Redirect("/");
+        //}
 
+
+        [AllowAnonymous]
         public IActionResult Privacy()
+        {
+            return this.View();
+        }
+
+        [AllowAnonymous]
+        public IActionResult About()
         {
             return this.View();
         }

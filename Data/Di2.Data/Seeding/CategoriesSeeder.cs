@@ -17,12 +17,17 @@
                 return;
             }
 
-            var categories = new List<string> { "Cамозалепващи етикети", "Термотранферни ленти" };
+            var categories = new List<(string Name, string NameEng)>
+            {
+                ("Cамозалепващи етикети", "Labels"),
+                ("Термотранферни ленти", "Bands"),
+            };
             foreach (var category in categories)
             {
                 await dbContext.Categories.AddAsync(new Category
                 {
-                    Name = category,
+                    Name = category.Name,
+                    NameEng = category.NameEng,
                 });
             }
         }

@@ -72,13 +72,13 @@
         }
 
         // Download file sample
-        public IActionResult Download(string filename)
-        {
+       //  public IActionResult Download(string filename)
+        //{
             // System.IO.File.ReadAllBytesAsync(); - an alternative
             // return this.File();
             // FIND SANITIZE FILENAME ARTICLES to ignore xss etc!!!
-            return this.PhysicalFile(@$"D:\{filename}", "application/pdf");
-        }
+          //  return this.PhysicalFile(@$"D:\{filename}", "application/pdf");
+        // }
 
         public IActionResult All()
         {

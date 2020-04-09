@@ -31,20 +31,18 @@
     @Model.ToList()[i].UnitPrice
     @Model.ToList()[i].Quantity
     @Model.ToList()[i].TotalPrice
-    <div>
-        <form id="checkForm-@i" method="post"></form>
-        <div class="switch-toggle switch-3 switch-candy">
-            <input id="0" name="state-d" type="radio" checked="" />
-            <label for="0" onclick="sendStatus(@Model.ToList()[i].Id,@i, true)">Завършена</label>
+    <form id="checkForm-@i" method="post"></form>
+    <div class="switch-toggle switch-3 switch-candy">
+        <input id="0" name="state-d" type="radio" checked="" />
+        <label for="0" onclick="sendStatus(@Model.ToList()[i].Id,@i, true)">Завършена</label>
 
-            <input id="1" name="state-d" type="radio" disabled checked="checked" />
-            <label for="1" class="disabled" onclick="">Изпратена</label>
+        <input id="1" name="state-d" type="radio" disabled checked="checked" />
+        <label for="1" class="disabled" onclick="">Изпратена</label>
 
-            <input id="-1" name="state-d" type="radio" />
-            <label for="-1" onclick="sendStatus(@Model.ToList()[i].Id,@i, false)">Канселирана</label>
+        <input id="-1" name="state-d" type="radio" />
+        <label for="-1" onclick="sendStatus(@Model.ToList()[i].Id,@i, false)">Канселирана</label>
 
-            <a></a>
-        </div>
+        <a></a>
     </div>
 
     <div id="statusId">@Model.ToList()[i].Status</div>
@@ -75,7 +73,7 @@
             </div>
         </div>
     </div>*@
-    }
+    
 
 @section Scripts {
     <script>

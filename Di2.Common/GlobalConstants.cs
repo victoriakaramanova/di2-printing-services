@@ -8,7 +8,7 @@
 
         public const string UserRoleName = "User";
 
-        public const string Email = "victoriakaramanova@gmail.com";
+        public const string SystemEmail = "victoriakaramanova@gmail.com";
 
         public const double StandardMarkup = 0.25;
 

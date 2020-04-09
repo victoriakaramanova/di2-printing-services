@@ -97,7 +97,7 @@
                 var attchList = new List<EmailAttachment>();
                 attchList.Add(attch);
 
-                await this.sender.SendEmailAsync(GlobalConstants.Email, GlobalConstants.SystemName, supplier.Select(x => x.Supplier.Email).FirstOrDefault(), $"Поръчка за {DateTime.UtcNow.ToShortDateString()}", $"Здравейте, приложена е поръчката. Поздрави - {GlobalConstants.SystemName}", attchList);
+                await this.sender.SendEmailAsync(GlobalConstants.SystemEmail, GlobalConstants.SystemName, supplier.Select(x => x.Supplier.Email).FirstOrDefault(), $"Поръчка за {DateTime.UtcNow.ToShortDateString()}", $"Здравейте, приложена е поръчката. Поздрави - {GlobalConstants.SystemName}", attchList);
             }
         }
 

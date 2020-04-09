@@ -16,8 +16,12 @@
 
         public string Name { get; set; }
 
+        public string NameEng { get; set; }
+
         public DateTime CreatedOn { get; set; }
 
         public string UserUsername { get; set; }
+
+        public string Url => $"/{this.NameEng}";
     }
 }

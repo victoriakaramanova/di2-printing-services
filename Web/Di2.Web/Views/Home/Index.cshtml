@@ -1,26 +1,53 @@
 ﻿@using Di2.Common
 @model Di2.Web.ViewModels.Home.IndexViewModel
-@{
-    this.ViewData["Title"] = $"Welcome to {GlobalConstants.SystemName}";
-}
 
-<div class="text-center">
-    <h1 class="display-5">@this.ViewData["Title"]</h1>
-</div>
+<div class="site">
+    <header class="site-header">
+        <div class="site-media" style="background-image: url('@Url.Content("images/nFalpz.jpg")');">
+            <div class="site-wrapper">
+                <div class="horizontal">
+                </div>
+                <div class="site-message">
+                    <h1>Дизайн и изпълнение на етикети</h1>
+                    <p>с традиции от 2008 година</p>
+                </div>
+            </div>
+        </div>
+    </header>
 
-
-@foreach (var material in Model.Materials)
-{
-    <div class="row">
-        @*<img src="@material.ImageUrl" width="100" class="mr-3" alt="@category.Title">*@
-
-
-        @material.Name, @material.Description
-        @*@material.Image*@
-        <img src="@material.Image" />
-
-        @material.Category.Name
-        @material.SubCategory.Name
+    <div class="site-wrapper">
+        <section class="service-types">
+            <ul>
+                @foreach (var category in Model.Categories)
+                {
+                    <li>
+                        <a href="@category.Url">
+                            @if (category.NameEng == "Labels")
+                            {
+                                <i class="fas fa-tags fa-7x"></i>
+                            }
+                            else
+                            {
+                                <i class="fas fa-scroll fa-7x"></i>
+                            }
+                            <h2>@category.Name</h2>
+                            @*<p>@category.Name.Skip(1).Take(1)</p>*@
+                        </a>
+                    </li>
+                }
+            </ul>
+        </section>
     </div>
-}
+</div>
+@*@foreach (var material in Model.Materials)
+    {
+        <div class="row">
+            @material.Name, @material.Description
+            <img src="@material.Image" />
+
+            @material.Category.Name
+            @material.SubCategory.Name
+        </div>
+    }*@
+
 

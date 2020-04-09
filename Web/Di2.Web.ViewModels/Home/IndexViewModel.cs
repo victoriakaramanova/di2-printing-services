@@ -6,6 +6,6 @@ namespace Di2.Web.ViewModels.Home
 {
     public class IndexViewModel
     {
-        public IEnumerable<IndexMaterialViewModel> Materials { get; set; }
+        public IEnumerable<IndexCategoriesViewModel> Categories { get; set; }
     }
 }
