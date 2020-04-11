@@ -50,19 +50,11 @@ namespace Di2.Services.Data
             if (isCompleted == 0)
             {
                 supplyOrderStatus.OrderStatus = OrderStatus.Completed;
-                //order.Status = OrderStatus.Completed;
-                /*var viewModel = new OrderSupplierViewModel
-                {
-                    Id = order.Id,
-                    MaterialId = materialId,
-                    SupplierId = order.SupplierId,
-                    OrderDate = order.OrderDate,
-                    Quantity = order.Quantity,
-                    UnitPrice = order.UnitPrice,
-                    TotalPrice = order.TotalPrice,
-                };
-                await this.deliveriesService.Create(viewModel);
-                */            
+                /*await this.supplyOrderStatuses.SaveChangesAsync();
+                order.Status = supplyOrderStatus.OrderStatus;
+                this.orderSupplierRepository.Update(order);
+                await this.orderSupplierRepository.SaveChangesAsync();*/
+                var deliveryId = await this.InvokeDelivery(order);
             }
             else
             if (isCompleted == -1)
@@ -76,14 +68,6 @@ namespace Di2.Services.Data
                 supplyOrderStatus.OrderStatus = OrderStatus.Sent;
             }
 
-            // this.supplyOrderStatuses.Update(supplyOrderStatus);
-            // await this.supplyOrderStatuses.SaveChangesAsync();
-
-                //await this.supplyOrderStatuses.AddAsync(supplyOrderStatus);
-                //await this.supplyOrderStatuses.SaveChangesAsync();
-
-            //return (int)order.Status;
-
             await this.supplyOrderStatuses.SaveChangesAsync();
             order.Status = supplyOrderStatus.OrderStatus;
             this.orderSupplierRepository.Update(order);
@@ -92,15 +76,15 @@ namespace Di2.Services.Data
             return (int)order.Status;
         }
 
-        /*public async Task<int> InvokeDelivery(OrderSupplier order)
+        public async Task<int> InvokeDelivery(OrderSupplier order)
         {
-            var supplyOrderStatus = new SupplyOrderStatus
+            /*var supplyOrderStatus = new SupplyOrderStatus
             {
                 OrderId = order.Id,
                 OrderStatus = order.Status,
             };
             await this.supplyOrderStatuses.AddAsync(supplyOrderStatus);
-
+            */
             var viewModel = new OrderSupplierViewModel
             {
                 Id = order.Id,
@@ -111,9 +95,9 @@ namespace Di2.Services.Data
                 UnitPrice = order.UnitPrice,
                 TotalPrice = order.TotalPrice,
             };
-            await this.deliveriesService.Create(viewModel);
-            return (int)order.Status;
-            */
+            var deliveryId = await this.deliveriesService.Create(viewModel);
+            return deliveryId;
+        }
 
     }
 }

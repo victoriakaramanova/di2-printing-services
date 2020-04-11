@@ -9,7 +9,8 @@
     @foreach (var item in Model)
     {
         @item.MaterialName
-        @item.Description
+        @item.MaterialDescription
         @item.Quantity
         @item.UnitPrice
+        <img src="@item.MaterialImage" />
     }

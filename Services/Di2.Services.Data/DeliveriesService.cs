@@ -39,14 +39,24 @@
             /*double stockQuantity = this.orderSuppliersRepository.All()
                 .Where(x => x.Status == 0 && x.MaterialId == input.MaterialId)
                 .Sum(x => x.Quantity);*/
-
+            var deliveryMaterialDb = this.deliveriesRepository.All()
+                .FirstOrDefault(x => x.MaterialId == input.MaterialId);
+            if (deliveryMaterialDb != null)
+            {
+                deliveryMaterialDb.Quantity += input.Quantity;
+            }
+            else
+            {
             var materialCategoryId = this.materialsRepository.All()
                 .Where(x => x.Id == input.MaterialId)
                 .Select(x => x.CategoryId).FirstOrDefault();
-            var deliveredProduct = new Delivery
+            var material = this.materialsRepository.All()
+                .Where(x => x.Id == input.MaterialId).FirstOrDefault();
+            deliveryMaterialDb = new Delivery
             {
                 OrderId = input.Id,
                 MaterialId = input.MaterialId,
+                Material = material,
                 // Description = input.Material.Description,
                 // ExtraInfo = input.Material.ExtraInfo,
                 // Image = input.Material.Image,
@@ -57,9 +67,11 @@
                 UnitPrice = input.UnitPrice * (1 + (decimal)GlobalConstants.StandardMarkup),
             };
 
-            await this.deliveriesRepository.AddAsync(deliveredProduct);
+            await this.deliveriesRepository.AddAsync(deliveryMaterialDb);
             await this.deliveriesRepository.SaveChangesAsync();
-            return deliveredProduct.Id;
+            }
+
+            return deliveryMaterialDb.Id;
         }
 
         public IEnumerable<T> GetAll<T>(int? categoryId = null)

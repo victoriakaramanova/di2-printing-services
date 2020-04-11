@@ -10,37 +10,43 @@
     using Di2.Services.Data;
     using Di2.Web.ViewModels.Categories.InputModels;
     using Di2.Web.ViewModels.Categories.ViewModels;
+    using Di2.Web.ViewModels.Deliveries;
     using Di2.Web.ViewModels.OrderSuppliers;
     using Di2.Web.ViewModels.SubCategories.ViewModels;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
-    [Authorize]
+    
     public class CategoriesController : BaseController
     {
         private readonly ICategoriesService categoriesService;
         private readonly Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager;
         private readonly ISubCategoriesService subCategoriesService;
         private readonly IOrderSupplierService orderSupplierService;
+        private readonly IDeliveriesService deliveriesService;
 
         public CategoriesController(
             ICategoriesService categoriesService,
             Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager,
             ISubCategoriesService subCategoriesService,
-            IOrderSupplierService orderSupplierService)
+            IOrderSupplierService orderSupplierService,
+            IDeliveriesService deliveriesService)
         {
             this.categoriesService = categoriesService;
             this.userManager = userManager;
             this.subCategoriesService = subCategoriesService;
             this.orderSupplierService = orderSupplierService;
+            this.deliveriesService = deliveriesService;
         }
 
+        [Authorize]
         public IActionResult Add()
         {
             return this.View();
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Add(CreateCategoryInputModel input, string userId)
         {
@@ -68,15 +74,16 @@
 
         public IActionResult ByName(string name)
         {
+            //var category = this.categoriesService.GetByName<CategoryProductsViewModel>
             var viewModel = this.categoriesService.GetByName<CategoryProductsViewModel>(name);
             if (viewModel == null)
             {
                 return this.NotFound();
             }
 
-            viewModel.SubCategories = this.subCategoriesService.GetAllSubCategories<SubCategoryViewModel>(viewModel.Id);
+            // viewModel.SubCategories = this.subCategoriesService.GetAllSubCategories<SubCategoryViewModel>(viewModel.Id);
 
-            viewModel.OrderSuppliers = this.orderSupplierService.GetByCategoryId<OrderSupplierViewModel>(viewModel.Id);
+            viewModel.Deliveries = this.deliveriesService.GetAll<DeliveryViewModel>(viewModel.Id);
 
             return this.View(viewModel);
         }

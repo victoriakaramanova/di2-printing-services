@@ -49,6 +49,16 @@
         {
             var category = this.categoriesRepository.All()
                 .Where(x => x.NameEng == name)
+                // .Select(x => x.Id)
+                .To<T>().FirstOrDefault();
+            return category;
+        }
+
+        public T GetById<T>(int catId)
+        {
+            var category = this.categoriesRepository.All()
+                .Where(x => x.Id == catId)
+                //.Select(x => x.Name)
                 .To<T>().FirstOrDefault();
             return category;
         }

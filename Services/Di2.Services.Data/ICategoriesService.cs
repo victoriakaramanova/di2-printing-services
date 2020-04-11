@@ -12,5 +12,7 @@
         IEnumerable<T> GetAllCategories<T>();
 
         T GetByName<T>(string name);
+
+        T GetById<T>(int catId);
     }
 }

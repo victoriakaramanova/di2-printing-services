@@ -37,7 +37,7 @@
     <div class="v-switcher-wrapper" style="margin:15px;">
         <input type="range" id="switcher-@i" 
                name="switcher-@i" class="@Model.ToList()[i].SwitchValue"
-               min="-1" max="1" step="1" checked
+               min="-1" max="1" step="1" 
                onchange="sendStatus(@Model.ToList()[i].Id,@i)" />
     </div>
     @*<div class="switch-toggle switch-3 switch-candy">
@@ -67,6 +67,7 @@
                     break;
                 case '0': $(`#switcher-${i}`).removeClass();
                     $(`#switcher-${i}`).addClass('v-switcher v-switcher-mode--tri v-switcher-state--neutral');
+                    // $(`#switcher-${i}`)["disabled" = true];
                     break;
                 case '1': $(`#switcher-${i}`).removeClass();
                     $(`#switcher-${i}`).addClass('v-switcher v-switcher-mode--tri v-switcher-state--active');
