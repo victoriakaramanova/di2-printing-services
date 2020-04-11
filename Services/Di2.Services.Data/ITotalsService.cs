@@ -7,6 +7,8 @@ namespace Di2.Services.Data
 {
     public interface ITotalsService
     {
-        Task<int> ChangeOrderStatus(int orderId, bool isCompleted);
+        int GetStatus(int orderId);
+
+        Task<int> ChangeOrderStatus(int orderId, int isCompleted);
     }
 }

@@ -11,6 +11,7 @@
     using Di2.Data.Models;
     using Di2.Data.Models.Enums;
     using Di2.Services.Mapping;
+    using Di2.Web.ViewModels.Deliveries;
     using Di2.Web.ViewModels.OrderSuppliers;
     using Di2.Web.ViewModels.PriceLists.InputModels;
 
@@ -18,13 +19,19 @@
     {
         private readonly IDeletableEntityRepository<Delivery> deliveriesRepository;
         private readonly IDeletableEntityRepository<OrderSupplier> orderSuppliersRepository;
+        private readonly IDeletableEntityRepository<Material> materialsRepository;
+        private readonly IDeletableEntityRepository<Category> categoriesRepository;
 
         public DeliveriesService(
             IDeletableEntityRepository<Delivery> deliveriesRepository,
-            IDeletableEntityRepository<OrderSupplier> orderSuppliersRepository)
+            IDeletableEntityRepository<OrderSupplier> orderSuppliersRepository,
+            IDeletableEntityRepository<Material> materialsRepository,
+            IDeletableEntityRepository<Category> categoriesRepository)
         {
             this.deliveriesRepository = deliveriesRepository;
             this.orderSuppliersRepository = orderSuppliersRepository;
+            this.materialsRepository = materialsRepository;
+            this.categoriesRepository = categoriesRepository;
         }
 
         public async Task<int> Create(OrderSupplierViewModel input)
@@ -33,14 +40,18 @@
                 .Where(x => x.Status == 0 && x.MaterialId == input.MaterialId)
                 .Sum(x => x.Quantity);*/
 
+            var materialCategoryId = this.materialsRepository.All()
+                .Where(x => x.Id == input.MaterialId)
+                .Select(x => x.CategoryId).FirstOrDefault();
             var deliveredProduct = new Delivery
             {
-                Name = input.Material.Name,
-                Description = input.Material.Description,
-                ExtraInfo = input.Material.ExtraInfo,
-                Image = input.Material.Image,
-                CategoryId = input.Material.CategoryId,
-                SubCategoryId = input.Material.SubCategoryId,
+                OrderId = input.Id,
+                MaterialId = input.MaterialId,
+                // Description = input.Material.Description,
+                // ExtraInfo = input.Material.ExtraInfo,
+                // Image = input.Material.Image,
+                CategoryId = materialCategoryId,
+                // SubCategoryId = input.Material.SubCategoryId,
                 Quantity = input.Quantity,
                 //QuantityOnStock = stockQuantity,
                 UnitPrice = input.UnitPrice * (1 + (decimal)GlobalConstants.StandardMarkup),

@@ -8,6 +8,8 @@ namespace Di2.Web.ViewModels.Totals
     {
         public int OrderId { get; set; }
 
-        public bool IsCompleted { get; set; }
+        public int I { get; set; }
+
+        public int IsCompleted { get; set; }
     }
 }

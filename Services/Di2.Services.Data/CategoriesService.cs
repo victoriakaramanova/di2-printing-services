@@ -41,15 +41,16 @@
         {
             IQueryable<Category> query =
                 this.categoriesRepository.All().OrderBy(x => x.Name);
-            //return query.To<SelectListItem>().ToList();
             var categories = this.categoriesRepository.All();
-            //var list = new List<SelectListItem>();
-            //foreach (var category in categories)
-            //{
-            //    list.Add(new SelectListItem { Value = category.Id.ToString(), Text = category.Name });
-            //}
-
             return query.To<T>().ToList(); 
+        }
+
+        public T GetByName<T>(string name)
+        {
+            var category = this.categoriesRepository.All()
+                .Where(x => x.NameEng == name)
+                .To<T>().FirstOrDefault();
+            return category;
         }
     }
 }

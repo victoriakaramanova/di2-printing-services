@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Di2.Data.Models
 {
-    public class SupplyOrderStatus : BaseModel<int>
+    public class SupplyOrderStatus : BaseDeletableModel<int>
     {
         public int OrderId { get; set; }
 

@@ -1,0 +1,14 @@
+﻿@model Di2.Web.ViewModels.Categories.ViewModels.CategoryProductsViewModel
+@{ 
+    this.ViewData["Title"] = "Продукти";
+}
+
+@foreach (var product in Model.OrderSuppliers)
+{
+    <div class="row">
+        @product.Material.Name
+        @product.Material.Description
+        @product.Material.ExtraInfo
+        @product.UnitPrice
+    </div>
+}

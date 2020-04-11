@@ -208,11 +208,20 @@ namespace Di2.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<int>("MaterialId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MaterialName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OrderSupplierId")
+                        .HasColumnType("int");
 
                     b.Property<double>("Quantity")
                         .HasColumnType("float");
@@ -231,6 +240,10 @@ namespace Di2.Data.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("IsDeleted");
+
+                    b.HasIndex("MaterialId");
+
+                    b.HasIndex("OrderSupplierId");
 
                     b.HasIndex("SubCategoryId");
 
@@ -300,6 +313,9 @@ namespace Di2.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -343,6 +359,8 @@ namespace Di2.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("IsDeleted");
 
@@ -532,6 +550,12 @@ namespace Di2.Data.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
@@ -545,6 +569,8 @@ namespace Di2.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
 
                     b.HasIndex("OrderSupplierId");
 
@@ -685,6 +711,16 @@ namespace Di2.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Di2.Data.Models.Material", "Material")
+                        .WithMany()
+                        .HasForeignKey("MaterialId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Di2.Data.Models.OrderSupplier", "OrderSupplier")
+                        .WithMany()
+                        .HasForeignKey("OrderSupplierId");
+
                     b.HasOne("Di2.Data.Models.SubCategory", "SubCategory")
                         .WithMany()
                         .HasForeignKey("SubCategoryId")
@@ -717,6 +753,10 @@ namespace Di2.Data.Migrations
 
             modelBuilder.Entity("Di2.Data.Models.OrderSupplier", b =>
                 {
+                    b.HasOne("Di2.Data.Models.Category", null)
+                        .WithMany("OrderSuppliers")
+                        .HasForeignKey("CategoryId");
+
                     b.HasOne("Di2.Data.Models.Material", "Material")
                         .WithMany()
                         .HasForeignKey("MaterialId")

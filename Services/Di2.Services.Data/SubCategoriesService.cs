@@ -55,11 +55,19 @@
         public IEnumerable<T> GetAllSubCategories<T>(int? categoryId = null)
         {
             IQueryable<SubCategory> query = this.subCategoriesRepository.All();
-            if(categoryId.HasValue)
+            if (categoryId.HasValue)
             {
                 query = query.Where(x => x.CategoryId == categoryId);
             }
+
             return query.To<T>().ToList();
+        }
+
+        public T GetById<T>(int id)
+        {
+            var post = this.subCategoriesRepository.All().Where(x => x.Id == id)
+                .To<T>().FirstOrDefault();
+            return post;
         }
     }
 }

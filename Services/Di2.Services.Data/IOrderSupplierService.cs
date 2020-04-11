@@ -16,5 +16,7 @@
         IEnumerable<T> GetAllOrderSuppliers<T>();
 
         Task SendMailSupplier(List<OrderSupplier> orderSuppliers);
+
+        IEnumerable<T> GetByCategoryId<T>(int categoryId);
     }
 }

@@ -38,6 +38,12 @@
 
         public int StatusId { get; set; }
 
+        public string SwitchValue => (int)this.Status == 1 ?
+         "v-switcher v-switcher-mode--tri v-switcher-state--active"
+         : (int)this.Status == -1
+         ? "v-switcher v-switcher-mode--tri v-switcher-state--passive"
+         : "v-switcher v-switcher-mode--tri v-switcher-state--neutral";
+
         public OrderStatus Status { get; set; }
     }
 }

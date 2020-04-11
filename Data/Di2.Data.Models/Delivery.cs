@@ -7,21 +7,29 @@ namespace Di2.Data.Models
 {
     public class Delivery : BaseDeletableModel<int>
     {
-        public string Name { get; set; }
+        public int OrderId { get; set; }
 
-        public string Description { get; set; }
+        public virtual OrderSupplier OrderSupplier { get; set; }
 
-        public string ExtraInfo { get; set; }
+        public int MaterialId { get; set; }
+
+        public virtual Material Material { get; set; }
+
+        // public string MaterialName { get; set; }
+
+        // public string Description { get; set; }
+
+        // public string ExtraInfo { get; set; }
 
         public int CategoryId { get; set; }
 
-        public Category Category { get; set; }
+        // public Category Category { get; set; }
 
-        public int SubCategoryId { get; set; }
+        // public int SubCategoryId { get; set; }
 
-        public SubCategory SubCategory { get; set; }
+        // public SubCategory SubCategory { get; set; }
 
-        public string Image { get; set; }
+        // public string Image { get; set; }
 
         // public double QuantityOnStock { get; set; }
 
@@ -32,5 +40,6 @@ namespace Di2.Data.Models
         public string UserId { get; set; }
 
         public virtual ApplicationUser User { get; set; }
+
     }
 }

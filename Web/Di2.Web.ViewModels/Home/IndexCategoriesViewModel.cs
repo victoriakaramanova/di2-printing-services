@@ -13,6 +13,6 @@
 
         public string NameEng { get; set; }
 
-        public string Url => $"/{this.Name}";
+        public string Url => $"/{this.NameEng}";
     }
 }

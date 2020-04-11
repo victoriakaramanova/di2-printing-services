@@ -7,9 +7,13 @@
     using Di2.Data.Models;
     using Di2.Services.Mapping;
 
-    public class DeliveryViewModel : IMapFrom<Delivery>
+    public class DeliveryViewModel : IMapFrom<OrderSupplier>
     {
-        public string Name { get; set; }
+        public int DeliveryId { get; set; }
+
+        public int MaterialId { get; set; }
+
+        public string MaterialName { get; set; }
 
         public string Description { get; set; }
 

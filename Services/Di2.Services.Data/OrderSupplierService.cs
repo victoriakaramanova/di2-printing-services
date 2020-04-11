@@ -21,15 +21,18 @@
         private readonly IDeletableEntityRepository<OrderSupplier> orderSuppliersRepository;
         private readonly IDeletableEntityRepository<PriceList> priceListRepository;
         private readonly IEmailSender sender;
+        private readonly IDeletableEntityRepository<SupplyOrderStatus> supplyOrderStatuses;
 
         public OrderSupplierService(
             IDeletableEntityRepository<OrderSupplier> orderSuppliersRepository,
             IDeletableEntityRepository<PriceList> priceListRepository,
-            IEmailSender sender)
+            IEmailSender sender,
+            IDeletableEntityRepository<SupplyOrderStatus> supplyOrderStatuses)
         {
             this.orderSuppliersRepository = orderSuppliersRepository;
             this.priceListRepository = priceListRepository;
             this.sender = sender;
+            this.supplyOrderStatuses = supplyOrderStatuses;
         }
 
         public async Task<OrderSupplier> CreateAsync(CreateOrderSupplierInputModel orderSupplierInput, PriceListViewModel priceListInput, string userId)
@@ -56,7 +59,13 @@
 
             await this.orderSuppliersRepository.AddAsync(orderSupplier);
             await this.orderSuppliersRepository.SaveChangesAsync();
-
+            SupplyOrderStatus supplyOrderStatus = new SupplyOrderStatus
+            {
+                OrderId = orderSupplier.Id,
+                OrderStatus = OrderStatus.Sent,
+            };
+            await this.supplyOrderStatuses.AddAsync(supplyOrderStatus);
+            await this.supplyOrderStatuses.SaveChangesAsync();
             return orderSupplier;
         }
 
@@ -105,6 +114,14 @@
         {
             // var supplier = AutoMapperConfig.MapperInstance.Map<OrderSuppliersListViewModel>();
             IQueryable<OrderSupplier> query = this.orderSuppliersRepository.All();
+            return query.To<T>().ToList();
+        }
+
+        public IEnumerable<T> GetByCategoryId<T>(int categoryId)
+        {
+            var query = this.orderSuppliersRepository.All()
+                .Where(x => x.Material.CategoryId == categoryId);
+
             return query.To<T>().ToList();
         }
     }

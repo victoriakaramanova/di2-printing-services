@@ -14,6 +14,7 @@
         public Material()
         {
             this.PriceLists = new HashSet<PriceList>();
+            
         }
 
         [Required]
@@ -38,6 +39,8 @@
         public virtual ApplicationUser User { get; set; }
 
         public virtual ICollection<PriceList> PriceLists { get; }
+
+        
 
     }
 }

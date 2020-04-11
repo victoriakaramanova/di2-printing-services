@@ -29,7 +29,7 @@ namespace Di2.Data.Seeding
                 {
                     Name = "SYS-45",
                     Address = "гр. Варна, ул. Пристанищна 3 В",
-                    Email = "victoriakaramanova@gmail.com",
+                    Email = "e_karamanova@abv.bg",
                     Phone = "0898400235",
                 },
             };

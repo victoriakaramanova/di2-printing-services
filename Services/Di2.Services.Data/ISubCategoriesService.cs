@@ -13,5 +13,7 @@
         IEnumerable<T> GetAllSubCategories<T>(int? count = null);
 
         IEnumerable<T> GetCategories<T>();
+
+        T GetById<T>(int id);
     }
 }

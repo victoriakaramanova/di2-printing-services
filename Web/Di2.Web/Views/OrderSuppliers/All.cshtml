@@ -6,16 +6,18 @@
     //var orderSuppliers = Model.OrderSub.ToList();
 }
 
-<link href="https://cdn.jsdelivr.net/css-toggle-switch/latest/toggle-switch.css" rel="stylesheet" />
+<style>
+
+</style>
+@*<link href="https://cdn.jsdelivr.net/css-toggle-switch/latest/toggle-switch.css" rel="stylesheet" />
 <style>
     .switch-toggle {
         width: 10em;
     }
-
         .switch-toggle label:not(.disabled) {
             cursor: pointer;
         }
-</style>
+</style>*@
 
 <div class="text-center">
     <h2 class="display-3">@this.ViewData["Title"]</h2>
@@ -32,55 +34,47 @@
     @Model.ToList()[i].Quantity
     @Model.ToList()[i].TotalPrice
     <form id="checkForm-@i" method="post"></form>
-    <div class="switch-toggle switch-3 switch-candy">
-        <input id="0" name="state-d" type="radio" checked="" />
-        <label for="0" onclick="sendStatus(@Model.ToList()[i].Id,@i, true)">Завършена</label>
-
-        <input id="1" name="state-d" type="radio" disabled checked="checked" />
-        <label for="1" class="disabled" onclick="">Изпратена</label>
-
-        <input id="-1" name="state-d" type="radio" />
-        <label for="-1" onclick="sendStatus(@Model.ToList()[i].Id,@i, false)">Канселирана</label>
-
-        <a></a>
+    <div class="v-switcher-wrapper" style="margin:15px;">
+        <input type="range" id="switcher-@i" 
+               name="switcher-@i" class="@Model.ToList()[i].SwitchValue"
+               min="-1" max="1" step="1" checked
+               onchange="sendStatus(@Model.ToList()[i].Id,@i)" />
     </div>
+    @*<div class="switch-toggle switch-3 switch-candy">
+            <input id="0" name="state-d" type="radio" checked="" />
+            <label for="0" onclick="sendStatus(@Model.ToList()[i].Id,@i, true)">Завършена</label>
 
-    <div id="statusId">@Model.ToList()[i].Status</div>
+            <input id="1" name="state-d" type="radio" disabled checked="checked" />
+            <label for="1" class="disabled" onclick="">Изпратена</label>
+
+            <input id="-1" name="state-d" type="radio" />
+            <label for="-1" onclick="sendStatus(@Model.ToList()[i].Id,@i, false)">Канселирана</label>
+            <a></a>
+        </div>*@
+
+    <div id="statusId-@i">@Model.ToList()[i].Status</div>
 }
-
-@*<div class="row">
-        <div>@order.Material.Name</div>
-        <div>@order.Material.Description</div>
-        <div><time datetime="@order.OrderDate.ToString("O")">@order.OrderDate.ToString("dd.MM.yyyy HH:mm")</time></div>
-        <div>@order.Supplier.Name</div>
-        <div>@order.UnitPrice</div>
-        <div>@order.Quantity</div>
-        <div>@order.TotalPrice</div>
-        <div>@order.Status</div>
-        <div>
-            <form id="checkForm" method="post"></form>
-            <div class="switch-toggle switch-3 switch-candy">
-                <input id="completed" name="state-d" type="radio" checked="" />
-                <label for="completed" onclick="sendStatus(@order.Id, true)">Завършена</label>
-
-                <input id="sent" name="state-d" type="radio" disabled checked="checked" />
-                <label for="sent" class="disabled" onclick="">Изпратена</label>
-
-                <input id="canceled" name="state-d" type="radio" />
-                <label for="canceled" onclick="sendStatus(@order.Id, false)">Канселирана</label>
-
-                <a></a>
-            </div>
-        </div>
-    </div>*@
-    
 
 @section Scripts {
     <script>
         function sendStatus(orderId, i, isCompleted) {
             var token = $(`#checkForm-${i} input[name = __RequestVerificationToken]`).val();
-            var json = { orderId: orderId, i: i, isCompleted: isCompleted };
-            // debugger
+            let myInput = Number($(`#switcher-${i}`).val());
+            //debugger
+            switch (myInput.toString()) {
+                case '-1': $(`#switcher-${i}`).removeClass();
+                    $(`#switcher-${i}`).addClass('v-switcher v-switcher-mode--tri v-switcher-state--passive');
+                    break;
+                case '0': $(`#switcher-${i}`).removeClass();
+                    $(`#switcher-${i}`).addClass('v-switcher v-switcher-mode--tri v-switcher-state--neutral');
+                    break;
+                case '1': $(`#switcher-${i}`).removeClass();
+                    $(`#switcher-${i}`).addClass('v-switcher v-switcher-mode--tri v-switcher-state--active');
+                    break;
+            }
+            var json = { orderId: orderId, i: i, isCompleted: myInput };
+            //$("#statusId").empty();
+            //debugger
             $.ajax({
                 url: "/api/totals",
                 type: "POST",
@@ -88,9 +82,15 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 headers: { 'X-CSRF-TOKEN': token },
-                success: function (data) {
-                    $("#statusId").html(data.statusId);
-                    $(`#checkForm-${i} input[id=data.statusId]`).checked = "checked";
+                    success: function (data) {
+                        //$("#statusId").html(data.toString());
+                        //debugger
+                        if (data.toString() == 1) {
+                            $(`#statusId-${i}`).html("Sent")
+                        } else if (data.toString() == -1) {
+                            $(`#statusId-${i}`).html("Canceled")
+                        }
+                        else $(`#statusId-${i}`).html("Completed");
                 }
             });
         }

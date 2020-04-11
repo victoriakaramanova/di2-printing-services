@@ -2,41 +2,43 @@
 @model Di2.Web.ViewModels.Home.IndexViewModel
 
 <div class="site">
-    <header class="site-header">
-        <div class="site-media" style="background-image: url('@Url.Content("images/nFalpz.jpg")');">
-            <div class="site-wrapper">
-                <div class="horizontal">
-                </div>
-                <div class="site-message">
-                    <h1>Дизайн и изпълнение на етикети</h1>
-                    <p>с традиции от 2008 година</p>
+    <div class="page-home">
+        <header class="site-header">
+            <div class="site-media" style="background-image: url('@Url.Content("images/nFalpz.jpg")');">
+                <div class="site-wrapper">
+                    <div class="horizontal">
+                    </div>
+                    <div class="site-message">
+                        <h1>Дизайн и изпълнение на етикети</h1>
+                        <p>с традиции от 2008 година</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </header>
+        </header>
 
-    <div class="site-wrapper">
-        <section class="service-types">
-            <ul>
-                @foreach (var category in Model.Categories)
-                {
-                    <li>
-                        <a href="@category.Url">
-                            @if (category.NameEng == "Labels")
-                            {
-                                <i class="fas fa-tags fa-7x"></i>
-                            }
-                            else
-                            {
-                                <i class="fas fa-scroll fa-7x"></i>
-                            }
-                            <h2>@category.Name</h2>
-                            @*<p>@category.Name.Skip(1).Take(1)</p>*@
-                        </a>
-                    </li>
-                }
-            </ul>
-        </section>
+        <div class="site-wrapper">
+            <section class="service-types">
+                <ul>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <li>
+                            <a href="@category.Url">
+                                @if (category.NameEng == "Labels")
+                                {
+                                    <i class="fas fa-tags fa-7x"></i>
+                                }
+                                else
+                                {
+                                    <i class="fas fa-scroll fa-7x"></i>
+                                }
+                                <h2>@category.Name</h2>
+                                @*<p>@category.Name.Skip(1).Take(1)</p>*@
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </section>
+        </div>
     </div>
 </div>
 @*@foreach (var material in Model.Materials)

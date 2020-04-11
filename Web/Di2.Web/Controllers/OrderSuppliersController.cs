@@ -21,19 +21,22 @@
         private readonly ISuppliersService suppliersService;
         private readonly IMaterialsService materialsService;
         private readonly IPriceListsService priceListsService;
+        private readonly ITotalsService totalsService;
 
         public OrderSuppliersController(
             IOrderSupplierService orderSupplierService,
             UserManager<ApplicationUser> userManager,
             ISuppliersService suppliersService,
             IMaterialsService materialsService,
-            IPriceListsService priceListsService)
+            IPriceListsService priceListsService,
+            ITotalsService totalsService)
         {
             this.orderSupplierService = orderSupplierService;
             this.userManager = userManager;
             this.suppliersService = suppliersService;
             this.materialsService = materialsService;
             this.priceListsService = priceListsService;
+            this.totalsService = totalsService;
         }
 
         [Authorize]
@@ -95,7 +98,18 @@
                     var priceList = this.priceListsService.GetByElements<PriceListViewModel>(materialId, supplierId, minQty, unitPrice);
                     var user = await this.userManager.GetUserAsync(this.User);
                     OrderSupplier orderSupplier = await this.orderSupplierService.CreateAsync(input.OrderSub[i], priceList, user.Id);
+                    
+                    //await this.totalsService.ChangeOrderStatus(orderSupplier.Id, true);
+
+
+                    /*SupplyOrderStatus supplyOrderStatus = new SupplyOrderStatus
+                    {
+                        OrderId = orderSupplier.Id,
+                        OrderStatus = orderSupplier.Status,
+                    };*/
+
                     emailSuppliers.Add(orderSupplier);
+
                 }
             }
 
