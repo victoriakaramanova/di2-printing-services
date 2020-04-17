@@ -32,7 +32,7 @@
         public IActionResult All()
         {
             var viewModel = this.deliveriesService
-                .GetAll<DeliveryViewModel>(null);
+                .GetAllProducts<DeliveryViewModel>(null);
 
             return this.View(viewModel);
         }

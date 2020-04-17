@@ -83,7 +83,7 @@
 
             // viewModel.SubCategories = this.subCategoriesService.GetAllSubCategories<SubCategoryViewModel>(viewModel.Id);
 
-            viewModel.Deliveries = this.deliveriesService.GetAll<DeliveryViewModel>(viewModel.Id);
+            viewModel.Deliveries = this.deliveriesService.GetAllProducts<DeliveryViewModel>(viewModel.Id);
 
             return this.View(viewModel);
         }

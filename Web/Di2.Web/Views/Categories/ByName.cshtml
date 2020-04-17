@@ -6,12 +6,12 @@
 @foreach (var product in Model.Deliveries)
 {
     <div class="row">
-        @product.MaterialName
-        @product.MaterialDescription
-        @product.MaterialExtraInfo
-        @product.UnitPrice
-        @product.SubCategory
-        <img src="@product.MaterialImage" />
+        <a>@product.Name</a>
+        @product.Description
+        @product.ExtraInfo
+        @product.AvgPrice.ToString("#.##")
+        @product.SubCategoryName
         @product.Quantity
+       <a><img src="@product.Image" /></a>
     </div>
 }

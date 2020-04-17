@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Di2.Web.ViewModels.Categories.ViewModels
 {
-    public class CategoryProductsViewModel : IMapFrom<Delivery>, IMapFrom<Category>
+    public class CategoryProductsViewModel : IMapFrom<Delivery>, IMapFrom<Category>,IMapTo<DeliveryViewModel>
     {
         public int Id { get; set; }
 
@@ -19,13 +19,17 @@ namespace Di2.Web.ViewModels.Categories.ViewModels
 
         public string ExtraInfo { get; set; }
 
-        public long Quantity { get; set; }
+        public double Quantity { get; set; }
 
-        public decimal UnitPrice { get; set; }
+        public decimal AvgPrice { get; set; }
 
         public string Image { get; set; }
 
-        // public string SubCategory { get; set; }
+        public int CategoryId { get; set; }
+
+        // public int SubCategoryId { get; set; }
+
+        public string SubCategoryName { get; set; }
 
         public IEnumerable<DeliveryViewModel> Deliveries { get; set; }
     }

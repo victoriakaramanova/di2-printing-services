@@ -1,4 +1,5 @@
-﻿using Di2.Web.ViewModels.OrderSuppliers;
+﻿using Di2.Web.ViewModels.Deliveries;
+using Di2.Web.ViewModels.OrderSuppliers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,6 +13,6 @@ namespace Di2.Services.Data
 
         T GetById<T>(int id);
 
-        IEnumerable<T> GetAll<T>(int? categoryId);
+        IEnumerable<T> GetAllProducts<T>(int? categoryId);
     }
 }

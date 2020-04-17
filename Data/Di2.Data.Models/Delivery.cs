@@ -37,6 +37,8 @@ namespace Di2.Data.Models
 
         public decimal UnitPrice { get; set; }
 
+        public decimal Cost { get; set; }
+
         public string UserId { get; set; }
 
         public virtual ApplicationUser User { get; set; }

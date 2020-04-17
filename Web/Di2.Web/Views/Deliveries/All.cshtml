@@ -1,16 +1,17 @@
-﻿@using Di2.Web.ViewModels.Deliveries //.
+﻿@using Di2.Web.ViewModels.Deliveries
 @model IEnumerable<DeliveryViewModel>
 
-    @using Di2.Common
-    @{
-        this.ViewData["Title"] = "List All Deliveries";
-    }
+@using Di2.Common
+@{
+    this.ViewData["Title"] = "List All Deliveries";
+}
 
-    @foreach (var item in Model)
-    {
-        @item.MaterialName
-        @item.MaterialDescription
+@foreach (var item in Model)
+{
+    <a>@item.Name</a>
+    @item.Description
         @item.Quantity
-        @item.UnitPrice
-        <img src="@item.MaterialImage" />
-    }
+        @item.AvgPrice
+        @item.SubCategoryName
+    <a><img src="@item.Image" /></a>
+}

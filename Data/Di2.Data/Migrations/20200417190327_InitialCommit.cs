@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Di2.Data.Migrations
 {
-    public partial class initialCommit : Migration
+    public partial class InitialCommit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,6 +52,26 @@ namespace Di2.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ContactForms",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedOn = table.Column<DateTime>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    Subject = table.Column<string>(nullable: true),
+                    Content = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContactForms", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -432,35 +452,26 @@ namespace Di2.Data.Migrations
                     DeletedOn = table.Column<DateTime>(nullable: true),
                     OrderId = table.Column<int>(nullable: false),
                     OrderSupplierId = table.Column<int>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    ExtraInfo = table.Column<string>(nullable: true),
+                    MaterialId = table.Column<int>(nullable: false),
                     CategoryId = table.Column<int>(nullable: false),
-                    SubCategoryId = table.Column<int>(nullable: false),
-                    Image = table.Column<string>(nullable: true),
                     Quantity = table.Column<double>(nullable: false),
                     UnitPrice = table.Column<decimal>(nullable: false),
+                    Cost = table.Column<decimal>(nullable: false),
                     UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Deliveries", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Deliveries_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
+                        name: "FK_Deliveries_Materials_MaterialId",
+                        column: x => x.MaterialId,
+                        principalTable: "Materials",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Deliveries_OrderSuppliers_OrderSupplierId",
                         column: x => x.OrderSupplierId,
                         principalTable: "OrderSuppliers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Deliveries_SubCategories_SubCategoryId",
-                        column: x => x.SubCategoryId,
-                        principalTable: "SubCategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -571,9 +582,9 @@ namespace Di2.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Deliveries_CategoryId",
-                table: "Deliveries",
-                column: "CategoryId");
+                name: "IX_ContactForms_IsDeleted",
+                table: "ContactForms",
+                column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Deliveries_IsDeleted",
@@ -581,14 +592,14 @@ namespace Di2.Data.Migrations
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Deliveries_MaterialId",
+                table: "Deliveries",
+                column: "MaterialId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Deliveries_OrderSupplierId",
                 table: "Deliveries",
                 column: "OrderSupplierId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Deliveries_SubCategoryId",
-                table: "Deliveries",
-                column: "SubCategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Deliveries_UserId",
@@ -717,6 +728,9 @@ namespace Di2.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "ContactForms");
 
             migrationBuilder.DropTable(
                 name: "Deliveries");

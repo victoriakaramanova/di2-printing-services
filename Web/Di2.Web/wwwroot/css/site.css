@@ -1004,12 +1004,16 @@ footer {
 
 footer .container {
     box-sizing:border-box;
-    margin: 0px auto !important;
+    margin: 0 auto !important;
 }
 
 body .row {
     margin-right:0;
     margin-left:0;
+}
+
+body .container {
+    margin: 0 auto;
 }
 
 /*TRI-STATE TOGGLE*/
@@ -1144,14 +1148,14 @@ input[type=range].v-switcher-state--passive::-ms-fill-upper {
     background: #d9534f;
 }
 
+input[type=range].v-switcher-state--passive::-webkit-slider-thumb {
+    box-shadow: none;
+}
 
 input[type=range].v-switcher-state--passive::-ms-thumb {
     box-shadow: none;
 }
 
-input[type=range].v-switcher-state--passive::-webkit-slider-thumb {
-    box-shadow: none;
-}
 
 
 input[type=range].v-switcher-state--neutral::-webkit-slider-runnable-track {
@@ -1203,11 +1207,10 @@ input[type=range].v-switcher-state--active::-ms-fill-upper {
     background: #5cb85c;
 }
 
-input[type=range].v-switcher-state--active::-ms-thumb {
-    box-shadow: none;
-}
-
 input[type=range].v-switcher-state--active::-webkit-slider-thumb {
     box-shadow: none;
 }
 
+input[type=range].v-switcher-state--active::-ms-thumb {
+    box-shadow: none;
+}
