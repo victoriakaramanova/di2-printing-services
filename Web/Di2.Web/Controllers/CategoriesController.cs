@@ -86,7 +86,7 @@
                 return this.NotFound();
             }
 
-             viewModel.Deliveries = this.deliveriesService.GetAllProducts<CategoryProductsViewModel>(viewModel.Id);
+             //viewModel.Deliveries = this.deliveriesService.GetAllProducts<CategoryProductsViewModel>(viewModel.Id);
 
             return this.View(viewModel);
         }

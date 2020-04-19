@@ -10,6 +10,7 @@
     using Di2.Data.Models;
     using Di2.Services.Mapping;
     using Di2.Web.ViewModels.Categories.InputModels;
+    using Di2.Web.ViewModels.Deliveries;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc.Rendering;
@@ -49,7 +50,6 @@
         {
             var category = this.categoriesRepository.All()
                 .Where(x => x.NameEng == name)
-                // .Select(x => x.Id)
                 .To<T>().FirstOrDefault();
             return category;
         }

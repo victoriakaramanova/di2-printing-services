@@ -31,5 +31,7 @@
         public virtual ICollection<Material> Materials { get; set; }
 
         public virtual ICollection<OrderSupplier> OrderSuppliers { get; set; }
+
+        public virtual ICollection<Delivery> Deliveries { get; set; }
     }
 }

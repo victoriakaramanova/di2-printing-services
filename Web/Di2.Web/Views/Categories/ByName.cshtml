@@ -4,6 +4,8 @@
     this.ViewData["Title"] = "Продукти";
 }
 
+@Model.Name
+
 @foreach (var product in Model.Deliveries)
 {
     <div class="row">
@@ -13,6 +15,6 @@
             @product.AvgPrice.ToString("#.##")
             @product.SubCategoryName
             @product.Quantity*@
-        <a><img src="@product.Image" /></a>
+        <img src="@product.Image" />
     </div>
 }

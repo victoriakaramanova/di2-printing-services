@@ -1,4 +1,5 @@
-﻿using Di2.Data.Models;
+﻿using AutoMapper;
+using Di2.Data.Models;
 using Di2.Services.Mapping;
 using Di2.Web.ViewModels.Deliveries;
 using Di2.Web.ViewModels.OrderSuppliers;
@@ -9,11 +10,11 @@ using System.Text;
 
 namespace Di2.Web.ViewModels.Categories.ViewModels
 {
-    public class CategoryProductsViewModel : IMapFrom<Delivery>, IMapFrom<Category>,IMapTo<DeliveryViewModel>
+    public class CategoryProductsViewModel : IMapFrom<Delivery>, IMapFrom<Category>,IMapFrom<Material>, IMapTo<CategoryProductsViewModel>
     {
-        public int Id { get; set; }
+        public int MaterialId { get; set; }
 
-        public string Name { get; set; }
+        public string MaterialName { get; set; }
 
         public string Description { get; set; }
 
@@ -27,10 +28,10 @@ namespace Di2.Web.ViewModels.Categories.ViewModels
 
         public int CategoryId { get; set; }
 
-        // public int SubCategoryId { get; set; }
+        public decimal Cost { get; set; }
 
         public string SubCategoryName { get; set; }
 
-        public IEnumerable<DeliveryViewModel> Deliveries { get; set; }
+        
     }
 }

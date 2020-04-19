@@ -15,21 +15,21 @@ namespace Di2.Data.Models
 
         public virtual Material Material { get; set; }
 
-        // public string MaterialName { get; set; }
+        public string MaterialName { get; set; }
 
-        // public string Description { get; set; }
+         public string Description { get; set; }
 
-        // public string ExtraInfo { get; set; }
+         public string ExtraInfo { get; set; }
 
         public int CategoryId { get; set; }
 
-        // public Category Category { get; set; }
+        public virtual Category Category { get; set; }
 
-        // public int SubCategoryId { get; set; }
+         public int SubCategoryId { get; set; }
 
         // public SubCategory SubCategory { get; set; }
 
-        // public string Image { get; set; }
+        public string Image { get; set; }
 
         // public double QuantityOnStock { get; set; }
 

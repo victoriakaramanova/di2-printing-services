@@ -54,11 +54,12 @@
                 OrderId = input.Id,
                 MaterialId = input.MaterialId,
                 Material = material,
-                // Description = input.Material.Description,
-                // ExtraInfo = input.Material.ExtraInfo,
-                // Image = input.Material.Image,
+                MaterialName = material.Name,
+                Description = material.Description,
+                ExtraInfo = material.ExtraInfo,
+                Image = material.Image,
                 CategoryId = materialCategoryId,
-                // SubCategoryId = input.Material.SubCategoryId,
+                SubCategoryId = material.SubCategoryId,
                 Quantity = input.Quantity,
                 Cost = input.TotalPrice,
                 //QuantityOnStock = stockQuantity,
@@ -71,10 +72,14 @@
             return delivery.Id;
         }
 
-        public IEnumerable<T> GetAllProducts<T>(int? categoryId = null)
+        public IEnumerable<T> GetAllProducts<T>(int categoryId)
         {
             var categoryName = this.categoriesRepository.All()
                 .FirstOrDefault(x => x.Id == categoryId).Name;
+          //if(!categoryId.HasValue)
+          //  {
+          //      return null;
+          //  }
 
             var query = from d in this.deliveriesRepository.All()
                         group d by new
@@ -90,8 +95,42 @@
                         into m 
                         select new CategoryProductsViewModel
                         {
-                            Id = m.Key.MaterialId,
-                            Name = m.Key.Name,
+                            MaterialId = m.Key.MaterialId,
+                            MaterialName = m.Key.Name,
+                            Description = m.Key.Description,
+                            ExtraInfo = m.Key.ExtraInfo,
+                            Image = m.Key.Image,
+                            CategoryId = m.Key.CategoryId,
+                            SubCategoryName = this.subCategoriesRepository.All().FirstOrDefault(x => x.Id == m.Key.SubCategoryId).Name,
+                            Quantity = m.Sum(x => x.Quantity),
+                            Cost = m.Sum(x => x.Cost),
+                            AvgPrice = m.Sum(x => x.Cost) * (decimal)(1 + GlobalConstants.StandardMarkup) / (decimal)m.Sum(x=>x.Quantity),
+                        };
+            //.FirstOrDefault(x => x.CategoryId == categoryId)
+
+            query = query.Where(x => x.CategoryId == categoryId);
+            return query.To<T>().ToList();
+        }
+
+
+        public T GetByMaterialId<T>(int materialId)
+        {
+            var query = from d in this.deliveriesRepository.All()
+                        group d by new
+                        {
+                            d.MaterialId,
+                            d.Material.Name,
+                            d.Material.Description,
+                            d.Material.ExtraInfo,
+                            d.Material.Image,
+                            d.CategoryId,
+                            d.Material.SubCategoryId,
+                        }
+                        into m
+                        select new ProductViewModel
+                        {
+                            MaterialId = m.Key.MaterialId,
+                            MaterialName = m.Key.Name,
                             Description = m.Key.Description,
                             ExtraInfo = m.Key.ExtraInfo,
                             Image = m.Key.Image,
@@ -100,25 +139,11 @@
                             SubCategoryName = this.subCategoriesRepository.All().FirstOrDefault(x => x.Id == m.Key.SubCategoryId).Name,
                             Quantity = m.Sum(x => x.Quantity),
                             //AvgPrice = m.Sum(x => x.UnitPrice) / (decimal)m.Count(),
-                            AvgPrice = m.Sum(x => x.Cost) * (decimal)(1 + GlobalConstants.StandardMarkup) / (decimal)m.Sum(x=>x.Quantity),
+                            
+                            AvgPrice = m.Sum(x => x.Cost) * (decimal)(1 + GlobalConstants.StandardMarkup) / (decimal)m.Sum(x => x.Quantity),
                         };
-                //.Select(x => x.MaterialId)
-                //.FirstOrDefault(x => x.CategoryId == categoryId)
-
-            if (categoryId.HasValue)
-            {
-                query = query
-                    .Where(x => x.CategoryId == categoryId.Value);
-            }
-
-            return query.To<T>().ToList();
-        }
-
-        public T GetById<T>(int id)
-        {
-            var product = this.deliveriesRepository.All().Where(x => x.Id == id)
-                .To<T>().FirstOrDefault();
-            return product;
+            query = query.Where(x => x.MaterialId == materialId);
+            return query.To<T>().FirstOrDefault();
         }
     }
 }

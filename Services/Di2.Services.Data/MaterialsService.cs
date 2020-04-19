@@ -93,6 +93,13 @@
             return material;
         }
 
-        
+        public IEnumerable<T> GetByCategoryName<T>(string categoryName)
+        {
+            IQueryable<Material> query = this.materialRepository
+            .All();
+            query = query.Where(x => x.Category.Name == categoryName);
+            
+            return query.To<T>().ToList();
+        }
     }
 }

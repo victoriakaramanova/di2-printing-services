@@ -40,7 +40,9 @@
 
         public virtual ICollection<PriceList> PriceLists { get; }
 
-        
+        public virtual ICollection<OrderSupplier> OrderSuppliers { get; }
+
+        public virtual ICollection<Delivery> Deliveries { get; }
 
     }
 }

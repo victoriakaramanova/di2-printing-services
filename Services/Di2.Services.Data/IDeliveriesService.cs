@@ -11,8 +11,10 @@ namespace Di2.Services.Data
     {
         Task<int> Create(OrderSupplierViewModel input);
 
-        T GetById<T>(int id);
+        //T GetById<T>(int materialId);
 
-        IEnumerable<T> GetAllProducts<T>(int? categoryId);
+        T GetByMaterialId<T>(int materialId);
+
+        IEnumerable<T> GetAllProducts<T>(int categoryId);
     }
 }

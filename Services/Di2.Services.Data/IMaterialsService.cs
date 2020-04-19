@@ -18,5 +18,7 @@
         MaterialsViewModel GetById(int id);
 
         MaterialsViewModel GetByName(string name);
+
+        IEnumerable<T> GetByCategoryName<T>(string categoryName);
     }
 }
