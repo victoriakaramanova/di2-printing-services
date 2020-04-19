@@ -6,35 +6,32 @@
     using System.Threading.Tasks;
 
     using Di2.Services.Data;
+    using Di2.Web.ViewModels.Categories.ViewModels;
     using Di2.Web.ViewModels.Deliveries;
     using Microsoft.AspNetCore.Mvc;
 
     public class DeliveriesControler : BaseController
     {
         private readonly IDeliveriesService deliveriesService;
+        private readonly IMaterialsService materialsService;
 
-        public DeliveriesControler(IDeliveriesService deliveriesService)
+        public DeliveriesControler(IDeliveriesService deliveriesService, IMaterialsService materialsService)
         {
             this.deliveriesService = deliveriesService;
+            this.materialsService = materialsService;
         }
 
-        public IActionResult ById(int id)
+        public IActionResult ById(int materialId)
         {
-            var viewModel = this.deliveriesService.GetById<DeliveryViewModel>(id);
+            var viewModel = this.deliveriesService
+                .GetByMaterialId<ProductViewModel>(materialId);
             if (viewModel == null)
             {
                 return this.NotFound();
             }
-
+            //return this.RedirectToAction(nameof(this.ById), new { id = materialId});
             return this.View(viewModel);
         }
 
-        public IActionResult All()
-        {
-            var viewModel = this.deliveriesService
-                .GetAllProducts<DeliveryViewModel>(null);
-
-            return this.View(viewModel);
-        }
     }
 }

@@ -1,5 +1,5 @@
-﻿@using Di2.Web.ViewModels.Deliveries
-@model IEnumerable<DeliveryViewModel>
+﻿@using Di2.Web.ViewModels.Categories.ViewModels
+@model IEnumerable<CategoryProductsViewModel>
 
 @using Di2.Common
 @{
@@ -8,10 +8,10 @@
 
 @foreach (var item in Model)
 {
-    <a>@item.Name</a>
-    @item.Description
+    <a>@item.MaterialName</a>
+    @*@item.Description
         @item.Quantity
         @item.AvgPrice
-        @item.SubCategoryName
+        @item.SubCategoryName*@
     <a><img src="@item.Image" /></a>
 }

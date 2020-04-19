@@ -5,6 +5,16 @@
     ViewData["Title"] = "КОНТАКТ";
 }
 
+<script src="/lib/tinymce/tinymce.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    tinymce.init({
+        selector: "textarea",
+        plugins: [
+            "image paste table link code media"
+        ]
+    });
+</script>
+
 <main class="site-content">
     <div class="site-wrapper">
         <div class="contacts-container">
@@ -73,14 +83,14 @@
 </main>
 
 @*@section Scripts
-{
-    <script src="https://www.google.com/recaptcha/api.js?render=@this.Configuration["GoogleReCaptcha:Key"]"></script>
-    <script>
-        grecaptcha.ready(function () {
-            grecaptcha.execute('@this.Configuration["GoogleReCaptcha:Key"]', { action: 'contact_form' }).then(function (token) {
-                document.getElementById("RecaptchaValue").value = token;
+    {
+        <script src="https://www.google.com/recaptcha/api.js?render=@this.Configuration["GoogleReCaptcha:Key"]"></script>
+        <script>
+            grecaptcha.ready(function () {
+                grecaptcha.execute('@this.Configuration["GoogleReCaptcha:Key"]', { action: 'contact_form' }).then(function (token) {
+                    document.getElementById("RecaptchaValue").value = token;
+                });
             });
-        });
-    </script>
-}*@
+        </script>
+    }*@
 
