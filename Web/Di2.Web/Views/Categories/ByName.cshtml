@@ -10,11 +10,12 @@
 {
     <div class="row">
         <a asp-controller="Deliveries" asp-action="ById" asp-route-id="@product.MaterialId">@product.MaterialName</a>
-        @*@product.Description
+        @product.Description
             @product.ExtraInfo
-            @product.AvgPrice.ToString("#.##")
-            @product.SubCategoryName
-            @product.Quantity*@
+            @product.UnitPrice.ToString("#.##")
+            @product.SubCategoryId
+            @product.Quantity
+        @product.Cost
         <img src="@product.Image" />
     </div>
 }

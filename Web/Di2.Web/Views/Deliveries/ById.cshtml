@@ -1,13 +1,14 @@
-﻿@model Di2.Web.ViewModels.Deliveries.ProductViewModel
+﻿@*@model Di2.Web.ViewModels.Deliveries.ProductViewModel*@
+@model Di2.Web.ViewModels.Categories.ViewModels.CategoryProductsViewModel
 @{
     this.ViewData["Title"] = "Детайли за продукта";
 }
 
 @Model.MaterialName
-@Model.Image
-@Model.Description,
-@Model.ExtraInfo
-@Model.SubCategoryName
-@Model.Quantity
-@Model.Cost
-@Model.AvgPrice
+    <img src="@Model.Image" />
+         @Model.Description ,
+         @Model.ExtraInfo
+         @Model.SubCategoryId
+         @Model.Quantity
+         @Model.Cost
+         @Model.UnitPrice

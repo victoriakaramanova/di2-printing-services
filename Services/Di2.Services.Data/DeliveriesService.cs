@@ -101,10 +101,12 @@
                             ExtraInfo = m.Key.ExtraInfo,
                             Image = m.Key.Image,
                             CategoryId = m.Key.CategoryId,
-                            SubCategoryName = this.subCategoriesRepository.All().FirstOrDefault(x => x.Id == m.Key.SubCategoryId).Name,
+                            SubCategoryId = m.Key.SubCategoryId,
+                            //SubCategoryName = this.subCategoriesRepository.All().FirstOrDefault(x => x.Id == m.Key.SubCategoryId).Name,
                             Quantity = m.Sum(x => x.Quantity),
+                            UnitPrice = m.Sum(x => x.UnitPrice) / (decimal)m.Sum(x => x.Quantity),
                             Cost = m.Sum(x => x.Cost),
-                            AvgPrice = m.Sum(x => x.Cost) * (decimal)(1 + GlobalConstants.StandardMarkup) / (decimal)m.Sum(x=>x.Quantity),
+                            //AvgPrice = m.Sum(x => x.Cost) / (decimal)m.Sum(x=>x.Quantity),
                         };
             //.FirstOrDefault(x => x.CategoryId == categoryId)
 
@@ -127,7 +129,7 @@
                             d.Material.SubCategoryId,
                         }
                         into m
-                        select new ProductViewModel
+                        select new CategoryProductsViewModel //ProductViewModel
                         {
                             MaterialId = m.Key.MaterialId,
                             MaterialName = m.Key.Name,
@@ -135,12 +137,12 @@
                             ExtraInfo = m.Key.ExtraInfo,
                             Image = m.Key.Image,
                             CategoryId = m.Key.CategoryId,
-                            // SubCategoryId = m.Key.SubCategoryId,
-                            SubCategoryName = this.subCategoriesRepository.All().FirstOrDefault(x => x.Id == m.Key.SubCategoryId).Name,
+                            SubCategoryId = m.Key.SubCategoryId,
+                            // SubCategoryName = this.subCategoriesRepository.All().FirstOrDefault(x => x.Id == m.Key.SubCategoryId).Name,
                             Quantity = m.Sum(x => x.Quantity),
-                            //AvgPrice = m.Sum(x => x.UnitPrice) / (decimal)m.Count(),
-                            
-                            AvgPrice = m.Sum(x => x.Cost) * (decimal)(1 + GlobalConstants.StandardMarkup) / (decimal)m.Sum(x => x.Quantity),
+                            UnitPrice = m.Sum(x => x.UnitPrice) / (decimal)m.Sum(x => x.Quantity),
+                            Cost = m.Sum(x => x.Cost),
+                            //AvgPrice = m.Sum(x => x.Cost) * (decimal)(1 + GlobalConstants.StandardMarkup) / (decimal)m.Sum(x => x.Quantity),
                         };
             query = query.Where(x => x.MaterialId == materialId);
             return query.To<T>().FirstOrDefault();

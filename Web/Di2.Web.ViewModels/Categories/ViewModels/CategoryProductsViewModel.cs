@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Di2.Web.ViewModels.Categories.ViewModels
 {
-    public class CategoryProductsViewModel : IMapFrom<Delivery>, IMapFrom<Category>,IMapFrom<Material>, IMapTo<CategoryProductsViewModel>
+    public class CategoryProductsViewModel : IMapFrom<Delivery>, IMapTo<CategoryProductsViewModel>,IMapTo<Delivery>//, IMapFrom<Category>,IMapFrom<Material>, IMapTo<CategoryProductsViewModel>
     {
         public int MaterialId { get; set; }
 
@@ -22,7 +22,9 @@ namespace Di2.Web.ViewModels.Categories.ViewModels
 
         public double Quantity { get; set; }
 
-        public decimal AvgPrice { get; set; }
+        public decimal UnitPrice { get; set; }
+
+        //public decimal AvgPrice { get; set; }
 
         public string Image { get; set; }
 
@@ -30,8 +32,8 @@ namespace Di2.Web.ViewModels.Categories.ViewModels
 
         public decimal Cost { get; set; }
 
-        public string SubCategoryName { get; set; }
+        //public string SubCategoryName { get; set; }
+        public int SubCategoryId { get; set; }
 
-        
     }
 }

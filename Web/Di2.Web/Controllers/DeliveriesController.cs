@@ -10,21 +10,24 @@
     using Di2.Web.ViewModels.Deliveries;
     using Microsoft.AspNetCore.Mvc;
 
-    public class DeliveriesControler : BaseController
+    [Route("[controller]/[action]")]
+    public class DeliveriesController : BaseController
     {
         private readonly IDeliveriesService deliveriesService;
         private readonly IMaterialsService materialsService;
 
-        public DeliveriesControler(IDeliveriesService deliveriesService, IMaterialsService materialsService)
+        public DeliveriesController(IDeliveriesService deliveriesService, IMaterialsService materialsService)
         {
             this.deliveriesService = deliveriesService;
             this.materialsService = materialsService;
         }
 
+        [HttpGet("{materialId}")]
+        //[Route("Deliveries/ById/{materialId}")]
         public IActionResult ById(int materialId)
         {
             var viewModel = this.deliveriesService
-                .GetByMaterialId<ProductViewModel>(materialId);
+                .GetByMaterialId<CategoryProductsViewModel>(materialId);
             if (viewModel == null)
             {
                 return this.NotFound();

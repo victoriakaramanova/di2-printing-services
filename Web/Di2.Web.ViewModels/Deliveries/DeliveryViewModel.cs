@@ -14,7 +14,7 @@
 
         public string Name { get; set; } //CategoryName
 
-        public IEnumerable<Delivery> Deliveries { get; set; }
+        public IEnumerable<CategoryProductsViewModel> Deliveries { get; set; }
         //public IEnumerable<CategoryProductsViewModel> Deliveries { get; set; }
 
         //public int MaterialId { get; set; }

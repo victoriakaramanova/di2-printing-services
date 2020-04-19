@@ -9,7 +9,7 @@ using Di2.Web.ViewModels.Categories.ViewModels;
 
 namespace Di2.Web.ViewModels.Deliveries
 {
-    public class ProductViewModel : IMapFrom<Delivery>, IMapFrom<CategoryProductsViewModel>,IMapFrom<Category>, IMapFrom<Material>, IMapTo<Delivery>
+    public class ProductViewModel : IMapFrom<Delivery>, IMapTo<Delivery> //,IMapFrom<CategoryProductsViewModel>,IMapFrom<Category>, IMapFrom<Material>, IMapTo<CategoryProductsViewModel>
     {
         public int MaterialId { get; set; }
 
@@ -29,7 +29,7 @@ namespace Di2.Web.ViewModels.Deliveries
 
         public int CategoryId { get; set; }
 
-        public string SubCategoryName { get; set; }
+        public int SubCategoryId { get; set; }
 
         /*public void CreateMappings(IProfileExpression configuration)
         {
