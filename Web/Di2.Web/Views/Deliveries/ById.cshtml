@@ -1,14 +1,45 @@
-﻿@*@model Di2.Web.ViewModels.Deliveries.ProductViewModel*@
+﻿@using Di2.Common
+@*@model Di2.Web.ViewModels.Deliveries.ProductViewModel*@
 @model Di2.Web.ViewModels.Categories.ViewModels.CategoryProductsViewModel
 @{
     this.ViewData["Title"] = "Детайли за продукта";
 }
 
+@*<link rel="stylesheet" href="css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">*@
+
+
+<img src="@Model.Image" />
 @Model.MaterialName
-    <img src="@Model.Image" />
-         @Model.Description ,
-         @Model.ExtraInfo
-         @Model.SubCategoryId
-         @Model.Quantity
-         @Model.Cost
-         @Model.UnitPrice
+@Model.Description
+@Model.ExtraInfo
+@Model.SubCategoryName
+@*@Model.Quantity
+    @Model.Cost*@
+@Model.AvgPrice.ToString("0.##")
+
+<div id="navigation-holder" class="mt-4 d-flex justify-content-around">
+    <button class="btn btn-primary text-white font-weight-bold" data-toggle="modal" data-target="#orderModal">Order</button>
+    @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+    {
+        <a href="/Administration/Product/Edit/@Model.MaterialId" class="btn btn-primary text-white font-weight-bold">Edit</a>
+        <a href="/Administration/Product/Delete/@Model.MaterialId" class="btn btn-primary text-white font-weight-bold">Delete</a>
+    }
+</div>
+
+@if (this.User.Identity.IsAuthenticated)
+{
+<form asp-controller="Deliveries" asp-action="Order" method="post" id="placeOrder">
+    <div class="product-quantity">
+        <div class="pro-qty">
+            <input name="Quantity" id="Quantity" type="number" value="1" class="form-control" />
+        </div>
+    </div>
+    <input type="hidden" name="MaterialId" value="@Model.MaterialId" />
+    <input type="submit" class="primary-btn pc-btn" value="Добави" />
+</form>
+}
+

@@ -49,7 +49,7 @@
                     break;
             }
             var json = { orderId: orderId, i: i, isCompleted: myInput };
-            debugger
+            //debugger
             $.ajax({
                 url: "/api/totals",
                 type: "POST",
@@ -58,7 +58,7 @@
                 dataType: "json",
                 headers: { 'X-CSRF-TOKEN': token },
                     success: function (data) {
-                        debugger
+                        //debugger
                         if (data.toString() == 1) {
                             $(`#statusId-${i}`).html("Sent")
                         } else if (data.toString() == -1) {

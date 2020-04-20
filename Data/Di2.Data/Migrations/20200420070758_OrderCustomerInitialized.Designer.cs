@@ -4,14 +4,16 @@ using Di2.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Di2.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200420070758_OrderCustomerInitialized")]
+    partial class OrderCustomerInitialized
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -343,52 +345,6 @@ namespace Di2.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Materials");
-                });
-
-            modelBuilder.Entity("Di2.Data.Models.Order", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("IssuedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("MaterialId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("OrderStatus")
-                        .HasColumnType("int");
-
-                    b.Property<string>("OrdererId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<double>("Quantity")
-                        .HasColumnType("float");
-
-                    b.Property<int>("StatusId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.HasIndex("MaterialId");
-
-                    b.HasIndex("OrdererId");
-
-                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Di2.Data.Models.OrderSupplier", b =>
@@ -828,19 +784,6 @@ namespace Di2.Data.Migrations
                     b.HasOne("Di2.Data.Models.ApplicationUser", "User")
                         .WithMany("Materials")
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Di2.Data.Models.Order", b =>
-                {
-                    b.HasOne("Di2.Data.Models.Material", "Material")
-                        .WithMany()
-                        .HasForeignKey("MaterialId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Di2.Data.Models.ApplicationUser", "Orderer")
-                        .WithMany()
-                        .HasForeignKey("OrdererId");
                 });
 
             modelBuilder.Entity("Di2.Data.Models.OrderSupplier", b =>

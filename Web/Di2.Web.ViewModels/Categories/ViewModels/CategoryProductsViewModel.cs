@@ -24,7 +24,7 @@ namespace Di2.Web.ViewModels.Categories.ViewModels
 
         public decimal UnitPrice { get; set; }
 
-        //public decimal AvgPrice { get; set; }
+        public decimal AvgPrice { get; set; }
 
         public string Image { get; set; }
 
@@ -32,7 +32,7 @@ namespace Di2.Web.ViewModels.Categories.ViewModels
 
         public decimal Cost { get; set; }
 
-        //public string SubCategoryName { get; set; }
+        public string SubCategoryName { get; set; }
         public int SubCategoryId { get; set; }
 
     }

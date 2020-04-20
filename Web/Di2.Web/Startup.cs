@@ -91,6 +91,7 @@
             services.AddTransient<IDeliveriesService, DeliveriesService>();
             services.AddTransient<ICloudinaryService, CloudinaryService>();
             services.AddTransient<ITotalsService, TotalsService>();
+            services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IEmailSender>(x => new SendGridEmailSender(this.configuration["Sendgrid:ApiSecret"]));
             services.AddTransient<ISettingsService, SettingsService>();
 

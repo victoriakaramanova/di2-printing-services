@@ -16,5 +16,7 @@ namespace Di2.Services.Data
         T GetByMaterialId<T>(int materialId);
 
         IEnumerable<T> GetAllProducts<T>(int categoryId);
+
+        
     }
 }
