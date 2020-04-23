@@ -19,17 +19,20 @@ namespace Di2.Services.Data
         private readonly IDeletableEntityRepository<Delivery> deliveriesRepository;
         private readonly IDeletableEntityRepository<Material> materialsRepository;
         private readonly IDeletableEntityRepository<SubCategory> subCategoriesRepository;
+        private readonly IDeletableEntityRepository<Receipt> receiptsRepository;
 
         public OrderService(
             IDeletableEntityRepository<Order> ordersRepository,
             IDeletableEntityRepository<Delivery> deliveriesRepository,
             IDeletableEntityRepository<Material> materialsRepository,
-            IDeletableEntityRepository<SubCategory> subCategoriesRepository)
+            IDeletableEntityRepository<SubCategory> subCategoriesRepository,
+            IDeletableEntityRepository<Receipt> receiptsRepository)
         {
             this.ordersRepository = ordersRepository;
             this.deliveriesRepository = deliveriesRepository;
             this.materialsRepository = materialsRepository;
             this.subCategoriesRepository = subCategoriesRepository;
+            this.receiptsRepository = receiptsRepository;
         }
 
         public async Task<int> CreateOrder(OrderInputModel input, string userId)
@@ -38,10 +41,10 @@ namespace Di2.Services.Data
                 .Where(x => x.Id == input.MaterialId)
                 .Select(x => x.Image)
                 .FirstOrDefault();
-            var subCategoryId = this.materialsRepository.All()
-                .Select(x => x.SubCategoryId).FirstOrDefault();
-            var subCategoryName = this.subCategoriesRepository.All()
-                .Where(x => x.Id == subCategoryId).Select(x => x.Name).FirstOrDefault();
+           // var subCategoryId = this.materialsRepository.All()
+                //.Select(x => x.SubCategoryId).FirstOrDefault();
+           // var subCategoryName = this.subCategoriesRepository.All()
+            //    .Where(x => x.Name == input.SubCategoryName).FirstOrDefault();
             var order = new Order
             {
                 Id = Guid.NewGuid().ToString(),
@@ -50,9 +53,10 @@ namespace Di2.Services.Data
                 Description = input.Description,
                 ExtraInfo = input.ExtraInfo,
                 Image = image,
-                SubCategoryName = subCategoryName,
+                SubCategoryName = input.SubCategoryName,
                 Quantity = input.Quantity,
                 AvgPrice = input.AvgPrice,
+                StatusId = (int)OrderStatus.Created,
                 //IssuedOn = DateTime.UtcNow,
                 TotalPrice = input.AvgPrice * (decimal)input.Quantity,
                 OrdererId = userId,
@@ -83,8 +87,9 @@ namespace Di2.Services.Data
                     dbOrder.Quantity = order.Quantity;
                     dbOrder.TotalPrice = (decimal)order.Quantity * dbOrder.AvgPrice;
                     this.ordersRepository.Update(dbOrder);
-                    await this.ordersRepository.SaveChangesAsync();
+                    
                 }
+                await this.ordersRepository.SaveChangesAsync();
             }
         }
 
@@ -95,23 +100,15 @@ namespace Di2.Services.Data
             {
                 dbOrder = this.ordersRepository.All()
                     .Where(x => x.Id == order.Id).FirstOrDefault();
-                if (dbOrder == null || dbOrder.OrderStatus != OrderStatus.Sent)
+                if (dbOrder == null || dbOrder.StatusId != (int)OrderStatus.Created)
                 {
                     throw new ArgumentException(nameof(dbOrder));
                 }
 
-                dbOrder.OrderStatus = OrderStatus.Sent;
+                dbOrder.StatusId = (int)OrderStatus.Sent;
                 this.ordersRepository.Update(dbOrder);
                 await this.ordersRepository.SaveChangesAsync();
             }
-        }
-
-        public async Task AssignOrdersToReceipt(Receipt receipt)
-        {
-            List<Order> dbOrders = await this.ordersRepository.All()
-                .Where(x => x.OrdererId == receipt.RecipientId && x.OrderStatus == OrderStatus.Sent).ToListAsync();
-            receipt.Orders = dbOrders;
-            await this.ordersRepository.SaveChangesAsync();
         }
 
         public async Task<string> CreateReceipt(string recipientId)
@@ -122,9 +119,22 @@ namespace Di2.Services.Data
                 IssuedOn = DateTime.UtcNow,
                 RecipientId = recipientId,
             };
-            await this.ordersRepository.SaveChangesAsync();
-            await this.AssignOrdersToReceipt(receipt);
+            await this.receiptsRepository.AddAsync(receipt);
+            await this.receiptsRepository.SaveChangesAsync();
+           // await this.ordersRepository.SaveChangesAsync();
+            //await this.AssignOrdersToReceipt(receipt);
             return receipt.Id;
+        }
+
+        public IEnumerable<T> GetReceiptOrders<T>(string receiptId)
+        {
+            Receipt receipt = this.receiptsRepository.All()
+                .Where(x => x.Id == receiptId).FirstOrDefault();
+
+            IQueryable<Order> query = this.ordersRepository.All()
+                .Where(x => x.OrdererId == receipt.RecipientId);
+            query = query.Where(x => x.StatusId == (int)OrderStatus.Sent);
+            return query.To<T>().ToList();
         }
 
         public T GetById<T>(string id)

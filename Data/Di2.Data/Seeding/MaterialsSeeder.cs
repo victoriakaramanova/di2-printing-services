@@ -33,7 +33,7 @@ namespace Di2.Data.Seeding
                     Name = "80x300 m OUT AWX FH черна",
                     Description = "Wax Premium FH",
                     CategoryId=2,
-                    SubCategoryId = 2,
+                    SubCategoryId = 5,
                     Image = "https://res.cloudinary.com/stopify-cloud-v/image/upload/v1587150779/Di2pix/lqfujwkadyqgdbm52z3b.jpg",
                 },
                 new Material
@@ -57,7 +57,7 @@ namespace Di2.Data.Seeding
                     Name = "65x360 m  OUT AWX FH черна",
                     Description = "Wax Premium FH",
                     CategoryId=2,
-                    SubCategoryId = 7,
+                    SubCategoryId = 6,
                     Image = "https://res.cloudinary.com/stopify-cloud-v/image/upload/v1587150817/Di2pix/duutexqzc3uestlri6fk.jpg",
                 },
                 new Material
@@ -65,7 +65,7 @@ namespace Di2.Data.Seeding
                     Name = "74x47 оранж-бял",
                     Description = "f76 x 1 x 3 000",
                     CategoryId=1,
-                    SubCategoryId = 3,
+                    SubCategoryId = 2,
                     Image = "https://res.cloudinary.com/stopify-cloud-v/image/upload/v1587150727/Di2pix/x94qhp3ygx1qymuzjsgg.gif",
                 },
             };

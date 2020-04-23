@@ -9,5 +9,6 @@ namespace Di2.Data.Models.Enums
         Canceled = -1,
         Completed = 0,
         Sent = 1,
+        Created = 2,
     }
 }

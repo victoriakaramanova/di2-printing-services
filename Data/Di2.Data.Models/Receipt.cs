@@ -9,12 +9,12 @@ namespace Di2.Data.Models
     {
         public Receipt()
         {
-            this.Orders = new List<Order>();
+            this.Orders = new HashSet<Order>();
         }
 
         public DateTime IssuedOn { get; set; }
 
-        public List<Order> Orders { get; set; }
+        public ICollection<Order> Orders { get; set; }
 
         public string RecipientId { get; set; }
 

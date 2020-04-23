@@ -18,7 +18,7 @@ namespace Di2.Services.Data
 
         Task CompleteOrder(OrdersViewModel input);
 
-        Task AssignOrdersToReceipt(Receipt receipt);
+        IEnumerable<T> GetReceiptOrders<T>(string receiptId);
 
         Task<string> CreateReceipt(string recipientId);
 

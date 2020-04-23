@@ -33,7 +33,7 @@ namespace Di2.Web.Controllers
             {
                 Orders = this.orderService
                 .GetAll<OrderViewModel>()
-                .Where(x => x.OrderStatus == OrderStatus.Sent).ToList(),
+                .Where(x => x.StatusId == (int)OrderStatus.Created).ToList(),
 
             };
             viewModel.Orders = viewModel.Orders.Where(x => x.OrdererId == userId).ToList();
@@ -49,13 +49,18 @@ namespace Di2.Web.Controllers
             var user = await this.userManager.GetUserAsync(this.User);
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var receiptId = await this.orderService.CreateReceipt(userId);
-            return this.RedirectToAction("Details", "Orders", new { id = receiptId });
+            return this.RedirectToAction(nameof(this.Details),"Orders", new { id = receiptId } );
         }
 
         [HttpGet]
         public IActionResult Details(string id)
         {
-            var viewModel = this.orderService.GetById<ReceiptViewModel>(id);
+            var orders = this.orderService.GetReceiptOrders<OrderViewModel>(id);
+            var viewModel = new ReceiptViewModel
+            {
+                Orders = orders,
+            };
+
             if (viewModel == null)
             {
                 return this.NotFound();

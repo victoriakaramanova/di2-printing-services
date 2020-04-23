@@ -68,19 +68,14 @@
             if (this.ModelState.IsValid)
             {
                 var categoryName = this.materialsService.GetById(input.MaterialId).Category;
-                var catEng = this.categoriesService.GetByNameBg<string>(categoryName);
+                var catEng = this.categoriesService.GetByNameBg<CategoryViewModel>(categoryName).NameEng;
                 var user = await this.userManager.GetUserAsync(this.User);
                 await this.orderService.CreateOrder(input, user.Id);
 
                 return this.RedirectToAction("ByName", "Categories", new { name = catEng });
-
-                
             }
                 //return this.View(input);
             return this.RedirectToAction("ById","Deliveries",new { materialId = input.MaterialId});
-
-            
-
         }
 
         [AcceptVerbs("Get", "Post")]

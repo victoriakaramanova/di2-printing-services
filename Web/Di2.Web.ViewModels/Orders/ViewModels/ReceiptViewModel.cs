@@ -12,7 +12,7 @@ namespace Di2.Web.ViewModels.Orders.ViewModels
 
         public DateTime IssuedOn { get; set; }
 
-        public List<OrderViewModel> Orders { get; set; }
+        public IEnumerable<OrderViewModel> Orders { get; set; }
 
         public string RecipientId { get; set; }
 

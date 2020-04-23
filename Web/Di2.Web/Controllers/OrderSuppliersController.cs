@@ -95,7 +95,7 @@
                     minQty = input.Pricelists.Select(x => x.MinimumQuantityPerOrder).ToList()[i];
                     unitPrice = input.Pricelists.Select(x => x.UnitPrice).ToList()[i];
 
-                    var priceList = this.priceListsService.GetByElements<PriceListViewModel>(materialId, supplierId, minQty, unitPrice);
+                    var priceList = this.priceListsService.GetByElements<PriceListViewModel>(materialIdInput, supplierId, minQty, unitPrice);
                     var user = await this.userManager.GetUserAsync(this.User);
                     OrderSupplier orderSupplier = await this.orderSupplierService.CreateAsync(input.OrderSub[i], priceList, user.Id);
                     

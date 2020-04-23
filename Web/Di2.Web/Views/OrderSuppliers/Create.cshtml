@@ -6,18 +6,24 @@
 }
 <h1 class="display-3">@this.ViewData["Title"]</h1>
 
+<style>
+    form input {
+        border: none;
+    }
+</style>
+
 <form method="post" asp-action="Create">
     <div class="order">
         @for (int i = 0; i < Model.Pricelists.Count; i++)
         {
         <div class="order_row">
-            <input asp-for="@Model.Pricelists[i].Material.Name" readonly="readonly"/>
-            <input asp-for="@Model.Pricelists[i].Supplier.Name" readonly="readonly"/>
-            <input asp-for="@Model.Pricelists[i].MinimumQuantityPerOrder" readonly="readonly"/>
-            <input asp-for="@Model.Pricelists[i].UnitPrice" readonly="readonly" />
+            <input asp-for="@Model.Pricelists[i].Material.Name"/>
+            <input asp-for="@Model.Pricelists[i].Supplier.Name" />
+            <input asp-for="@Model.Pricelists[i].MinimumQuantityPerOrder" />
+            <input asp-for="@Model.Pricelists[i].UnitPrice" />
             @*<input class="unitPrice" asp-for="@Model.Pricelists[i].UnitPrice" />*@
 
-            <input type="datetime" asp-for="@Model.OrderSub[i].OrderDate" />
+            <input type="datetime" asp-for="@Model.OrderSub[i].OrderDate" value="@Model.OrderSub[i].OrderDate.ToShortDateString()"/>
             @* @Html.TextBoxFor(x=>x.OrderSub[i].Quantity, new { placeholder = $"{Model.Pricelists[i].MinimumQuantityPerOrder}" })*@
 
             @*<input class="qty" onchange="sendQty()" asp-for="@Model.OrderSub[i].Quantity" />
