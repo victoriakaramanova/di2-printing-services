@@ -24,13 +24,13 @@
         {
         }
 
-        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
-
         public DbSet<Material> Materials { get; set; }
 
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<SubCategory> SubCategories { get; set; }
+
+        //public DbSet<SubCategoryMaterial> SubCategoryMaterials { get; set; }
 
         public DbSet<Supplier> Suppliers { get; set; }
 
@@ -45,6 +45,8 @@
         public DbSet<ContactForm> ContactForms { get; set; }
 
         public DbSet<Order> Orders { get; set; }
+
+        public DbSet<Receipt> Receipts { get; set; }
 
         public DbSet<Setting> Settings { get; set; }
 
@@ -96,16 +98,17 @@
             }
 
             //builder.Entity<DeliveryBatch>().HasKey(k => new
-           // { k.MaterialId, k.SupplierId, });
+            // { k.MaterialId, k.SupplierId, });
 
             builder.Entity<PriceList>().HasKey(k => new
             { k.MaterialId, k.SupplierId, });
 
-            //builder.Entity<DeliveryBatch>().HasOne(k => k.Material)
-           //     .WithMany(s => s.DeliveryBatches).HasForeignKey(k => k.MaterialId);
+            builder.Entity<SubCategoryMaterial>().HasKey(x => new { x.SubCategoryId, x.MaterialId });
+            //builder.Entity<SubCategoryMaterial>().HasOne(k => k.Material)
+             //    .WithMany(s => s.SubCategoryMaterials).HasForeignKey(k => k.MaterialId);
 
-            //builder.Entity<DeliveryBatch>().HasOne(k => k.Supplier)
-            //    .WithMany(s => s.DeliveryBatches).HasForeignKey(k => k.SupplierId);
+            //builder.Entity<SubCategoryMaterial>().HasOne(k => k.SubCategory)
+             //   .WithMany(s => s.SubCategoryMaterials).HasForeignKey(k => k.SubCategoryId);
 
             builder.Entity<PriceList>().HasOne(k => k.Material)
                 .WithMany(s => s.PriceLists).HasForeignKey(k => k.MaterialId);

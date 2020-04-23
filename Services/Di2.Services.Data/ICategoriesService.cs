@@ -13,6 +13,8 @@
 
         T GetByName<T>(string name);
 
+        T GetByNameBg<T>(string name);
+
         T GetById<T>(int catId);
     }
 }

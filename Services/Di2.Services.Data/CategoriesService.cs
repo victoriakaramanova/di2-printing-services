@@ -54,6 +54,14 @@
             return category;
         }
 
+        public T GetByNameBg<T>(string name)
+        {
+            var category = this.categoriesRepository.All()
+                .Where(x => x.Name == name)
+                .To<T>().FirstOrDefault();
+            return category;
+        }
+
         public T GetById<T>(int catId)
         {
             var category = this.categoriesRepository.All()

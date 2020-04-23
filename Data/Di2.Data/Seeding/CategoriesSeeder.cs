@@ -7,11 +7,13 @@
     using System.Threading.Tasks;
     using Di2.Common;
     using Di2.Data.Models;
+    using Microsoft.Extensions.DependencyInjection;
 
     public class CategoriesSeeder : ISeeder
     {
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
+       
             if (dbContext.Categories.Any())
             {
                 return;

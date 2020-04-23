@@ -10,11 +10,24 @@ namespace Di2.Data.Models
     {
         public int MaterialId { get; set; }
 
-        public Material Material { get; set; }
+        //public Material Material { get; set; }
+        public string MaterialName { get; set; }
 
-        public DateTime IssuedOn { get; set; }
+        public string Description { get; set; }
+
+        public string ExtraInfo { get; set; }
+
+        public string Image { get; set; }
+
+        public string SubCategoryName { get; set; }
+
+        //public DateTime IssuedOn { get; set; }
 
         public double Quantity { get; set; }
+
+        public decimal AvgPrice { get; set; }
+
+        public decimal TotalPrice { get; set; }
 
         public string OrdererId { get; set; }
 
@@ -23,5 +36,9 @@ namespace Di2.Data.Models
         public int StatusId { get; set; }
 
         public OrderStatus OrderStatus { get; set; }
+
+        public string ReceiptId { get; set; }
+
+        public virtual Receipt Receipt { get; set; }
     }
 }

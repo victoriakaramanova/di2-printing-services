@@ -43,7 +43,7 @@
             var subCategory = new SubCategory
             {
                 Name = input.Name,
-                Category = category,
+                CategoryId = category.Id,
                 Description = input.Description,
                 UserId = userId,
             };

@@ -146,5 +146,14 @@
             query = query.Where(x => x.MaterialId == materialId);
             return query.To<T>().FirstOrDefault();
         }
+
+        public bool GetDeliveredQuantityPerProduct(int materialId, double quantity)
+        {
+            var availableQuantity = this.deliveriesRepository.All()
+                .Where(x => x.MaterialId == materialId)
+                .Sum(x => x.Quantity);
+            var enough = availableQuantity > quantity ? true : false;
+            return enough;
+        }
     }
 }

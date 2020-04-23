@@ -20,6 +20,10 @@ namespace Di2.Data.Models
             this.Categories = new HashSet<Category>();
             this.SubCategories = new HashSet<SubCategory>();
             this.Materials = new HashSet<Material>();
+            this.PriceLists = new HashSet<PriceList>();
+            this.OrderSuppliers = new HashSet<OrderSupplier>();
+            this.Deliveries = new HashSet<Delivery>();
+            this.Orders = new HashSet<Order>();
         }
 
         // Audit info
@@ -43,5 +47,13 @@ namespace Di2.Data.Models
         public virtual ICollection<Category> Categories { get; set; }
 
         public virtual ICollection<SubCategory> SubCategories { get; set; }
+
+        public virtual ICollection<PriceList> PriceLists { get; set; }
+
+        public virtual ICollection<OrderSupplier> OrderSuppliers { get; set; }
+
+        public virtual ICollection<Delivery> Deliveries { get; set; }
+
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

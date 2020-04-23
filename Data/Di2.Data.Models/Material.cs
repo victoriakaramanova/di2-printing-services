@@ -11,11 +11,11 @@
 
     public class Material : BaseDeletableModel<int>
     {
-        public Material()
-        {
-            this.PriceLists = new HashSet<PriceList>();
+        //public Material()
+        //{
+        //    this.PriceLists = new HashSet<PriceList>();
             
-        }
+        //}
 
         [Required]
         public string Name { get; set; }
@@ -26,19 +26,21 @@
 
         public int CategoryId { get; set; }
 
-        public virtual Category Category { get; set; }
+        //public virtual Category Category { get; set; }
 
         public int SubCategoryId { get; set; }
 
-        public virtual SubCategory SubCategory { get; set; }
+        //public virtual SubCategory SubCategory { get; set; }
 
         public string Image { get; set; }
 
-        public string UserId { get; set; }
+       public string UserId { get; set; }
 
         public virtual ApplicationUser User { get; set; }
 
-        public virtual ICollection<PriceList> PriceLists { get; }
+        public virtual ICollection<PriceList> PriceLists { get; set; }
+
+        public virtual ICollection<SubCategoryMaterial> SubCategoryMaterials { get; set; }
 
         public virtual ICollection<OrderSupplier> OrderSuppliers { get; }
 

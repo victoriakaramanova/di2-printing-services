@@ -60,7 +60,7 @@
                 Description = input.Description,
                 ExtraInfo = input.ExtraInfo,
                 SubCategoryId = input.SubCategoryId,
-                CategoryId = input.CategoryId,
+                CategoryId = categoryId,
                 Image = imageUrl,
                 UserId = userId,
             };
@@ -79,9 +79,14 @@
 
         public MaterialsViewModel GetById(int id)
         {
+            var m = this.materialRepository.All().Where(x => x.Id == id).FirstOrDefault();
             var material = this.materialRepository.All()
-                .Where(x => x.Id == id).To<MaterialsViewModel>()
+                .Where(x => x.Id == m.CategoryId).To<MaterialsViewModel>()
                 .FirstOrDefault();
+            material.Category = this.categoryRepository.All()
+                .Where(x => x.Id == m.CategoryId).FirstOrDefault().Name;
+            material.SubCategory = this.subCategoryRepository.All()
+                .Where(x => x.Id == m.SubCategoryId).FirstOrDefault().Name;
             return material;
         }
 
@@ -95,9 +100,12 @@
 
         public IEnumerable<T> GetByCategoryName<T>(string categoryName)
         {
+            var categoryId = this.categoryRepository.All()
+                
+                .Where(x => x.Name == categoryName).Select(x => x.Id).FirstOrDefault();
             IQueryable<Material> query = this.materialRepository
             .All();
-            query = query.Where(x => x.Category.Name == categoryName);
+            query = query.Where(x => x.CategoryId == categoryId);
             
             return query.To<T>().ToList();
         }

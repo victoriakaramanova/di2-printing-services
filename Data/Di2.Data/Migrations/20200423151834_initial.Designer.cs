@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Di2.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200419123805_CategoryCategoryRestored")]
-    partial class CategoryCategoryRestored
+    [Migration("20200423151834_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -340,11 +340,76 @@ namespace Di2.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.HasIndex("SubCategoryId");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Materials");
+                });
+
+            modelBuilder.Entity("Di2.Data.Models.Order", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("AvgPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ExtraInfo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MaterialId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MaterialName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OrderStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OrdererId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<double>("Quantity")
+                        .HasColumnType("float");
+
+                    b.Property<string>("ReceiptId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SubCategoryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("OrdererId");
+
+                    b.HasIndex("ReceiptId");
+
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Di2.Data.Models.OrderSupplier", b =>
@@ -462,6 +527,38 @@ namespace Di2.Data.Migrations
                     b.ToTable("PriceLists");
                 });
 
+            modelBuilder.Entity("Di2.Data.Models.Receipt", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("IssuedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RecipientId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("RecipientId");
+
+                    b.ToTable("Receipts");
+                });
+
             modelBuilder.Entity("Di2.Data.Models.Setting", b =>
                 {
                     b.Property<int>("Id")
@@ -536,6 +633,38 @@ namespace Di2.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("SubCategories");
+                });
+
+            modelBuilder.Entity("Di2.Data.Models.SubCategoryMaterial", b =>
+                {
+                    b.Property<int>("SubCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaterialId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("SubCategoryId", "MaterialId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("MaterialId");
+
+                    b.ToTable("SubCategoryMaterial");
                 });
 
             modelBuilder.Entity("Di2.Data.Models.Supplier", b =>
@@ -746,7 +875,7 @@ namespace Di2.Data.Migrations
 
             modelBuilder.Entity("Di2.Data.Models.Delivery", b =>
                 {
-                    b.HasOne("Di2.Data.Models.Category", "Category")
+                    b.HasOne("Di2.Data.Models.Category", null)
                         .WithMany("Deliveries")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -763,27 +892,32 @@ namespace Di2.Data.Migrations
                         .HasForeignKey("OrderSupplierId");
 
                     b.HasOne("Di2.Data.Models.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("Deliveries")
                         .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Di2.Data.Models.Material", b =>
                 {
-                    b.HasOne("Di2.Data.Models.Category", "Category")
+                    b.HasOne("Di2.Data.Models.Category", null)
                         .WithMany("Materials")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Di2.Data.Models.SubCategory", "SubCategory")
-                        .WithMany("Materials")
-                        .HasForeignKey("SubCategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Di2.Data.Models.ApplicationUser", "User")
                         .WithMany("Materials")
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Di2.Data.Models.Order", b =>
+                {
+                    b.HasOne("Di2.Data.Models.ApplicationUser", "Orderer")
+                        .WithMany("Orders")
+                        .HasForeignKey("OrdererId");
+
+                    b.HasOne("Di2.Data.Models.Receipt", "Receipt")
+                        .WithMany("Orders")
+                        .HasForeignKey("ReceiptId");
                 });
 
             modelBuilder.Entity("Di2.Data.Models.OrderSupplier", b =>
@@ -805,7 +939,7 @@ namespace Di2.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("Di2.Data.Models.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("OrderSuppliers")
                         .HasForeignKey("UserId");
 
                     b.HasOne("Di2.Data.Models.PriceList", null)
@@ -828,13 +962,20 @@ namespace Di2.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("Di2.Data.Models.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("PriceLists")
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Di2.Data.Models.Receipt", b =>
+                {
+                    b.HasOne("Di2.Data.Models.ApplicationUser", "Recipient")
+                        .WithMany()
+                        .HasForeignKey("RecipientId");
                 });
 
             modelBuilder.Entity("Di2.Data.Models.SubCategory", b =>
                 {
-                    b.HasOne("Di2.Data.Models.Category", "Category")
+                    b.HasOne("Di2.Data.Models.Category", null)
                         .WithMany("SubCategories")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -843,6 +984,21 @@ namespace Di2.Data.Migrations
                     b.HasOne("Di2.Data.Models.ApplicationUser", "User")
                         .WithMany("SubCategories")
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Di2.Data.Models.SubCategoryMaterial", b =>
+                {
+                    b.HasOne("Di2.Data.Models.Material", "Material")
+                        .WithMany("SubCategoryMaterials")
+                        .HasForeignKey("MaterialId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Di2.Data.Models.SubCategory", "SubCategory")
+                        .WithMany("SubCategoryMaterials")
+                        .HasForeignKey("SubCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Di2.Data.Models.Supplier", b =>

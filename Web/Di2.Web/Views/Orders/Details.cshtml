@@ -1,0 +1,17 @@
+﻿@model Di2.Web.ViewModels.Orders.ViewModels.ReceiptViewModel
+
+@{ 
+    ViewData["Title"] = "Детайли за поръчката";
+}
+
+@foreach (var order in Model.Orders)
+{
+    @order.MaterialName
+    @order.Quantity
+    @order.AvgPrice
+
+}
+@Model.Orders.Sum(x => x.AvgPrice * (decimal)x.Quantity).ToString("F2");
+@Model.IssuedOn.ToString("dd.mm.yyyy")
+@Model.Recipient
+@Model.Id

@@ -23,11 +23,11 @@ namespace Di2.Data.Models
 
         public int CategoryId { get; set; }
 
-        public virtual Category Category { get; set; }
+        //public virtual Category Category { get; set; }
 
          public int SubCategoryId { get; set; }
 
-        // public SubCategory SubCategory { get; set; }
+        //public virtual SubCategory SubCategory { get; set; }
 
         public string Image { get; set; }
 

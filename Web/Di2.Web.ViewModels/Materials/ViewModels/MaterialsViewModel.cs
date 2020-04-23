@@ -18,9 +18,9 @@
 
         public string ExtraInfo { get; set; }
 
-        public Category Category { get; set; }
+        public string Category { get; set; }
 
-        public SubCategory SubCategory { get; set; }
+        public string SubCategory { get; set; }
 
         public string Image { get; set; }
 

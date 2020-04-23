@@ -1,4 +1,5 @@
-﻿using Di2.Web.ViewModels.Orders.InputModels;
+﻿using Di2.Data.Models;
+using Di2.Web.ViewModels.Orders.InputModels;
 using Di2.Web.ViewModels.Orders.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -10,5 +11,17 @@ namespace Di2.Services.Data
     public interface IOrderService
     {
         Task<int> CreateOrder(OrderInputModel input, string userId);
+
+        List<T> GetAll<T>();
+
+        Task UpdateOrder(OrdersViewModel input);
+
+        Task CompleteOrder(OrdersViewModel input);
+
+        Task AssignOrdersToReceipt(Receipt receipt);
+
+        Task<string> CreateReceipt(string recipientId);
+
+        T GetById<T>(string id);
     }
 }

@@ -33,7 +33,7 @@
         public List<T> GetAllPriceLists<T>()
         {
             return this.priceListsRepository
-            .All().OrderBy(x => x.Material.SubCategory)
+            .All().OrderBy(x => x.Material.SubCategoryId)
             .ThenBy(x => x.Material.Name)
             .ThenBy(x => x.CheapRatio)
             .To<T>()

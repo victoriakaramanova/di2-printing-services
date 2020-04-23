@@ -89,7 +89,7 @@ img {
 	max-width: 100%;
 }
 
-input:focus,
+/*input:focus,*/
 select:focus,
 button:focus,
 textarea:focus {
@@ -2361,4 +2361,50 @@ ol {
 	.header-info {
 		padding: 10px 0;
 	}
+}
+
+.product-image {
+	width: 300px;
+	height: 200px;
+}
+
+.product-cart-image {
+	max-width: 50%;
+}
+
+.w-30 {
+	width: 30%;
+}
+
+.w-40 {
+	width: 40%;
+}
+
+.w-45 {
+	width: 45%;
+}
+
+.w-55 {
+	width: 55%;
+}
+
+.w-60 {
+	width: 60%;
+}
+
+.w-65 {
+	width: 65%;
+}
+
+.w-70 {
+	width: 70%;
+}
+
+.w-85 {
+	width: 85%;
+}
+
+.row {
+	width: 100%;
+	margin: auto;
 }

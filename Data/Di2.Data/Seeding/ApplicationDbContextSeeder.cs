@@ -3,7 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-
+    using Di2.Data.Models;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 
@@ -23,14 +24,19 @@
 
             var logger = serviceProvider.GetService<ILoggerFactory>().CreateLogger(typeof(ApplicationDbContextSeeder));
 
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
+
             var seeders = new List<ISeeder>
                           {
                               new RolesSeeder(),
+                              //new ApplicationUserSeeder(),
                               new SettingsSeeder(),
                               new CategoriesSeeder(),
-                             // new SubCategoriesSeeder(),
+                              new SubCategoriesSeeder(),
                               new SuppliersSeeder(),
-                              // new MaterialsSeeder(),
+                              new MaterialsSeeder(),
+                              new PriceListsSeeder(),
                           };
 
             foreach (var seeder in seeders)

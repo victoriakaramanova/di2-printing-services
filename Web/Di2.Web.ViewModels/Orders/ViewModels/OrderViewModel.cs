@@ -5,6 +5,7 @@ using Di2.Web.ViewModels.Materials.ViewModels;
 using Di2.Web.ViewModels.Orders.InputModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Di2.Web.ViewModels.Orders.ViewModels
@@ -15,9 +16,26 @@ namespace Di2.Web.ViewModels.Orders.ViewModels
 
         public int MaterialId { get; set; }
 
-        public MaterialsViewModel Material { get; set; }
+        //public MaterialsViewModel Material { get; set; }
+        public string MaterialName { get; set; }
 
+        public string Description { get; set; }
+
+        public string ExtraInfo { get; set; }
+
+        public string Image { get; set; }
+
+        public string SubCategoryName { get; set; }
+
+        public DateTime IssuedOn { get; set; }
+
+        [Range(1, int.MaxValue, ErrorMessage = "Въведете положително число!")]
         public double Quantity { get; set; }
+
+        public decimal AvgPrice { get; set; }
+
+        [Required]
+        public decimal TotalPrice { get; set; }
 
         public string OrdererId { get; set; }
 

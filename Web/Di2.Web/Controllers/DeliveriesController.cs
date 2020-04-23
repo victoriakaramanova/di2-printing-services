@@ -15,6 +15,7 @@
     using Di2.Services.Mapping;
     //using Microsoft.AspNet.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.VisualStudio.Web.CodeGenerators.Mvc;
 
     [Route("[controller]/[action]")]
     public class DeliveriesController : BaseController
@@ -57,16 +58,41 @@
         [Authorize]
         public async Task<IActionResult> Order(OrderInputModel input)
         {
-            //OrderViewModel viewModel = input.To<OrderViewModel>();
-            if (!this.ModelState.IsValid)
+            if (this.CheckDeliveredQty(input.MaterialId,input.Quantity)==null)
             {
-                return this.View(input);
+                //return this.ValidationProblem();
+                this.ModelState.AddModelError("Quantity", "Too much qty!");
             }
-            var categoryName = this.materialsService.GetById(input.MaterialId).Category.NameEng;
-            var user = await this.userManager.GetUserAsync(this.User);
-            await this.orderService.CreateOrder(input, user.Id);
 
-            return this.RedirectToAction("ByName","Categories", new { name = categoryName});
+            //OrderViewModel viewModel = input.To<OrderViewModel>();
+            if (this.ModelState.IsValid)
+            {
+                var categoryName = this.materialsService.GetById(input.MaterialId).Category;
+                var catEng = this.categoriesService.GetByNameBg<string>(categoryName);
+                var user = await this.userManager.GetUserAsync(this.User);
+                await this.orderService.CreateOrder(input, user.Id);
+
+                return this.RedirectToAction("ByName", "Categories", new { name = catEng });
+
+                
+            }
+                //return this.View(input);
+            return this.RedirectToAction("ById","Deliveries",new { materialId = input.MaterialId});
+
+            
+
+        }
+
+        [AcceptVerbs("Get", "Post")]
+        public IActionResult CheckDeliveredQty(int materialId, double quantity)
+        {
+            var comparison = this.deliveriesService.GetDeliveredQuantityPerProduct(materialId, quantity);
+            if (!comparison)
+            {
+                return null; //this.Json("Order less!");
+            }
+
+            return this.Ok();//this.Json(true);
         }
     }
 }
