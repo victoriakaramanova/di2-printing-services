@@ -81,8 +81,9 @@
         {
             var m = this.materialRepository.All().Where(x => x.Id == id).FirstOrDefault();
             var material = this.materialRepository.All()
-                .Where(x => x.Id == m.CategoryId).To<MaterialsViewModel>()
+                .Where(x => x.Id == m.Id).To<MaterialsViewModel>()
                 .FirstOrDefault();
+            material.Name = m.Name;
             material.Category = this.categoryRepository.All()
                 .Where(x => x.Id == m.CategoryId).FirstOrDefault().Name;
             material.SubCategory = this.subCategoryRepository.All()

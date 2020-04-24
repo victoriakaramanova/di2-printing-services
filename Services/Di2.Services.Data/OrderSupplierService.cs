@@ -73,9 +73,6 @@
         {
             foreach (var supplier in orderSuppliers.GroupBy(x => x.SupplierId))
             {
-                // var materials = supplier.Select(x => x.SupplierId)
-                // .ToList();
-
                 StringBuilder sb = new StringBuilder();
                 sb.Append("Дата за изпълнение;Име на материал;Описание на материал;Количество;Единична цена;Крайна цена" + Environment.NewLine);
 
@@ -112,7 +109,6 @@
 
         public IEnumerable<T> GetAllOrderSuppliers<T>()
         {
-            // var supplier = AutoMapperConfig.MapperInstance.Map<OrderSuppliersListViewModel>();
             IQueryable<OrderSupplier> query = this.orderSuppliersRepository.All();
             return query.To<T>().ToList();
         }

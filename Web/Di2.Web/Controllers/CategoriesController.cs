@@ -78,9 +78,10 @@
 
         public IActionResult ByName(string name)
         {
-            //var materialsViewModel = this.materialsService.GetByCategoryName<MaterialsViewModel>(name);
-            
+            var catId = this.categoriesService.GetByName<CategoryViewModel>(name).Id;
+            //var viewModel = this.categoriesService.GetByName<DeliveryViewModel>(name);
             var viewModel = this.categoriesService.GetByName<DeliveryViewModel>(name);
+            viewModel.Deliveries = this.deliveriesService.GetAllProducts<CategoryProductsViewModel>(catId);
             if (viewModel == null)
             {
                 return this.NotFound();

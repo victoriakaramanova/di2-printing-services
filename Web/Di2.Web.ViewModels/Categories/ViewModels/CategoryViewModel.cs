@@ -9,7 +9,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
-    [Authorize]
+    
     public class CategoryViewModel : IMapFrom<Category>
     {
         public int Id { get; set; }

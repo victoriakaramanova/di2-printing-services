@@ -121,8 +121,6 @@ namespace Di2.Services.Data
             };
             await this.receiptsRepository.AddAsync(receipt);
             await this.receiptsRepository.SaveChangesAsync();
-           // await this.ordersRepository.SaveChangesAsync();
-            //await this.AssignOrdersToReceipt(receipt);
             return receipt.Id;
         }
 
@@ -134,6 +132,8 @@ namespace Di2.Services.Data
             IQueryable<Order> query = this.ordersRepository.All()
                 .Where(x => x.OrdererId == receipt.RecipientId);
             query = query.Where(x => x.StatusId == (int)OrderStatus.Sent);
+            // var defaultDuration = TimeSpan.FromMinutes(1);
+            // query = query.Where(x => x.CreatedOn - DateTime.UtcNow < defaultDuration);
             return query.To<T>().ToList();
         }
 
