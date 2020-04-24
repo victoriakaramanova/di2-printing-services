@@ -69,5 +69,10 @@
                 .To<T>().FirstOrDefault();
             return post;
         }
+
+        public int GetCount()
+        {
+            return this.subCategoriesRepository.All().Count();
+        }
     }
 }

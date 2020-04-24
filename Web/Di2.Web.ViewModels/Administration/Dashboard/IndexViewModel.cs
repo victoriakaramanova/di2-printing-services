@@ -2,6 +2,9 @@
 {
     public class IndexViewModel
     {
-        public int SettingsCount { get; set; }
+        public string CreateSubCategoryPath { get; set; }
+        public int SubCategoriesCount { get; set; }
+
+        public string ViewAllSubCategories { get; set; }
     }
 }

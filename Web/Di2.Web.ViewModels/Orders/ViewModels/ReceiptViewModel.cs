@@ -16,6 +16,8 @@ namespace Di2.Web.ViewModels.Orders.ViewModels
 
         public string RecipientId { get; set; }
 
+        public string RecipientName { get; set; }
+
         public ApplicationUser Recipient { get; set; }
 
     }

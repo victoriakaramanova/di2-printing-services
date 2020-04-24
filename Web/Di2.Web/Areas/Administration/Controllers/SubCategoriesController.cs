@@ -1,4 +1,4 @@
-﻿namespace Di2.Web.Controllers
+﻿namespace Di2.Web.Areas.Administration.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -6,7 +6,6 @@
     using System.Threading.Tasks;
     using Di2.Data.Models;
     using Di2.Services.Data;
-    using Di2.Web.Areas.Administration.Controllers;
     using Di2.Web.ViewModels.Categories.ViewModels;
     using Di2.Web.ViewModels.SubCategories.InputModels;
     using Di2.Web.ViewModels.SubCategories.ViewModels;
@@ -14,7 +13,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
-    public class SubCategoriesController : BaseController
+    public class SubCategoriesController : AdministrationController
     {
         private readonly ISubCategoriesService subCategoriesService;
         private readonly UserManager<ApplicationUser> userManager;

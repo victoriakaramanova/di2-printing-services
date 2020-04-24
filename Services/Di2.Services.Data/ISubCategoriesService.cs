@@ -15,5 +15,7 @@
         IEnumerable<T> GetCategories<T>();
 
         T GetById<T>(int id);
+
+        int GetCount();
     }
 }

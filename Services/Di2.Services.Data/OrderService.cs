@@ -144,5 +144,12 @@ namespace Di2.Services.Data
                 .To<T>().FirstOrDefault();
             return receipt;
         }
+
+        public string GetRecipientName(string receiptId)
+        {
+            var recipient = this.receiptsRepository.All()
+                .Where(x => x.Id == receiptId).FirstOrDefault().Recipient;
+            return recipient.UserName;
+        }
     }
 }

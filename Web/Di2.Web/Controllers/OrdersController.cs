@@ -56,8 +56,12 @@ namespace Di2.Web.Controllers
         public IActionResult Details(string id)
         {
             var orders = this.orderService.GetReceiptOrders<OrderViewModel>(id);
+            var recipientName = this.orderService.GetRecipientName(id);
             var viewModel = new ReceiptViewModel
             {
+                Id = id,
+                IssuedOn = DateTime.UtcNow,
+                RecipientName = recipientName,
                 Orders = orders,
             };
 

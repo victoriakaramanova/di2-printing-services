@@ -23,5 +23,7 @@ namespace Di2.Services.Data
         Task<string> CreateReceipt(string recipientId);
 
         T GetById<T>(string id);
+
+        string GetRecipientName(string receiptId);
     }
 }
