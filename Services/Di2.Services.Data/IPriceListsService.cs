@@ -21,5 +21,9 @@
         T GetById<T>();
 
         T GetByElements<T>(int materialId, int supplierId, double minQty, decimal unitPrice);
+
+        int GetCount();
+
+        Task DeleteAsync(int materialId, int supplierId, double mqo, decimal unitPrice);
     }
 }

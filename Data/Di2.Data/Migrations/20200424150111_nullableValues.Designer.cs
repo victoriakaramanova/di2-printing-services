@@ -4,14 +4,16 @@ using Di2.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Di2.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200424150111_nullableValues")]
+    partial class nullableValues
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -635,10 +637,10 @@ namespace Di2.Data.Migrations
 
             modelBuilder.Entity("Di2.Data.Models.SubCategoryMaterial", b =>
                 {
-                    b.Property<int?>("SubCategoryId")
+                    b.Property<int>("SubCategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MaterialId")
+                    b.Property<int>("MaterialId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
@@ -987,13 +989,13 @@ namespace Di2.Data.Migrations
                     b.HasOne("Di2.Data.Models.Material", "Material")
                         .WithMany("SubCategoryMaterials")
                         .HasForeignKey("MaterialId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Di2.Data.Models.SubCategory", "SubCategory")
                         .WithMany("SubCategoryMaterials")
                         .HasForeignKey("SubCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 

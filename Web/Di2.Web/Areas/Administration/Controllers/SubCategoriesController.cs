@@ -58,5 +58,12 @@
 
             return this.View(allSubCategories);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await this.subCategoriesService.DeleteAsync(id);
+            return this.RedirectToAction(nameof(this.All));
+        }
     }
 }

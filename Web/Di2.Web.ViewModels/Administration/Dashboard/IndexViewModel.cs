@@ -3,8 +3,27 @@
     public class IndexViewModel
     {
         public string CreateSubCategoryPath { get; set; }
+
         public int SubCategoriesCount { get; set; }
 
         public string ViewAllSubCategories { get; set; }
+
+        public string CreateSupplierPath { get; set; }
+
+        public int SuppliersCount { get; set; }
+
+        public string ViewAllSuppliersPath { get; set; }
+
+        public string CreateMaterialPath { get; set; }
+
+        public int MaterialsCount { get; set; }
+
+        public string ViewAllMaterialsPath { get; set; }
+
+        public string CreatePriceListPath { get; set; }
+
+        public int PriceListsCount { get; set; }
+
+        public string ViewAllPriceListsPath { get; set; }
     }
 }

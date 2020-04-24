@@ -4,4 +4,15 @@
 }
 
 <h1>@this.ViewData["Title"]</h1>
-<a href="@this.Model.CreateSubCategoryPath">Създаване на подкатегория</a>Текущо: @Model.SubCategoriesCount <a href="@Model.ViewAllSubCategories">Преглед: </a>
+<div class="row-cols-3">
+    <a href="@this.Model.CreateSubCategoryPath">Създаване на подкатегория</a>Текущо: @Model.SubCategoriesCount <a href="@Model.ViewAllSubCategories">Преглед </a>
+</div>
+<div class="row-cols-3">
+    <a href="@this.Model.CreateSupplierPath">Създаване на доставчик</a>Текущо: @Model.SuppliersCount <a href="@Model.ViewAllSuppliersPath">Преглед </a>
+</div>
+<div class="row-cols-3">
+    <a href="@this.Model.CreateMaterialPath">Създаване на материал</a>Текущо: @Model.MaterialsCount <a href="@Model.ViewAllMaterialsPath">Преглед </a>
+</div>
+<div class="row-cols-3">
+    <a href="@this.Model.CreatePriceListPath">Създаване на ценова оферта към доставчик</a>Текущо: @Model.PriceListsCount <a href="@Model.ViewAllPriceListsPath">Преглед </a>
+</div>

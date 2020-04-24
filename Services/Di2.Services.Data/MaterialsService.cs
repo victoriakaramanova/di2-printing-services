@@ -19,15 +19,18 @@
         private readonly IDeletableEntityRepository<Material> materialRepository;
         private readonly IDeletableEntityRepository<SubCategory> subCategoryRepository;
         private readonly IDeletableEntityRepository<Category> categoryRepository;
+        private readonly IDeletableEntityRepository<SubCategoryMaterial> subCategoryMaterialRepository;
 
         public MaterialsService(
             IDeletableEntityRepository<Material> materialRepository, 
             IDeletableEntityRepository<SubCategory> subCategoryRepository,
-            IDeletableEntityRepository<Category> categoryRepository)
+            IDeletableEntityRepository<Category> categoryRepository,
+            IDeletableEntityRepository<SubCategoryMaterial> subCategoryMaterialRepository)
         {
             this.materialRepository = materialRepository;
             this.subCategoryRepository = subCategoryRepository;
             this.categoryRepository = categoryRepository;
+            this.subCategoryMaterialRepository = subCategoryMaterialRepository;
         }
 
         public async Task<int> AddAsync(CreateMaterialInputModel input, string imageUrl, string userId)
@@ -109,6 +112,25 @@
             query = query.Where(x => x.CategoryId == categoryId);
             
             return query.To<T>().ToList();
+        }
+
+        public int GetCount()
+        {
+            return this.materialRepository.All().Count();
+        }
+
+        public async Task<int> DeleteAsync(int id)
+        {
+            var material = this.materialRepository.All()
+                    .FirstOrDefault(x => x.Id == id);
+            //var materialIdToDelete = id;
+            //var subcategoryIdToDelete = material.SubCategoryId;
+            material.SubCategoryId = null;
+            this.materialRepository.Update(material);
+            await this.materialRepository.SaveChangesAsync();
+            this.materialRepository.Delete(material);
+            await this.materialRepository.SaveChangesAsync();
+            return material.Id;
         }
     }
 }

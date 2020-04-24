@@ -62,5 +62,19 @@
                 .FirstOrDefault();
             return supplier;
         }
+
+        public int GetCount()
+        {
+            return this.supplierRepository.All().Count();
+        }
+
+        public async Task<int> DeleteAsync(int id)
+        {
+            var supplier = this.supplierRepository.All()
+                    .FirstOrDefault(x => x.Id == id);
+            this.supplierRepository.Delete(supplier);
+            await this.supplierRepository.SaveChangesAsync();
+            return supplier.Id;
+        }
     }
 }

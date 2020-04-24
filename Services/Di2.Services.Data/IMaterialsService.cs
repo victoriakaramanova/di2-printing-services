@@ -20,5 +20,9 @@
         MaterialsViewModel GetByName(string name);
 
         IEnumerable<T> GetByCategoryName<T>(string categoryName);
+
+        int GetCount();
+
+        Task<int> DeleteAsync(int id);
     }
 }

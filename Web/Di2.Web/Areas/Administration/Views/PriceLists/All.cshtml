@@ -1,0 +1,18 @@
+﻿@using Di2.Web.ViewModels.PriceLists.ViewModels
+@model IEnumerable<PriceListViewModel>
+
+@using Di2.Common
+@{
+    this.ViewData["Title"] = "List All Price Lists";
+}
+
+@foreach (var item in Model)
+{
+    <div class="row">
+        <h4>@item.Material.Name</h4>
+        <div>@item.Supplier.Name @item.MinimumQuantityPerOrder @item.UnitPrice</div>
+        <form asp-controller="PriceLists" asp-action="Delete" asp-route-id = "@item.Material.Id" asp-route-supplierid="@item.SupplierId" asp-route-mqo="@item.MinimumQuantityPerOrder" asp-route-unitprice="@item.UnitPrice" method="get">
+            <input type="submit" class="btn-danger" value="Изтрий" />
+        </form>
+    </div>
+}

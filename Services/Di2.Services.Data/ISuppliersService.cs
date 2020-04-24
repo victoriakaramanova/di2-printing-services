@@ -16,5 +16,9 @@
         SupplierViewModel GetById(int id);
 
         SupplierViewModel GetByName(string name);
+
+        int GetCount();
+
+        Task<int> DeleteAsync(int id);
     }
 }

@@ -13,4 +13,7 @@
     <h5>@subCategory.Category</h5>
     <h5>@subCategory.UserUsername</h5>
     <time datetime="@subCategory.CreatedOn.ToString("O")">@subCategory.CreatedOn.ToString("dd.MM.yyyy HH:mm")</time>
+    <form asp-controller="SubCategories" asp-action="Delete" asp-route-id="@subCategory.Id" method="get">
+        <input type="submit" class="btn-danger" value="Изтрий" />
+    </form>
 }

@@ -86,11 +86,36 @@
         }
 
         public T GetByElements<T>(int materialId, int supplierId, double minQty, decimal unitPrice)
+        {
+            var priceList = this.priceListsRepository.All()
+               .Where(x => x.MaterialId == materialId && x.SupplierId == supplierId && x.MinimumQuantityPerOrder == minQty && x.UnitPrice == unitPrice)
+               .To<T>().FirstOrDefault();
+            return priceList;
+        }
+
+        public int GetCount()
+        {
+            return this.priceListsRepository.All().Count();
+        }
+
+        public async Task DeleteAsync(int materialId, int supplierId, double mqo, decimal unitPrice)
+        {
+            var minQty = this.priceListsRepository.All()
+                    .Where(x => x.Material.Id == materialId)
+                    .FirstOrDefault(x => x.Supplier.Id == supplierId).MinimumQuantityPerOrder;
+            var unPrice = this.priceListsRepository.All()
+                    .Where(x => x.Material.Id == materialId)
+                    .FirstOrDefault(x => x.Supplier.Id == supplierId).UnitPrice;
+            var plToDelete = this.priceListsRepository.All()
+                    .Where(x => x.Material.Id == materialId)
+                    .FirstOrDefault(x => x.Supplier.Id == supplierId);
+            if (plToDelete.MinimumQuantityPerOrder == minQty && plToDelete.UnitPrice == unitPrice)
             {
-             var priceList = this.priceListsRepository.All()
-                .Where(x => x.MaterialId == materialId && x.SupplierId == supplierId && x.MinimumQuantityPerOrder == minQty && x.UnitPrice == unitPrice)
-                .To<T>().FirstOrDefault();
-             return priceList;
+                this.priceListsRepository.Delete(plToDelete);
+            }
+
+            await this.priceListsRepository.SaveChangesAsync();
+            //return subCategory.Id;
         }
     }
 }

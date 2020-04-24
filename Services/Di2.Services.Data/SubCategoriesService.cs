@@ -13,6 +13,7 @@
     using Di2.Web.ViewModels.SubCategories;
     using Di2.Web.ViewModels.SubCategories.InputModels;
     using Di2.Web.ViewModels.SubCategories.ViewModels;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
 
     public class SubCategoriesService : ISubCategoriesService
@@ -73,6 +74,15 @@
         public int GetCount()
         {
             return this.subCategoriesRepository.All().Count();
+        }
+
+        public async Task<int> DeleteAsync(int id)
+        {
+            var subCategory = this.subCategoriesRepository.All()
+                    .FirstOrDefault(x => x.Id == id);
+            this.subCategoriesRepository.Delete(subCategory);
+            await this.subCategoriesRepository.SaveChangesAsync();
+            return subCategory.Id;
         }
     }
 }
