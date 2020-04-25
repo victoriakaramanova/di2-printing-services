@@ -32,6 +32,8 @@
 
         public string ViewAllOrderSuppliersPath { get; set; }
 
+        public string ViewAllCreatedOrdersPath { get; set; }
+
         public int OrdersCount { get; set; }
 
         public string ViewAllOrders { get; set; }

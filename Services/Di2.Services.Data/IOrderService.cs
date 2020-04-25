@@ -29,5 +29,7 @@ namespace Di2.Services.Data
         int GetCount();
 
         Task<string> DeleteAsync(string id);
+
+        Task AdminCompleteOrder(OrdersViewModel input);
     }
 }

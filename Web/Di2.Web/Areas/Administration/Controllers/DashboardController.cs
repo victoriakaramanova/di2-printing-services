@@ -61,6 +61,7 @@
 
                 ViewAllOrders = "Orders/All",
                 OrdersCount = this.orderService.GetCount(),
+                ViewAllCreatedOrdersPath = "Orders/AllCreated",
             };
             return this.View(viewModel);
         }

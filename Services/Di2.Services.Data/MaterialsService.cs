@@ -87,9 +87,9 @@
                 .Where(x => x.Id == m.Id).To<MaterialsViewModel>()
                 .FirstOrDefault();
             material.Name = m.Name;
-            material.Category = this.categoryRepository.All()
+            material.Category = this.categoryRepository.AllWithDeleted()
                 .Where(x => x.Id == m.CategoryId).FirstOrDefault().Name;
-            material.SubCategory = this.subCategoryRepository.All()
+            material.SubCategoryName = this.subCategoryRepository.All()
                 .Where(x => x.Id == m.SubCategoryId).FirstOrDefault().Name;
             return material;
         }

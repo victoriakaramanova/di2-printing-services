@@ -4,6 +4,7 @@ using Di2.Data.Models.Enums;
 using Di2.Services.Mapping;
 using Di2.Web.ViewModels.Orders.InputModels;
 using Di2.Web.ViewModels.Orders.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -166,6 +167,24 @@ namespace Di2.Services.Data
             this.ordersRepository.Delete(order);
             await this.ordersRepository.SaveChangesAsync();
             return order.Id;
+        }
+        
+        public async Task AdminCompleteOrder(OrdersViewModel input)
+        {
+            Order dbOrder;
+            foreach (var order in input.Orders)
+            {
+                dbOrder = this.ordersRepository.All()
+                    .Where(x => x.Id == order.Id).FirstOrDefault();
+                if (dbOrder == null || dbOrder.StatusId != (int)OrderStatus.Sent)
+                {
+                    throw new ArgumentException(nameof(dbOrder));
+                }
+
+                dbOrder.StatusId = (int)OrderStatus.Completed;
+                this.ordersRepository.Update(dbOrder);
+                await this.ordersRepository.SaveChangesAsync();
+            }
         }
     }
 }

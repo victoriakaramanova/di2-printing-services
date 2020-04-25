@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Di2.Web.Areas.Administration.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/[area]/[controller]")]
 
     public class TotalsController : AdministrationController
     {

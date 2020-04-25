@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Di2.Data.Migrations
 {
-    public partial class initialCommit : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -60,14 +60,14 @@ namespace Di2.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedOn = table.Column<DateTime>(nullable: false),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     DeletedOn = table.Column<DateTime>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),
                     Subject = table.Column<string>(nullable: true),
-                    Content = table.Column<string>(nullable: true)
+                    Content = table.Column<string>(nullable: true),
+                    CreatedOn = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {

@@ -53,7 +53,7 @@
                 input.Name,
                 GlobalConstants.SystemEmail,
                 input.Subject,
-                input.Content);
+                input.SanitizedContent);
 
             return this.RedirectToAction("ThankYou");
         }

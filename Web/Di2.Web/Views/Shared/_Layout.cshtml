@@ -66,14 +66,7 @@
         <main role="main" class="pb-3">
 
             @this.RenderBody()
-            @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
-            {
-                <div class="col-lg-4">
-                    <div class="g-mb-20">
-                        <vc:customer-messages></vc:customer-messages>
-                    </div>
-                </div>
-            }
+            
         </main>
     </div>
 

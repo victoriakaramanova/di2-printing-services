@@ -12,26 +12,27 @@
 
 @for (int i = 0; i < Model.ToList().Count; i++)
 {
+    <div class="row">
+        @Model.ToList()[i].Material.Name 
+        @Model.ToList()[i].Material.Description 
+        @Model.ToList()[i].OrderDate 
+        @Model.ToList()[i].Supplier.Name 
+        @Model.ToList()[i].UnitPrice 
+        @Model.ToList()[i].Quantity 
+        @Model.ToList()[i].TotalPrice 
+        <form id="checkForm-@i" method="post"></form>
+        <div class="v-switcher-wrapper" style="margin:5px;">
+            <input type="range" id="switcher-@i"
+                   name="switcher-@i" class="@Model.ToList()[i].SwitchValue"
+                   min="-1" max="1" step="1" value="@Model.ToList()[i].StatusId.ToString()"
+                   onchange="sendStatus(@Model.ToList()[i].Id,@i)" />
+        </div>
+        <div id="statusId-@i">@Model.ToList()[i].Status</div>
 
-    @Model.ToList()[i].Material.Name
-    @Model.ToList()[i].Material.Description
-    @Model.ToList()[i].OrderDate
-    @Model.ToList()[i].Supplier.Name
-    @Model.ToList()[i].UnitPrice
-    @Model.ToList()[i].Quantity
-    @Model.ToList()[i].TotalPrice
-    <form id="checkForm-@i" method="post"></form>
-    <div class="v-switcher-wrapper" style="margin:5px;">
-        <input type="range" id="switcher-@i"
-               name="switcher-@i" class="@Model.ToList()[i].SwitchValue"
-               min="-1" max="1" step="1" value="@Model.ToList()[i].StatusId.ToString()"
-               onchange="sendStatus(@Model.ToList()[i].Id,@i)" />
     </div>
-    <div id="statusId-@i">@Model.ToList()[i].Status</div>
-    <form asp-controller="OrderSuppliers" asp-action="Delete" asp-route-id="@Model.ToList()[i].Material.Id" asp-route-supplierid="@Model.ToList()[i].Supplier.Id" asp-route-qty="@Model.ToList()[i].Quantity" asp-route-unitprice="@Model.ToList()[i].UnitPrice" asp-route-totalprice="@Model.ToList()[i].TotalPrice" asp-route-odate="@Model.ToList()[i].OrderDate" method="get">
+    @*<form asp-controller="OrderSuppliers" asp-action="Delete" asp-route-id="@Model.ToList()[i].Material.Id" asp-route-supplierid="@Model.ToList()[i].Supplier.Id" asp-route-qty="@Model.ToList()[i].Quantity" asp-route-unitprice="@Model.ToList()[i].UnitPrice" asp-route-totalprice="@Model.ToList()[i].TotalPrice" asp-route-odate="@Model.ToList()[i].OrderDate" method="get">
         <input type="submit" class="btn-danger" value="Изтрий" />
-    </form>
-
+    </form>*@
 }
 
 @section Scripts {
@@ -56,7 +57,7 @@
             var json = { orderId: orderId, i: i, isCompleted: myInput };
             //debugger
             $.ajax({
-                url: "/api/totals",
+                url: "/api/administration/totals",
                 type: "POST",
                 data: JSON.stringify(json),
                 contentType: "application/json; charset=utf-8",

@@ -20,7 +20,7 @@
 
         public string Category { get; set; }
 
-        public string SubCategory { get; set; }
+        public string SubCategoryName { get; set; }
 
         public string Image { get; set; }
 

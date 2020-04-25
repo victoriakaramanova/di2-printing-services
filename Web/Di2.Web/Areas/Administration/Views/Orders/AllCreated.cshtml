@@ -1,7 +1,7 @@
 ﻿@using Di2.Web.ViewModels.Orders.ViewModels
 @model OrdersViewModel
 @{
-    ViewData["Title"] = "Общо поръчки";
+    ViewData["Title"] = "Общо незавършени поръчки";
 }
 
 @if (Model.Orders.Count == 0)
@@ -13,7 +13,7 @@ else
 {
     @*<div id="orders" class="text-dark">
         <div class="row mt-1">*@
-<table>
+
     <thead>
         <tr class="col-md-3 text-left">Продукт</tr>
         <tr class="col-md-1 text-left">Брой</tr>
@@ -24,11 +24,10 @@ else
     </thead>
     @*</div>*@
 
-<form asp-controller="Orders" asp-action="AdminComplete" method="post">
-    @for (int i = 0; i < Model.Orders.Count; i++)
-    {
+    <form asp-controller="Orders" asp-action="Complete" method="post">
+        @for (int i = 0; i < Model.Orders.Count; i++)
+        {
         <input type="hidden" asp-for="@this.Model.Orders[i].Id" />
-        <div class="order row">
             <tr>
                 <td>
                     @Model.Orders[i].MaterialName
@@ -55,16 +54,33 @@ else
                     @Model.Orders[i].Id
                 </td>
             </tr>
-            </div>
-            }
-
-            <hr class="hr-4 bg-info" />
-            <input type="submit" class="btn btn-primary" value="Изготвена" />
+        }
+        <hr class="hr-4 bg-info" />
+        <input type="submit" class="btn btn-primary" value="Поръчай" />
     </form>
+
     <hr class="hr-2 bg-light">
-</table>
+
     <h2 class="text-dark text-right" id="total-price">ОБЩО: @Model.Orders.Sum(x => x.AvgPrice * (decimal)x.Quantity).ToString("F2")</h2>
     @*</div>*@
 }
 
-
+@section Scripts {
+    <script>
+        function sendQty() {
+            let bigTotal = 0;
+            let current = 0;
+            debugger;
+            let orders = Array.from($('.order'));
+            for (let order of orders) {
+                current = 0;
+                let domUnitPrice = +$($(order).children()[4]).text();
+                let domQty = $($($(order).children()[3]).children()[0]).val();
+                current = +domQty * +domUnitPrice;
+                bigTotal += current;
+                +$($(order).children()[5]).text(current.toFixed(2));
+            }
+            $('#total-price').text('ОБЩО: ' + bigTotal.toFixed(2));
+        }
+    </script>
+}

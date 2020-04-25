@@ -39,6 +39,20 @@ namespace Di2.Web.Areas.Administration.Controllers
             return this.View(viewModel);
         }
 
+        public async Task<IActionResult> AllCreated()
+        {
+            var user = await this.userManager.GetUserAsync(this.User);
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var viewModel = new OrdersViewModel
+            {
+                Orders = this.orderService
+                .GetAll<OrderViewModel>()
+                .Where(x => x.StatusId == (int)OrderStatus.Created).ToList(),
+
+            };
+            return this.View(viewModel);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Complete(OrdersViewModel input)
         {
@@ -49,6 +63,17 @@ namespace Di2.Web.Areas.Administration.Controllers
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var receiptId = await this.orderService.CreateReceipt(userId);
             return this.RedirectToAction(nameof(this.Details),"Orders", new { id = receiptId } );
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AdminComplete(OrdersViewModel input)
+        {
+            await this.orderService.AdminCompleteOrder(input);
+
+            var user = await this.userManager.GetUserAsync(this.User);
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return this.RedirectToAction(nameof(this.All));
         }
 
         [HttpGet]
