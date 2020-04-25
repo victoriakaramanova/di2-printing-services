@@ -13,13 +13,11 @@ else
 {
     <div id="orders" class="text-dark">
         <div class="row mt-1">
-
-
             <div class="col-md-3 text-left">Продукт</div>
             <div class="col-md-1 text-left">Брой</div>
-            <div class="col-md-2 text-left">Единична цена</div>
-            <div class="col-md-3 text-left">Крайна цена</div>
-            <div class="col-md-3 text-left">Клиент</div>
+            <div class="col-md-1 text-left">Единична цена</div>
+            <div class="col-md-2 text-left">Крайна цена</div>
+            <div class="col-md-2 text-left">Клиент</div>
             <div class="col-md-3 text-left">Поръчка №</div>
 
         </div>
@@ -29,20 +27,22 @@ else
         @for (int i = 0; i < Model.Orders.Count; i++)
         {
             <input type="hidden" asp-for="@this.Model.Orders[i].Id" />
-            @Model.Orders[i].MaterialName
-            <h6 class="col-md-1 text-left">
-                <input type="number" asp-for="@Model.Orders[i].Quantity" style="border:none; width:100%;background-color: rgba(70, 35, 122, 0.1)" onchange="sendQty()" />
-                <span asp-validation-for="@Model.Orders[i].Quantity" class="text-danger"></span>
-            </h6>
-            @Model.Orders[i].AvgPrice
-            @Model.Orders[i].TotalPrice
-            @Model.Orders[i].IssuedOn
-            @Model.Orders[i].Orderer.UserName
-            @Model.Orders[i].Id
-        }
-        <hr class="hr-4 bg-info" />
-        <input type="submit" class="btn btn-primary" value="Поръчай" />
-    </form>
+            <div class="order row">
+                <h6>@Model.Orders[i].MaterialName</h6>
+                <h6 class="col-md-1 text-left">
+                    <input type="number" asp-for="@Model.Orders[i].Quantity" style="border:none; width:100%;background-color: rgba(70, 35, 122, 0.1)" onchange="sendQty()" />
+                    <span asp-validation-for="@Model.Orders[i].Quantity" class="text-danger"></span>
+                </h6>
+                <h6>@Model.Orders[i].AvgPrice</h6>
+                <h6>@Model.Orders[i].TotalPrice</h6>
+                <h6>@Model.Orders[i].IssuedOn</h6>
+                <h6>@Model.Orders[i].Orderer.UserName</h6>
+                <h6>@Model.Orders[i].Id</h6>
+            </div>
+                }
+                <hr class="hr-4 bg-info" />
+                <input type="submit" class="btn btn-primary" value="Поръчай" />
+        </form>
 
     <hr class="hr-2 bg-light">
 
@@ -59,11 +59,11 @@ else
             let orders = Array.from($('.order'));
             for (let order of orders) {
                 current = 0;
-                let domUnitPrice = +$($(order).children()[4]).text();
-                let domQty = $($($(order).children()[3]).children()[0]).val();
+                let domUnitPrice = +$($(order).children()[2]).text();
+                let domQty = $($($(order).children()[1]).children()[0]).val();
                 current = +domQty * +domUnitPrice;
                 bigTotal += current;
-                +$($(order).children()[5]).text(current.toFixed(2));
+                +$($(order).children()[3]).text(current.toFixed(2));
             }
             $('#total-price').text('ОБЩО: ' + bigTotal.toFixed(2));
         }

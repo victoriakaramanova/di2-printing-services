@@ -29,10 +29,10 @@ namespace Di2.Web.Areas.Administration.Controllers
         {
             var user = await this.userManager.GetUserAsync(this.User);
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var viewModel = new OrdersViewModel
+            var viewModel = new ListCompleteViewModel
             {
                 Orders = this.orderService
-                .GetAll<OrderViewModel>()
+                .GetAll<CompleteViewModel>()
                 .Where(x => x.StatusId == (int)OrderStatus.Sent).ToList(),
 
             };
@@ -54,8 +54,9 @@ namespace Di2.Web.Areas.Administration.Controllers
             return this.View(viewModel);
         }
 
+
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Complete(OrdersViewModel input)
         {
             await this.orderService.UpdateOrder(input);
