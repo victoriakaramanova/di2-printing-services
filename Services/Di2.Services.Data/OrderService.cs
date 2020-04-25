@@ -79,18 +79,20 @@ namespace Di2.Services.Data
         public async Task UpdateOrder(OrdersViewModel input)
         {
             Order dbOrder;
+            double inputQty;
             foreach (var order in input.Orders)
             {
                 dbOrder = this.ordersRepository.All()
                     .Where(x => x.Id == order.Id).FirstOrDefault();
-                if (dbOrder.Quantity != order.Quantity)
+                inputQty = order.Quantity;
+                if (dbOrder.Quantity != inputQty)
                 {
-                    dbOrder.Quantity = order.Quantity;
+                    dbOrder.Quantity = inputQty;
                     dbOrder.TotalPrice = (decimal)order.Quantity * dbOrder.AvgPrice;
                     this.ordersRepository.Update(dbOrder);
+                await this.ordersRepository.SaveChangesAsync();
                     
                 }
-                await this.ordersRepository.SaveChangesAsync();
             }
         }
 

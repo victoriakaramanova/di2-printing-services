@@ -39,6 +39,7 @@ namespace Di2.Web.Areas.Administration.Controllers
             return this.View(viewModel);
         }
 
+        [Authorize]
         public async Task<IActionResult> AllCreated()
         {
             var user = await this.userManager.GetUserAsync(this.User);
@@ -54,6 +55,7 @@ namespace Di2.Web.Areas.Administration.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Complete(OrdersViewModel input)
         {
             await this.orderService.UpdateOrder(input);
@@ -77,6 +79,7 @@ namespace Di2.Web.Areas.Administration.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Details(string id)
         {
             var orders = this.orderService.GetReceiptOrders<OrderViewModel>(id);
@@ -98,6 +101,7 @@ namespace Di2.Web.Areas.Administration.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string id)
         {
             await this.orderService.DeleteAsync(id);
