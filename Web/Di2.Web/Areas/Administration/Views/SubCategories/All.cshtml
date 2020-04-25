@@ -8,12 +8,14 @@
 
 @foreach (var subCategory in Model)
 {
-    <h3>@subCategory.Name</h3>
-    <h5>@subCategory.Description</h5>
-    <h5>@subCategory.Category</h5>
-    <h5>@subCategory.UserUsername</h5>
-    <time datetime="@subCategory.CreatedOn.ToString("O")">@subCategory.CreatedOn.ToString("dd.MM.yyyy HH:mm")</time>
-    <form asp-controller="SubCategories" asp-action="Delete" asp-route-id="@subCategory.Id" method="get">
-        <input type="submit" class="btn-danger" value="Изтрий" />
-    </form>
+    <div class="row">
+        <h5>@subCategory.Name</h5>
+        <h5>@subCategory.Description</h5>
+        <h5>@subCategory.Category</h5>
+        <h5>@subCategory.UserUsername</h5>
+        @*<time datetime="@subCategory.CreatedOn.ToString("O")">@subCategory.CreatedOn.ToString("dd.MM.yyyy HH:mm")</time>*@
+        <form asp-controller="SubCategories" asp-action="Delete" asp-route-id="@subCategory.Id" method="get">
+            <input type="submit" class="btn-danger" value="Изтрий" />
+        </form>
+    </div>
 }

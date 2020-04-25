@@ -1,17 +1,18 @@
-﻿using Di2.Common;
-using Di2.Data.Common.Repositories;
-using Di2.Data.Models;
-using Di2.Services.Messaging;
-using Di2.Web.ViewModels.Contacts;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Di2.Web.Controllers
+﻿namespace Di2.Web.Areas.Administration.Controllers
 {
-    public class ContactsController : BaseController
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using Di2.Common;
+    using Di2.Data.Common.Repositories;
+    using Di2.Data.Models;
+    using Di2.Services.Messaging;
+    using Di2.Web.ViewModels.Contacts;
+    using Microsoft.AspNetCore.Mvc;
+
+    public class ContactsController : AdministrationController
     {
         private readonly IRepository<ContactForm> contactsRepository;
         private readonly IEmailSender emailSender;
@@ -48,8 +49,8 @@ namespace Di2.Web.Controllers
             await this.contactsRepository.SaveChangesAsync();
 
             await this.emailSender.SendEmailAsync(
-                input.Email, 
-                input.Name, 
+                input.Email,
+                input.Name,
                 GlobalConstants.SystemEmail,
                 input.Subject,
                 input.Content);

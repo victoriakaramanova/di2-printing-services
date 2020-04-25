@@ -21,7 +21,7 @@ namespace Di2.Data.Models
 
         public string SubCategoryName { get; set; }
 
-        //public DateTime IssuedOn { get; set; }
+        public DateTime IssuedOn { get; set; }
 
         public double Quantity { get; set; }
 

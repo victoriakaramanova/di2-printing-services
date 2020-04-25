@@ -307,8 +307,8 @@ namespace Di2.Data.Migrations
                     Name = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: true),
                     ExtraInfo = table.Column<string>(nullable: true),
-                    CategoryId = table.Column<int>(nullable: false),
-                    SubCategoryId = table.Column<int>(nullable: false),
+                    CategoryId = table.Column<int>(nullable: true),
+                    SubCategoryId = table.Column<int>(nullable: true),
                     Image = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true)
                 },
@@ -376,6 +376,7 @@ namespace Di2.Data.Migrations
                     ExtraInfo = table.Column<string>(nullable: true),
                     Image = table.Column<string>(nullable: true),
                     SubCategoryName = table.Column<string>(nullable: true),
+                    IssuedOn = table.Column<DateTime>(nullable: false),
                     Quantity = table.Column<double>(nullable: false),
                     AvgPrice = table.Column<decimal>(nullable: false),
                     TotalPrice = table.Column<decimal>(nullable: false),
@@ -460,13 +461,13 @@ namespace Di2.Data.Migrations
                         column: x => x.MaterialId,
                         principalTable: "Materials",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_SubCategoryMaterial_SubCategories_SubCategoryId",
                         column: x => x.SubCategoryId,
                         principalTable: "SubCategories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

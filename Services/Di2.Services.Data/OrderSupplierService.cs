@@ -120,5 +120,37 @@
 
             return query.To<T>().ToList();
         }
+
+        public int GetCount()
+        {
+            return this.orderSuppliersRepository.All()
+                .Where(x=>x.Status==OrderStatus.Sent)
+                .Count();
+        }
+
+        public async Task DeleteAsync(int materialId, int supplierId, double qty, decimal unitPrice,decimal totalprice,DateTime odate)
+        {
+            var qtyDb = this.orderSuppliersRepository.All()
+                    .Where(x => x.Material.Id == materialId)
+                    .FirstOrDefault(x => x.Supplier.Id == supplierId).Quantity;
+            var unPrice = this.orderSuppliersRepository.All()
+                    .Where(x => x.Material.Id == materialId)
+                    .FirstOrDefault(x => x.Supplier.Id == supplierId).UnitPrice;
+            var totPrice = this.orderSuppliersRepository.All()
+                    .Where(x => x.Material.Id == materialId)
+                    .FirstOrDefault(x => x.Supplier.Id == supplierId).TotalPrice;
+            var orderDate = this.orderSuppliersRepository.All()
+                    .Where(x => x.Material.Id == materialId)
+                    .FirstOrDefault(x => x.Supplier.Id == supplierId).OrderDate;
+            var osToDelete = this.orderSuppliersRepository.All()
+                    .Where(x => x.Material.Id == materialId)
+                    .FirstOrDefault(x => x.Supplier.Id == supplierId);
+            if (osToDelete.Quantity == qtyDb && osToDelete.UnitPrice == unPrice && osToDelete.TotalPrice==totPrice && osToDelete.OrderDate==orderDate)
+            {
+                this.orderSuppliersRepository.Delete(osToDelete);
+            }
+
+            await this.orderSuppliersRepository.SaveChangesAsync();
+        }
     }
 }

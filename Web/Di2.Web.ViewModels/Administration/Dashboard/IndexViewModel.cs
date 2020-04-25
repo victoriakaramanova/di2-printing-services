@@ -25,5 +25,15 @@
         public int PriceListsCount { get; set; }
 
         public string ViewAllPriceListsPath { get; set; }
+
+        public string CreateOrderSupplierPath { get; set; }
+
+        public int OrderSuppliersCount { get; set; }
+
+        public string ViewAllOrderSuppliersPath { get; set; }
+
+        public int OrdersCount { get; set; }
+
+        public string ViewAllOrders { get; set; }
     }
 }

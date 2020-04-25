@@ -57,7 +57,7 @@ namespace Di2.Services.Data
                 Quantity = input.Quantity,
                 AvgPrice = input.AvgPrice,
                 StatusId = (int)OrderStatus.Created,
-                //IssuedOn = DateTime.UtcNow,
+                IssuedOn = DateTime.UtcNow,
                 TotalPrice = input.AvgPrice * (decimal)input.Quantity,
                 OrdererId = userId,
             };
@@ -150,6 +150,22 @@ namespace Di2.Services.Data
             var recipient = this.receiptsRepository.All()
                 .Where(x => x.Id == receiptId).FirstOrDefault().Recipient;
             return recipient.UserName;
+        }
+
+        public int GetCount()
+        {
+            return this.ordersRepository.All()
+                .Where(x=>x.StatusId==(int)OrderStatus.Sent)
+                .Count();
+        }
+
+        public async Task<string> DeleteAsync(string id)
+        {
+            var order = this.ordersRepository.All()
+                    .FirstOrDefault(x => x.Id == id);
+            this.ordersRepository.Delete(order);
+            await this.ordersRepository.SaveChangesAsync();
+            return order.Id;
         }
     }
 }

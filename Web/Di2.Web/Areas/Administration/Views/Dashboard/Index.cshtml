@@ -16,3 +16,9 @@
 <div class="row-cols-3">
     <a href="@this.Model.CreatePriceListPath">Създаване на ценова оферта към доставчик</a>Текущо: @Model.PriceListsCount <a href="@Model.ViewAllPriceListsPath">Преглед </a>
 </div>
+<div class="row-cols-3">
+    <a href="@this.Model.CreateOrderSupplierPath">Изпращане на поръчка към доставчик</a>Още недоставени: @Model.OrderSuppliersCount <a href="@Model.ViewAllOrderSuppliersPath">Преглед </a>
+</div>
+<div class="row-cols-3">
+    <a href="@this.Model.ViewAllOrders">Поръчки от клиенти</a> В подготовка: @Model.OrdersCount
+</div>

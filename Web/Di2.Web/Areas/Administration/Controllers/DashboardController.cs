@@ -14,19 +14,25 @@
         private readonly IMaterialsService materialsService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IPriceListsService priceListsService;
+        private readonly IOrderSupplierService orderSupplierService;
+        private readonly IOrderService orderService;
 
         public DashboardController(
             ISubCategoriesService subCategoriesService,
             ISuppliersService suppliersService,
             IMaterialsService materialsService,
             UserManager<ApplicationUser> userManager,
-            IPriceListsService priceListsService)
+            IPriceListsService priceListsService,
+            IOrderSupplierService orderSupplierService,
+            IOrderService orderService)
         {
             this.subCategoriesService = subCategoriesService;
             this.suppliersService = suppliersService;
             this.materialsService = materialsService;
             this.userManager = userManager;
             this.priceListsService = priceListsService;
+            this.orderSupplierService = orderSupplierService;
+            this.orderService = orderService;
         }
 
         public IActionResult Index()
@@ -48,6 +54,13 @@
                 CreatePriceListPath = "PriceLists/Create",
                 PriceListsCount = this.priceListsService.GetCount(),
                 ViewAllPriceListsPath = "PriceLists/All",
+
+                CreateOrderSupplierPath = "OrderSuppliers/Create",
+                OrderSuppliersCount = this.orderSupplierService.GetCount(),
+                ViewAllOrderSuppliersPath = "OrderSuppliers/All",
+
+                ViewAllOrders = "Orders/All",
+                OrdersCount = this.orderService.GetCount(),
             };
             return this.View(viewModel);
         }

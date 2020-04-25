@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Di2.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200424150111_nullableValues")]
-    partial class nullableValues
+    [Migration("20200424203952_initialCommit")]
+    partial class initialCommit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -371,6 +371,9 @@ namespace Di2.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime>("IssuedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("MaterialId")
                         .HasColumnType("int");
 
@@ -637,10 +640,10 @@ namespace Di2.Data.Migrations
 
             modelBuilder.Entity("Di2.Data.Models.SubCategoryMaterial", b =>
                 {
-                    b.Property<int>("SubCategoryId")
+                    b.Property<int?>("SubCategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("MaterialId")
+                    b.Property<int?>("MaterialId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
@@ -989,13 +992,13 @@ namespace Di2.Data.Migrations
                     b.HasOne("Di2.Data.Models.Material", "Material")
                         .WithMany("SubCategoryMaterials")
                         .HasForeignKey("MaterialId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Di2.Data.Models.SubCategory", "SubCategory")
                         .WithMany("SubCategoryMaterials")
                         .HasForeignKey("SubCategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

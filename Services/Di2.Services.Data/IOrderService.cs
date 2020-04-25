@@ -25,5 +25,9 @@ namespace Di2.Services.Data
         T GetById<T>(string id);
 
         string GetRecipientName(string receiptId);
+
+        int GetCount();
+
+        Task<string> DeleteAsync(string id);
     }
 }

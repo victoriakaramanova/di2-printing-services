@@ -1,0 +1,61 @@
+﻿@using Di2.Web.ViewModels.Orders.ViewModels
+@model OrdersViewModel
+@{
+    ViewData["Title"] = "Общо поръчки";
+}
+
+@if (Model.Orders.Count == 0)
+{
+    <h3 class="text-center text-primary">Няма поръчки</h3>
+}
+
+else
+{
+    @*<div id="orders" class="text-dark">
+        <div class="row mt-1">*@
+    <table>
+        <thead>
+            <tr class="col-md-3 text-left">Продукт</tr>
+            <tr class="col-md-1 text-left">Брой</tr>
+            <tr class="col-md-2 text-left">Единична цена</tr>
+            <tr class="col-md-3 text-left">Крайна цена</tr>
+            <tr class="col-md-3 text-left">Клиент</tr>
+            <tr class="col-md-3 text-left">Поръчка №</tr>
+        </thead>
+        @*</div>*@
+
+
+        @for (int i = 0; i < Model.Orders.Count; i++)
+        {
+            <tr>
+                <td>
+                    @Model.Orders[i].MaterialName
+                </td>
+                <td>
+                    @Model.Orders[i].Quantity
+                </td>
+                <td>
+                    @Model.Orders[i].AvgPrice
+                </td>
+                <td>
+                    @Model.Orders[i].TotalPrice
+                </td>
+                <td>
+                    @Model.Orders[i].IssuedOn
+                </td>
+                <td>
+                    @Model.Orders[i].Orderer.UserName
+                </td>
+                <td>
+                    @Model.Orders[i].Id
+                </td>
+            </tr>
+        }
+    </table>
+    <hr class="hr-2 bg-light">
+
+    <h2 class="text-dark text-right" id="total-price">ОБЩО: @Model.Orders.Sum(x => x.AvgPrice * (decimal)x.Quantity).ToString("F2")</h2>
+    @*</div>*@
+}
+
+

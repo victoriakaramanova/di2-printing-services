@@ -8,10 +8,13 @@
 
 @foreach (var item in Model)
 {
-    <h3>@item.Name</h3>
-    <h5>@item.Address</h5>
-    <h5>@item.Phone</h5>
-    <form asp-controller="Suppliers" asp-action="Delete" asp-route-id="@item.Id" method="get">
-        <input type="submit" class="btn-danger" value="Изтрий" />
-    </form>
+    <div class="row">
+        <h4>@item.Name</h4>
+        <h5>@item.Email</h5>
+        <h5>@item.Address</h5>
+        <h5>@item.Phone</h5>
+        <form asp-controller="Suppliers" asp-action="Delete" asp-route-id="@item.Id" method="get">
+            <input type="submit" class="btn-danger" value="Изтрий" />
+        </form>
+    </div>
 }

@@ -18,5 +18,9 @@
         Task SendMailSupplier(List<OrderSupplier> orderSuppliers);
 
         IEnumerable<T> GetByCategoryId<T>(int categoryId);
+
+        int GetCount();
+
+        Task DeleteAsync(int materialId, int supplierId, double qty, decimal unitPrice, decimal totalprice, DateTime odate);
     }
 }
