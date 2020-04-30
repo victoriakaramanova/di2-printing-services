@@ -21,7 +21,7 @@ namespace Di2.Web.Areas.Administration.Controllers
             this.totalsService = totalsService;
         }
 
-        // [Authorize]
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<int>> Post(TotalsInputModel input)
         {

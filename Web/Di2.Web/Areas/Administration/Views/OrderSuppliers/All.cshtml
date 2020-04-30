@@ -29,10 +29,10 @@
         </div>
         <div id="statusId-@i">@Model.ToList()[i].Status</div>
 
+    <form asp-controller="OrderSuppliers" asp-action="Delete" asp-route-id="@Model.ToList()[i].Material.Id" asp-route-supplierid="@Model.ToList()[i].Supplier.Id" asp-route-qty="@Model.ToList()[i].Quantity" asp-route-unitprice="@Model.ToList()[i].UnitPrice" asp-route-totalprice="@Model.ToList()[i].TotalPrice" asp-route-odate="@Model.ToList()[i].OrderDate" method="get">
+        <input type="submit" class="btn btn-danger" value="Изтрий" />
+    </form>
     </div>
-    @*<form asp-controller="OrderSuppliers" asp-action="Delete" asp-route-id="@Model.ToList()[i].Material.Id" asp-route-supplierid="@Model.ToList()[i].Supplier.Id" asp-route-qty="@Model.ToList()[i].Quantity" asp-route-unitprice="@Model.ToList()[i].UnitPrice" asp-route-totalprice="@Model.ToList()[i].TotalPrice" asp-route-odate="@Model.ToList()[i].OrderDate" method="get">
-        <input type="submit" class="btn-danger" value="Изтрий" />
-    </form>*@
 }
 
 @section Scripts {
@@ -68,9 +68,9 @@
                     if (data.toString() == 1) {
                         $(`#statusId-${i}`).html("Sent")
                     } else if (data.toString() == -1) {
-                        $(`#statusId-${i}`).html("Canceled")
+                        $(`#switcher-${i}`).val("-1")
                     }
-                    else $(`#statusId-${i}`).html("Completed");
+                    else $(`#switcher-${i}`).val("0");
                 }
             });
         }

@@ -14,22 +14,23 @@
 </div>
 
 <hr class="hr-2 bg-dark w-100">
-<div class="products-holder w-50 mx-auto">
+<div class="products-holder w-100 mx-auto">
     @foreach (var order in Model.Orders)
     {
         <div class="product d-flex justify-content-between">
-            <div class="product-name w-75">
+            <div class="product-name w-25">
                 <h5>@order.MaterialName</h5>
             </div>
-            <div class="product-quantity-and-price d-flex justify-content-between w-25">
+            <div class="product-quantity-and-price d-flex justify-content-between w-75">
                 <h5>@order.Quantity</h5>
                 <h5>@order.AvgPrice</h5>
+                <h5>@order.TotalPrice</h5>
             </div>
         </div>
     }
 </div>
 <hr class="hr-2 bg-dark w-100">
-<div class="finish-order-holder w-50 mx-auto d-flex justify-content-between">
+<div class="finish-order-holder w-75 mx-auto d-flex justify-content-between">
     <div class="form-holder w-25">
         <h3 class="text-left">Общо</h3>
     </div>

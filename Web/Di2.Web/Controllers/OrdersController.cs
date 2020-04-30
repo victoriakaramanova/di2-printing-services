@@ -49,6 +49,8 @@ namespace Di2.Web.Controllers
             var user = await this.userManager.GetUserAsync(this.User);
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var receiptId = await this.orderService.CreateReceipt(userId);
+            await this.orderService.AssignReceiptToOrders(receiptId);
+            await this.orderService.SendOrderReceiptMailCustomer(userId, receiptId);
             return this.RedirectToAction(nameof(this.Details),"Orders", new { id = receiptId } );
         }
 
@@ -62,7 +64,7 @@ namespace Di2.Web.Controllers
                 Id = id,
                 IssuedOn = DateTime.UtcNow,
                 RecipientName = recipientName,
-                Orders = orders,
+                Orders = orders.Where(x=>x.ReceiptId==id),
             };
 
             if (viewModel == null)

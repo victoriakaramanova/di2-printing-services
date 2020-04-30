@@ -31,5 +31,9 @@ namespace Di2.Services.Data
         Task<string> DeleteAsync(string id);
 
         Task AdminCompleteOrder(OrdersViewModel input);
+
+        Task<int> AssignReceiptToOrders(string receiptId);
+
+        Task SendOrderReceiptMailCustomer(string userId, string receiptId);
     }
 }

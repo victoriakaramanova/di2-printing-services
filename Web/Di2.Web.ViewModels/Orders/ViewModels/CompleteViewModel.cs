@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Di2.Web.ViewModels.Orders.ViewModels
 {
-    public class CompleteViewModel : IMapFrom<Order>, IMapTo<Order>, IMapTo<OrderInputModel>
+    public class CompleteViewModel : IMapFrom<Order>, IMapTo<Order>//, IMapTo<OrderInputModel>
     {
         public string Id { get; set; }
 
@@ -43,7 +43,15 @@ namespace Di2.Web.ViewModels.Orders.ViewModels
 
         public int StatusId { get; set; }
 
+        public string SwitchValue => this.StatusId == 1 ?
+         "v-switcher v-switcher-mode--tri v-switcher-state--active"
+         : this.StatusId == -1
+         ? "v-switcher v-switcher-mode--tri v-switcher-state--passive"
+         : "v-switcher v-switcher-mode--tri v-switcher-state--neutral";
+
         public OrderStatus OrderStatus { get; set; }
+
+        public string ReceiptId { get; set; }
     }
 }
 

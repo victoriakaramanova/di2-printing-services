@@ -33,8 +33,9 @@ namespace Di2.Web.Areas.Administration.Controllers
             {
                 Orders = this.orderService
                 .GetAll<CompleteViewModel>()
-                .Where(x => x.StatusId == (int)OrderStatus.Sent).ToList(),
-
+                .Where(x => x.StatusId == (int)OrderStatus.Sent)
+                .OrderBy(x=>x.IssuedOn)
+                .ToList(),
             };
             return this.View(viewModel);
         }
@@ -48,15 +49,14 @@ namespace Di2.Web.Areas.Administration.Controllers
             {
                 Orders = this.orderService
                 .GetAll<OrderViewModel>()
-                .Where(x => x.StatusId == (int)OrderStatus.Created).ToList(),
-
+                .Where(x => x.StatusId == (int)OrderStatus.Created)
+                .OrderBy(x=>x.IssuedOn).ToList(),
             };
             return this.View(viewModel);
         }
 
-
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public async Task<IActionResult> Complete(OrdersViewModel input)
         {
             await this.orderService.UpdateOrder(input);
@@ -65,6 +65,8 @@ namespace Di2.Web.Areas.Administration.Controllers
             var user = await this.userManager.GetUserAsync(this.User);
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var receiptId = await this.orderService.CreateReceipt(userId);
+            await this.orderService.AssignReceiptToOrders(receiptId);
+            await this.orderService.SendOrderReceiptMailCustomer(userId, receiptId);
             return this.RedirectToAction(nameof(this.Details),"Orders", new { id = receiptId } );
         }
 
@@ -84,13 +86,14 @@ namespace Di2.Web.Areas.Administration.Controllers
         public IActionResult Details(string id)
         {
             var orders = this.orderService.GetReceiptOrders<OrderViewModel>(id);
+
             var recipientName = this.orderService.GetRecipientName(id);
             var viewModel = new ReceiptViewModel
             {
                 Id = id,
                 IssuedOn = DateTime.UtcNow,
                 RecipientName = recipientName,
-                Orders = orders,
+                Orders = orders.Where(x=>x.ReceiptId==id),
             };
 
             if (viewModel == null)

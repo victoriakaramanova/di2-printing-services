@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
 
     using Di2.Data.Models;
+    using Di2.Data.Models.Enums;
     using Di2.Services.Data;
     using Di2.Web.ViewModels.Materials.ViewModels;
     using Di2.Web.ViewModels.OrderSuppliers;
@@ -120,7 +121,8 @@
         public IActionResult All()
         {
             var viewModel = this.orderSupplierService
-                .GetAllOrderSuppliers<OrderSupplierViewModel>();
+                .GetAllOrderSuppliers<OrderSupplierViewModel>()
+                .Where(x=>x.Status==OrderStatus.Completed || x.Status==OrderStatus.Canceled);
 
             return this.View(viewModel);
         }

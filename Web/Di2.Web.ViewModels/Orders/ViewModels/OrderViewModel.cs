@@ -44,5 +44,9 @@ namespace Di2.Web.ViewModels.Orders.ViewModels
         public int StatusId { get; set; }
 
         public OrderStatus OrderStatus { get; set; }
+
+        public string ReceiptId { get; set; }
+
+        public Receipt Receipt { get; set; }
     }
 }
