@@ -51,6 +51,8 @@ namespace Di2.Web.ViewModels.Orders.ViewModels
 
         public OrderStatus OrderStatus { get; set; }
 
+        public DateTime ModifiedOn { get; set; }
+
         public string ReceiptId { get; set; }
     }
 }

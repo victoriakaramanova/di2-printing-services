@@ -35,7 +35,7 @@
             this.categoriesService = categoriesService;
         }
 
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public IActionResult Index()
         {
             var viewModel = new IndexViewModel

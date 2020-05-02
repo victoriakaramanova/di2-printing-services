@@ -24,8 +24,25 @@ namespace Di2.Web.Areas.Administration.Controllers
             this.userManager = userManager;
         }
 
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> All()
+        {
+            var user = await this.userManager.GetUserAsync(this.User);
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var viewModel = new ListCompleteViewModel
+            {
+                Orders = this.orderService
+                .GetAll<CompleteViewModel>()
+                .Where(x => x.StatusId != (int)OrderStatus.Sent && x.StatusId!=(int)OrderStatus.Created)
+                .OrderBy(x => x.IssuedOn)
+                .ToList(),
+            };
+            
+            return this.View(viewModel);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> AllSent()
         {
             var user = await this.userManager.GetUserAsync(this.User);
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -82,7 +99,7 @@ namespace Di2.Web.Areas.Administration.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        // [Authorize]
         public IActionResult Details(string id)
         {
             var orders = this.orderService.GetReceiptOrders<OrderViewModel>(id);
@@ -104,7 +121,7 @@ namespace Di2.Web.Areas.Administration.Controllers
             return this.View(viewModel);
         }
 
-        [HttpGet]
+        //[HttpGet("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string id)
         {

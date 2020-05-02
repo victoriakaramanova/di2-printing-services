@@ -383,11 +383,24 @@ namespace Di2.Data.Migrations
                     OrdererId = table.Column<string>(nullable: true),
                     StatusId = table.Column<int>(nullable: false),
                     OrderStatus = table.Column<int>(nullable: false),
-                    ReceiptId = table.Column<string>(nullable: true)
+                    ReceiptId = table.Column<string>(nullable: true),
+                    CategoryId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Orders_Materials_MaterialId",
+                        column: x => x.MaterialId,
+                        principalTable: "Materials",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Orders_AspNetUsers_OrdererId",
                         column: x => x.OrdererId,
@@ -547,6 +560,7 @@ namespace Di2.Data.Migrations
                     SubCategoryId = table.Column<int>(nullable: false),
                     Image = table.Column<string>(nullable: true),
                     Quantity = table.Column<double>(nullable: false),
+                    SupplierUnitPrice = table.Column<decimal>(nullable: false),
                     UnitPrice = table.Column<decimal>(nullable: false),
                     Cost = table.Column<decimal>(nullable: false),
                     UserId = table.Column<string>(nullable: true)
@@ -725,9 +739,19 @@ namespace Di2.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Orders_CategoryId",
+                table: "Orders",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Orders_IsDeleted",
                 table: "Orders",
                 column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_MaterialId",
+                table: "Orders",
+                column: "MaterialId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_OrdererId",

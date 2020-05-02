@@ -51,12 +51,13 @@
             var categoryId = this.subCategoryRepository.All()
                 .Where(x => x.Id == subCategoryId)
                 .Select(x => x.CategoryId).FirstOrDefault();
-                //int.Parse(this.categoryRepository
-                //.All()
-                //.Select(y => y.SubCategories
-                //.Select(z => z.Id == subCategoryId)
-                //.FirstOrDefault()).FirstOrDefault().ToString());
-
+            //int.Parse(this.categoryRepository
+            //.All()
+            //.Select(y => y.SubCategories
+            //.Select(z => z.Id == subCategoryId)
+            //.FirstOrDefault()).FirstOrDefault().ToString());
+            var category = this.categoryRepository.All()
+                .FirstOrDefault(x => x.Id == categoryId);
             var material = new Material
             {
                 Name = input.Name,
@@ -64,6 +65,7 @@
                 ExtraInfo = input.ExtraInfo,
                 SubCategoryId = input.SubCategoryId,
                 CategoryId = categoryId,
+                Category = category,
                 Image = imageUrl,
                 UserId = userId,
             };
@@ -88,7 +90,8 @@
                 .FirstOrDefault();
             material.Name = m.Name;
             material.Category = this.categoryRepository.AllWithDeleted()
-                .Where(x => x.Id == m.CategoryId).FirstOrDefault().Name;
+                .Where(x => x.Id == m.Category.Id).FirstOrDefault();
+            
             material.SubCategoryName = this.subCategoryRepository.All()
                 .Where(x => x.Id == m.SubCategoryId).FirstOrDefault().Name;
             return material;

@@ -9,14 +9,15 @@
 @foreach (var product in Model.Deliveries)
 {
     <div class="row">
-        <a asp-controller="Deliveries" asp-action="ById" asp-route-id="@product.MaterialId">@product.MaterialName
-                @*@product.Description
-                @product.ExtraInfo
-                @product.UnitPrice.ToString("#.##")
-                @product.SubCategoryId
-                @product.Quantity
-            @product.Cost*@
-                <img src="@product.Image" />
-            </a>
+        <a asp-controller="Deliveries" asp-action="ById" asp-route-id="@product.MaterialId">
+            <img src="@product.Image" />
+            @*@product.Description
+            @product.ExtraInfo
+            @product.UnitPrice.ToString("#.##")
+            @product.SubCategoryId
+            @product.Quantity
+        @product.Cost*@
+           @product.MaterialName
+        </a>
     </div>
 }

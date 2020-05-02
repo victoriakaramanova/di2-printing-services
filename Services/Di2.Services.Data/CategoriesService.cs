@@ -43,7 +43,7 @@
             IQueryable<Category> query =
                 this.categoriesRepository.All().OrderBy(x => x.Name);
             var categories = this.categoriesRepository.All();
-            return query.To<T>().ToList(); 
+            return query.To<T>().ToList();
         }
 
         public T GetByName<T>(string name)

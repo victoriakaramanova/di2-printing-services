@@ -121,8 +121,8 @@
         public IActionResult All()
         {
             var viewModel = this.orderSupplierService
-                .GetAllOrderSuppliers<OrderSupplierViewModel>()
-                .Where(x=>x.Status==OrderStatus.Completed || x.Status==OrderStatus.Canceled);
+                .GetAllOrderSuppliers<OrderSupplierViewModel>();
+                //.Where(x=>x.Status==OrderStatus.Completed || x.Status==OrderStatus.Canceled);
 
             return this.View(viewModel);
         }

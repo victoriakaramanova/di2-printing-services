@@ -67,8 +67,8 @@
             //OrderViewModel viewModel = input.To<OrderViewModel>();
             if (this.ModelState.IsValid)
             {
-                var categoryName = this.materialsService.GetById(input.MaterialId).Category;
-                var catEng = this.categoriesService.GetByNameBg<CategoryViewModel>(categoryName).NameEng;
+                var category = this.materialsService.GetById(input.MaterialId).Category;
+                var catEng = this.categoriesService.GetByNameBg<CategoryViewModel>(category.Name).NameEng;
                 var user = await this.userManager.GetUserAsync(this.User);
                 await this.orderService.CreateOrder(input, user.Id);
 

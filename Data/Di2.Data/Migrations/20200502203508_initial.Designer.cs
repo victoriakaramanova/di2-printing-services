@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Di2.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200425111306_initial")]
+    [Migration("20200502203508_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -272,6 +272,9 @@ namespace Di2.Data.Migrations
                     b.Property<int>("SubCategoryId")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("SupplierUnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
 
@@ -353,6 +356,9 @@ namespace Di2.Data.Migrations
                     b.Property<decimal>("AvgPrice")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -406,7 +412,11 @@ namespace Di2.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.HasIndex("IsDeleted");
+
+                    b.HasIndex("MaterialId");
 
                     b.HasIndex("OrdererId");
 
@@ -901,7 +911,7 @@ namespace Di2.Data.Migrations
 
             modelBuilder.Entity("Di2.Data.Models.Material", b =>
                 {
-                    b.HasOne("Di2.Data.Models.Category", null)
+                    b.HasOne("Di2.Data.Models.Category", "Category")
                         .WithMany("Materials")
                         .HasForeignKey("CategoryId");
 
@@ -912,6 +922,16 @@ namespace Di2.Data.Migrations
 
             modelBuilder.Entity("Di2.Data.Models.Order", b =>
                 {
+                    b.HasOne("Di2.Data.Models.Category", null)
+                        .WithMany("Orders")
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("Di2.Data.Models.Material", "Material")
+                        .WithMany()
+                        .HasForeignKey("MaterialId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Di2.Data.Models.ApplicationUser", "Orderer")
                         .WithMany("Orders")
                         .HasForeignKey("OrdererId");

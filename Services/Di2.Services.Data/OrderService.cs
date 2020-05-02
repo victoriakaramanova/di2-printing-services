@@ -51,6 +51,9 @@ namespace Di2.Services.Data
                 .Where(x => x.Id == input.MaterialId)
                 .Select(x => x.Image)
                 .FirstOrDefault();
+            var material = this.materialsRepository.All()
+                .FirstOrDefault(x => x.Id == input.MaterialId);
+
             // var subCategoryId = this.materialsRepository.All()
             //.Select(x => x.SubCategoryId).FirstOrDefault();
             // var subCategoryName = this.subCategoriesRepository.All()
@@ -58,6 +61,7 @@ namespace Di2.Services.Data
             var order = new Order
             {
                 Id = Guid.NewGuid().ToString(),
+                Material = material,
                 MaterialId = input.MaterialId,
                 MaterialName = input.MaterialName,
                 Description = input.Description,
@@ -81,6 +85,7 @@ namespace Di2.Services.Data
         public List<T> GetAll<T>()
         {
             IQueryable<Order> query = this.ordersRepository.All();
+            query.Select(x => x.ModifiedOn);
             return query.To<T>().ToList();
 
         }
@@ -189,8 +194,22 @@ namespace Di2.Services.Data
 
         public async Task<string> DeleteAsync(string id)
         {
-            var order = this.ordersRepository.All()
-                    .FirstOrDefault(x => x.Id == id);
+            var order = this.ordersRepository.All().FirstOrDefault(x => x.Id == id);
+            if (order == null)
+            {
+                return null;
+            }
+
+            /*var orderMaterialCategoryId = this.ordersRepository.All()
+                    .FirstOrDefault(x => x.Id == id).Material.CategoryId;
+            this.ordersRepository.All()
+                    .FirstOrDefault(x => x.Id == id)
+                    .Material.CategoryId = null;
+            this.ordersRepository.Update(order);
+            await this.ordersRepository.SaveChangesAsync();*/
+            //orderMaterialCategoryId == null;
+            //var material = this.materialsRepository.All().FirstOrDefault(x => x.Id == orderMatId);
+            //material.CategoryId
             this.ordersRepository.Delete(order);
             await this.ordersRepository.SaveChangesAsync();
             return order.Id;

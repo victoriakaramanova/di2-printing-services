@@ -21,17 +21,20 @@
         private readonly IDeletableEntityRepository<OrderSupplier> orderSuppliersRepository;
         private readonly IDeletableEntityRepository<PriceList> priceListRepository;
         private readonly IEmailSender sender;
+        private readonly IDeletableEntityRepository<Material> materialsRepository;
         private readonly IDeletableEntityRepository<SupplyOrderStatus> supplyOrderStatuses;
 
         public OrderSupplierService(
             IDeletableEntityRepository<OrderSupplier> orderSuppliersRepository,
             IDeletableEntityRepository<PriceList> priceListRepository,
             IEmailSender sender,
+            IDeletableEntityRepository<Material> materialsRepository,
             IDeletableEntityRepository<SupplyOrderStatus> supplyOrderStatuses)
         {
             this.orderSuppliersRepository = orderSuppliersRepository;
             this.priceListRepository = priceListRepository;
             this.sender = sender;
+            this.materialsRepository = materialsRepository;
             this.supplyOrderStatuses = supplyOrderStatuses;
         }
 
@@ -43,10 +46,13 @@
             }
 
             double number;
+            Material material = this.materialsRepository.All()
+                .FirstOrDefault(x => x.Id == priceListInput.MaterialId);
             double.TryParse(orderSupplierInput.Quantity.ToString(), out number);
             var orderSupplier = new OrderSupplier
             {
                 MaterialId = priceListInput.MaterialId,
+                Material = material,
                 SupplierId = priceListInput.SupplierId,
                 OrderDate = orderSupplierInput.OrderDate,
                 Quantity = number,

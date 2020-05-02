@@ -61,6 +61,7 @@
                 CategoryId = materialCategoryId.Value,
                 SubCategoryId = material.SubCategoryId.Value,
                 Quantity = input.Quantity,
+                SupplierUnitPrice = input.UnitPrice,
                 Cost = input.TotalPrice,
                 //QuantityOnStock = stockQuantity,
                 UnitPrice = input.UnitPrice * (1 + (decimal)GlobalConstants.StandardMarkup),

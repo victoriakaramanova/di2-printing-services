@@ -35,6 +35,8 @@ namespace Di2.Data.Models
 
         public double Quantity { get; set; }
 
+        public decimal SupplierUnitPrice { get; set; }
+
         public decimal UnitPrice { get; set; }
 
         public decimal Cost { get; set; }

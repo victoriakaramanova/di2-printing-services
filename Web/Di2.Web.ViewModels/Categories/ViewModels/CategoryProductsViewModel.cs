@@ -6,6 +6,7 @@ using Di2.Web.ViewModels.OrderSuppliers;
 using Di2.Web.ViewModels.SubCategories.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Di2.Web.ViewModels.Categories.ViewModels
@@ -14,16 +15,22 @@ namespace Di2.Web.ViewModels.Categories.ViewModels
     {
         public int MaterialId { get; set; }
 
+        [Display(Name = "Продукт")]
         public string MaterialName { get; set; }
 
+        [Display(Name = "Описание")]
         public string Description { get; set; }
 
+        [Display(Name = "Допълнителна информация")]
         public string ExtraInfo { get; set; }
 
+        [Display(Name = "Количество")]
         public double Quantity { get; set; }
 
+        [Display(Name = "Доставна цена")] // ONLY FOR ADMIN USAGE!!!
         public decimal UnitPrice { get; set; }
-
+        
+        [Display(Name = "Единична цена")]
         public decimal AvgPrice { get; set; }
 
         public string Image { get; set; }
@@ -32,6 +39,7 @@ namespace Di2.Web.ViewModels.Categories.ViewModels
 
         public decimal Cost { get; set; }
 
+        [Display(Name = "Подкатегория на продукта")]
         public string SubCategoryName { get; set; }
         public int SubCategoryId { get; set; }
 

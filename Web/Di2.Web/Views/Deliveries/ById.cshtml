@@ -7,33 +7,104 @@
 
 <style>
     input {
-        border: none;
+        padding:0;
+        margin:0;
     }
-</style>
+    .product-img figure img {
+        min-width:50%;
+        max-width:100%;
+        vertical-align:middle;
+        align-content:center;
+    }
+    .primary-btn {
+        color: #fff;
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 16px 40px;
+        width: 173px;
+        border: 2px solid #EEF1F2;
+        border-radius: 50px;
+        text-transform: uppercase;
+    }
+    .product-content .product-quantity .pro-qty {
+        height: 56px;
+        width: 173px;
+        border: 2px solid #EEF1F2;
+        border-radius: 50px;
+        text-align: center;
+    }
+        .product-content .product-quantity .pro-qty input {
+        width: 50px;
+        text-align: center;
+        background: transparent;
+        border: none;
+        font-size: 18px;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 700;
+        height: 100%;
+    }
+    .product-content .pc-btn {
+        border-color: #D0D7DB;
+        color: #4a4a4a;
+    }
+
+    </style>
 
 <form asp-controller="Deliveries" asp-action="Order" method="post" id="placeOrder">
-    <img src="@Model.Image" />
-    <input asp-for="@Model.MaterialName" readonly="readonly" />
-    <input asp-for="@Model.Description" readonly="readonly" />
-    <input asp-for="@Model.ExtraInfo" style="border:none" readonly="readonly" />
-    <input asp-for="@Model.SubCategoryName" readonly="readonly" />
-    @*<input type="number" @Model.Quantity disabled />*@
-    @* @Model.Cost*@
-    <input asp-for="@Model.AvgPrice" readonly="readonly" />
-    <div class="product-quantity">
-        <span class="pro-qty">
-            <input name="Quantity" id="Quantity" type="number" value="1" class="form-control" />
-            <span asp-validation-for="Quantity" class="text-danger"> </span>
-        </span>
-    </div>
-    <input type="hidden" name="MaterialId" value="@Model.MaterialId" />
-    <input type="submit" class="primary-btn pc-btn" value="Добави" />
+    <section class="product-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="product-img">
+                        <figure>
+                            <img src="@Model.Image" />
+                        </figure>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="product-content">
+                        @*<label asp-for="@Model.MaterialName"></label>*@
+                        <h4><input asp-for="@Model.MaterialName" style="border:none; width: 20em;padding:0px;overflow:visible!" readonly="readonly" /></h4>
+                        @*<label asp-for="@Model.Description"></label>*@
+                        <p><input asp-for="@Model.Description" style="border:none; padding:0px" readonly="readonly" /></p>
+                        @*<label asp-for="@Model.ExtraInfo"></label>*@
+                        <p><input asp-for="@Model.ExtraInfo" style="border:none" readonly="readonly" /></p>
+                        <label asp-for="@Model.SubCategoryName"></label>
+                        <p><input asp-for="@Model.SubCategoryName" style="border:none; padding:0px;width: 30em;overflow:visible!" readonly="readonly" /></p>
+                        @* @Model.Cost*@
+                        <label asp-for="@Model.AvgPrice"></label>
+                        <h5><input asp-for="@Model.AvgPrice" id="price" style="border:none" readonly="readonly" /></h5>
+                        <div id="total">Сума: @Model.AvgPrice.ToString("F2")</div>
+                        <input type="hidden" name="MaterialId" value="@Model.MaterialId" />
+                        <div class="product-quantity" style="display:inline-block;margin-right:10px">
+                            <div class="pro-qty">
+                                @*<label asp-for="@Model.Quantity"></label>*@
+                                <input class="qtybtn" name="Quantity" id="Quantity" type="number" value="1" onchange="sendQty()" />
+                                <span asp-validation-for="Quantity" class="text-danger"> </span>
+                            </div>
+                        </div>
+                        @*<a href="#" class="primary-btn pc-btn">Добави</a>*@
+                        <input type="submit" class="primary-btn pc-btn" value="Добави" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </form>
 
 
-@*@section Scripts{
+@section Scripts{
     <script>
-        $('#placeOrder').validate({
+        function sendQty() {
+            //debugger;
+            let totalPrice = 0;
+            let qty = +$('#Quantity').val();
+            let price = +$('#price').val();
+            totalPrice = (qty * price).toFixed(2);
+            $('#total').text('Сума: ' + totalPrice);
+        }
+        @*$('#placeOrder').validate({
             rules: {
                 //required: true,
                 remote: {
@@ -46,6 +117,6 @@
                     }
                 }
             }
-        })
+        })*@
     </script>
-    }*@
+    }

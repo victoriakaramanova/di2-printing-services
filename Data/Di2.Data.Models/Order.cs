@@ -10,7 +10,8 @@ namespace Di2.Data.Models
     {
         public int MaterialId { get; set; }
 
-        //public Material Material { get; set; }
+        public Material Material { get; set; }
+
         public string MaterialName { get; set; }
 
         public string Description { get; set; }

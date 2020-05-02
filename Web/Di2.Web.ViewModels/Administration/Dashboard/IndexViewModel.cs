@@ -36,6 +36,8 @@
 
         public int OrdersCount { get; set; }
 
+        public string ViewAllSentOrders { get; set; }
+
         public string ViewAllOrders { get; set; }
     }
 }

@@ -17,13 +17,14 @@
         @for (int i = 0; i < Model.Pricelists.Count; i++)
         {
         <div class="order_row">
-            <input asp-for="@Model.Pricelists[i].Material.Name"/>
-            <input asp-for="@Model.Pricelists[i].Supplier.Name" />
-            <input asp-for="@Model.Pricelists[i].MinimumQuantityPerOrder" />
-            <input asp-for="@Model.Pricelists[i].UnitPrice" />
+            <input asp-for="@Model.Pricelists[i].Material.Name" style="border:none"/>
+            <input asp-for="@Model.Pricelists[i].Supplier.Name" style="border:none"/>
+            @*<h6 class="card-title text-center" data-toggle="tooltip" data-placement="bottom" data-original-title="@Model.Pricelists[i].MinimumQuantityPerOrder"></h6>*@
+            <input asp-for="@Model.Pricelists[i].MinimumQuantityPerOrder" style="border:none" />
+            <input asp-for="@Model.Pricelists[i].UnitPrice" style="border:none" />
             @*<input class="unitPrice" asp-for="@Model.Pricelists[i].UnitPrice" />*@
 
-            <input type="datetime" asp-for="@Model.OrderSub[i].OrderDate" value="@Model.OrderSub[i].OrderDate.ToShortDateString()"/>
+            <input type="datetime" asp-for="@Model.OrderSub[i].OrderDate" value="@Model.OrderSub[i].OrderDate.ToShortDateString()" style="border:none" />
             @* @Html.TextBoxFor(x=>x.OrderSub[i].Quantity, new { placeholder = $"{Model.Pricelists[i].MinimumQuantityPerOrder}" })*@
 
             @*<input class="qty" onchange="sendQty()" asp-for="@Model.OrderSub[i].Quantity" />

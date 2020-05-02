@@ -11,6 +11,7 @@
         public Category()
         {
             this.SubCategories = new HashSet<SubCategory>();
+            this.Orders = new HashSet<Order>();
             //this.OrderSuppliers = new HashSet<OrderSupplier>();
         }
 
@@ -33,5 +34,7 @@
         public virtual ICollection<OrderSupplier> OrderSuppliers { get; set; }
 
         public ICollection<Delivery> Deliveries { get; set; }
+
+        public ICollection<Order> Orders { get; set; }
     }
 }

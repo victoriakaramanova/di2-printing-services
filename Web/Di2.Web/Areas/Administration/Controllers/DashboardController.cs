@@ -60,6 +60,7 @@
                 ViewAllOrderSuppliersPath = "OrderSuppliers/All",
 
                 ViewAllOrders = "Orders/All",
+                ViewAllSentOrders = "Orders/AllSent",
                 OrdersCount = this.orderService.GetCount(),
                 ViewAllCreatedOrdersPath = "Orders/AllCreated",
             };

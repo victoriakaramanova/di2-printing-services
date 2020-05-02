@@ -9,14 +9,14 @@
 @foreach (var item in Model)
 {
     <div class="row">
+        <img src="@item.Image" alt="materialImg" class="img-fluid max-width: 20%" />
         <h4>@item.Name</h4>
         <h5>@item.Description</h5>
         <h5>@item.ExtraInfo</h5>
         @*<i class="fas fa-user-edit"></i>*@
         <h5>@item.UserUserName</h5>
-        <img src="@item.Image" alt="materialImg" class="img-fluid max-width: 20%" />
         <h6>@item.SubCategoryName</h6>
-        <h6>@item.Category</h6>
+        <h6>@item.Category.Name</h6>
         <form asp-controller="Materials" asp-action="Delete" asp-route-id="@item.Id" method="get">
             <input type="submit" class="btn-danger" value="Изтрий" />
         </form>
