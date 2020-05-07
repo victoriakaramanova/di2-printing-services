@@ -2,8 +2,10 @@
 using Di2.Data.Models;
 using Di2.Services.Mapping;
 using Di2.Web.ViewModels.Deliveries;
+using Di2.Web.ViewModels.Orders.ViewModels;
 using Di2.Web.ViewModels.OrderSuppliers;
 using Di2.Web.ViewModels.SubCategories.ViewModels;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,7 +13,7 @@ using System.Text;
 
 namespace Di2.Web.ViewModels.Categories.ViewModels
 {
-    public class CategoryProductsViewModel : IMapFrom<Delivery>, IMapTo<CategoryProductsViewModel>,IMapTo<Delivery>//, IMapFrom<Category>,IMapFrom<Material>, IMapTo<CategoryProductsViewModel>
+    public class CategoryProductsViewModel : IMapFrom<Delivery>, IMapTo<CategoryProductsViewModel>,IMapTo<Delivery>, IMapTo<OrderViewModel>,IMapFrom<Material>
     {
         public int MaterialId { get; set; }
 
@@ -41,7 +43,9 @@ namespace Di2.Web.ViewModels.Categories.ViewModels
 
         [Display(Name = "Подкатегория на продукта")]
         public string SubCategoryName { get; set; }
+
         public int SubCategoryId { get; set; }
 
+        public ICollection<IFormFile> PicturesFormFiles { get; set; }
     }
 }

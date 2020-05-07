@@ -29,7 +29,7 @@
             @*<input class="qty" onchange="sendQty()" asp-for="@Model.OrderSub[i].Quantity" />
         <span asp-validation-for="@Model.OrderSub[i].Quantity" class="text-danger"></span>*@
 
-            <input type="number" asp-for="@Model.OrderSub[i].Quantity" class="qty" onchange="sendQty()" />
+            <input type="number" asp-for="@Model.OrderSub[i].Quantity" placeholder="@Model.Pricelists[i].MinimumQuantityPerOrder" class="qty" onchange="sendQty()" />
 
         </div>
         }

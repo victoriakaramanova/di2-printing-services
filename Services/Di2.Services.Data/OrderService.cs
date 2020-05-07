@@ -26,6 +26,7 @@ namespace Di2.Services.Data
         private readonly IDeletableEntityRepository<Receipt> receiptsRepository;
         private readonly IEmailSender sender;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IPictureService pictureService;
 
         public OrderService(
             IDeletableEntityRepository<Order> ordersRepository,
@@ -34,7 +35,8 @@ namespace Di2.Services.Data
             IDeletableEntityRepository<SubCategory> subCategoriesRepository,
             IDeletableEntityRepository<Receipt> receiptsRepository,
             IEmailSender sender,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            IPictureService pictureService)
         {
             this.ordersRepository = ordersRepository;
             this.deliveriesRepository = deliveriesRepository;
@@ -43,9 +45,10 @@ namespace Di2.Services.Data
             this.receiptsRepository = receiptsRepository;
             this.sender = sender;
             this.userManager = userManager;
+            this.pictureService = pictureService;
         }
 
-        public async Task<int> CreateOrder(OrderInputModel input, string userId)
+        public async Task<int> CreateOrder(OrderInputModel input, string userId, List<string> customerImages)
         {
             var image = this.materialsRepository.All()
                 .Where(x => x.Id == input.MaterialId)
@@ -74,9 +77,11 @@ namespace Di2.Services.Data
                 IssuedOn = DateTime.UtcNow,
                 TotalPrice = input.AvgPrice * (decimal)input.Quantity,
                 OrdererId = userId,
+                //CustomerImages = customerImages,
             };
             //order.OrderStatus = OrderStatus.Sent;
             await this.ordersRepository.AddAsync(order);
+            await this.pictureService.Upload(input.PicturesFormFiles, order.Id);
             int result =
                 await this.ordersRepository.SaveChangesAsync();
             return result;

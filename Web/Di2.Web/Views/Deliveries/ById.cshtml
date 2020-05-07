@@ -7,15 +7,17 @@
 
 <style>
     input {
-        padding:0;
-        margin:0;
+        padding: 0;
+        margin: 0;
     }
+
     .product-img figure img {
-        min-width:50%;
-        max-width:100%;
-        vertical-align:middle;
-        align-content:center;
+        min-width: 50%;
+        max-width: 100%;
+        vertical-align: middle;
+        align-content: center;
     }
+
     .primary-btn {
         color: #fff;
         display: inline-block;
@@ -27,6 +29,7 @@
         border-radius: 50px;
         text-transform: uppercase;
     }
+
     .product-content .product-quantity .pro-qty {
         height: 56px;
         width: 173px;
@@ -34,24 +37,50 @@
         border-radius: 50px;
         text-align: center;
     }
+
         .product-content .product-quantity .pro-qty input {
-        width: 50px;
-        text-align: center;
-        background: transparent;
-        border: none;
-        font-size: 18px;
-        font-family: "Montserrat", sans-serif;
-        font-weight: 700;
-        height: 100%;
-    }
+            width: 50px;
+            text-align: center;
+            background: transparent;
+            border: none;
+            font-size: 18px;
+            font-family: "Montserrat", sans-serif;
+            font-weight: 700;
+            height: 100%;
+        }
+
     .product-content .pc-btn {
         border-color: #D0D7DB;
         color: #4a4a4a;
     }
 
-    </style>
+    .dropzone-container {
+        width: 100%;
+    }
 
-<form asp-controller="Deliveries" asp-action="Order" method="post" id="placeOrder">
+    .dropzone-drop-area {
+        background-color: lightcyan;
+        border: dashed 3px grey;
+        width: 450px;
+        min-height: 150px;
+        box-sizing: border-box;
+        padding: 6px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        cursor: pointer;
+        position: relative;
+    }
+
+        .dropzone-drop-area:hover {
+            background-color: darkorange;
+            border: dashed 3px black;
+        }
+</style>
+
+<form asp-controller="Deliveries" asp-action="Order" method="post" id="placeOrder" enctype="multipart/form-data">
     <section class="product-page">
         <div class="container">
             <div class="row">
@@ -61,6 +90,12 @@
                             <img src="@Model.Image" />
                         </figure>
                     </div>
+                    @if (Model.CategoryId == 1)
+                    {
+                        <input type="file" asp-for="@Model.PicturesFormFiles" id="picturesFormFiles" name="picturesFormFiles" class="form-control" multiple />
+                        @*<span asp-validation-for="Image" class="text-danger"></span>*@
+                    }
+                    
                 </div>
                 <div class="col-lg-6">
                     <div class="product-content">
@@ -104,6 +139,60 @@
             totalPrice = (qty * price).toFixed(2);
             $('#total').text('Сума: ' + totalPrice);
         }
+
+        function initializeDragAndDropArea() {
+            if (typeof (window["FileReader"]) == "undefined") {
+                return;
+            }
+
+            var dragAndDropArea = $("#dragAndDropArea");
+
+            if (dragAndDropArea.length == 0) {
+                return;
+            }
+
+            dragAndDropArea[0].ondragover = function () {
+                dragAndDropArea.addClass("drag-and-drop-area-dragging");
+                return false;
+            };
+
+            dragAndDropArea[0].ondragleave = function () {
+                dragAndDropArea.removeClass("drag-and-drop-area-dragging");
+                return false;
+            };
+
+            dragAndDropArea[0].ondrop = function (event) {
+                dragAndDropArea.removeClass("drag-and-drop-area-dragging");
+
+                var formData = new FormData();
+
+                for (var i = 0; i != event.dataTransfer.files.length; i++) {
+                    formData.append("files", event.dataTransfer.files[i]);
+                }
+
+                $.ajax(
+                    {
+                        url: "api/uploader",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        type: "POST",
+                        success: function (data) {
+                            alert("Files Uploaded!");
+                        }
+                    }
+                );
+
+                return false;
+            }
+        }
+
+        $(document).ready(
+            function () {
+                initializeDragAndDropArea();
+            }
+        );
+
         @*$('#placeOrder').validate({
             rules: {
                 //required: true,
@@ -119,4 +208,5 @@
             }
         })*@
     </script>
-    }
+
+}

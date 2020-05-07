@@ -42,14 +42,14 @@
     </div>
 </div>
 
-@*@if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+@if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
 {
     <div class="col-lg-4">
         <div class="g-mb-20">
             <vc:customer-messages></vc:customer-messages>
         </div>
     </div>
-}*@
+}
 
 @*@foreach (var material in Model.Materials)
     {

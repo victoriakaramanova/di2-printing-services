@@ -16,6 +16,8 @@
     //using Microsoft.AspNet.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.VisualStudio.Web.CodeGenerators.Mvc;
+    using Di2.Services;
+    using Microsoft.AspNetCore.Http;
 
     [Route("[controller]/[action]")]
     public class DeliveriesController : BaseController
@@ -25,19 +27,22 @@
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IOrderService orderService;
         private readonly ICategoriesService categoriesService;
+        private readonly ICloudinaryService cloudinaryService;
 
         public DeliveriesController(
             IDeliveriesService deliveriesService, 
             IMaterialsService materialsService, 
             UserManager<ApplicationUser> userManager,
             IOrderService orderService,
-            ICategoriesService categoriesService)
+            ICategoriesService categoriesService,
+            ICloudinaryService cloudinaryService)
         {
             this.deliveriesService = deliveriesService;
             this.materialsService = materialsService;
             this.userManager = userManager;
             this.orderService = orderService;
             this.categoriesService = categoriesService;
+            this.cloudinaryService = cloudinaryService;
         }
 
         [HttpGet("{materialId}")]
@@ -64,13 +69,23 @@
                 this.ModelState.AddModelError("Quantity", "Too much qty!");
             }
 
+            List<IFormFile> files = input.PicturesFormFiles;
+            List<string> customerImages = new List<string>();
+            string pic;
             //OrderViewModel viewModel = input.To<OrderViewModel>();
             if (this.ModelState.IsValid)
             {
                 var category = this.materialsService.GetById(input.MaterialId).Category;
                 var catEng = this.categoriesService.GetByNameBg<CategoryViewModel>(category.Name).NameEng;
                 var user = await this.userManager.GetUserAsync(this.User);
-                await this.orderService.CreateOrder(input, user.Id);
+                foreach (var file in files.Where(x=>x.Length>0))
+                {
+                    pic = await this.cloudinaryService.UploadPictureAsync(file, input.MaterialName);
+                    customerImages.Add(pic);
+                }
+                    
+                //var customerImages = await this.cloudinaryService.UploadPictureAsync
+                await this.orderService.CreateOrder(input, user.Id,customerImages);
 
                 return this.RedirectToAction("ByName", "Categories", new { name = catEng });
             }

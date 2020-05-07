@@ -30,6 +30,8 @@ namespace Di2.Data.Models
 
         public decimal TotalPrice { get; set; }
 
+        public ICollection<Picture> Pictures { get; set; }
+
         public string OrdererId { get; set; }
 
         public ApplicationUser Orderer { get; set; }

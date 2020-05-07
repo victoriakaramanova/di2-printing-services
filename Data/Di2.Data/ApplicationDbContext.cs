@@ -42,6 +42,8 @@
 
         public DbSet<Delivery> Deliveries { get; set; }
 
+        public DbSet<Picture> Pictures { get; set; }
+
         public DbSet<ContactForm> ContactForms { get; set; }
 
         public DbSet<Order> Orders { get; set; }

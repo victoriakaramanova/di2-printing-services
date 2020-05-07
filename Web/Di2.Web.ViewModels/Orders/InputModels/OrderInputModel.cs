@@ -2,6 +2,7 @@
 using Di2.Data.Models;
 using Di2.Services.Mapping;
 using Di2.Web.ViewModels.Orders.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -42,6 +43,8 @@ namespace Di2.Web.ViewModels.Orders.InputModels
         public int StatusId { get; set; }
 
         //public OrderStatus OrderStatus { get; set; }
+
+        public List<IFormFile> PicturesFormFiles { get; set; }
     }
 
    // [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
