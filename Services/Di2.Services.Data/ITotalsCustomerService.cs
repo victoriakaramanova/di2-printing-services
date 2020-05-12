@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Di2.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,6 @@ namespace Di2.Services.Data
     {
         int GetStatus(string orderId);
 
-        Task<int> ChangeOrderStatus(string orderId, int isCompleted);
+        Task<int> ChangeOrderStatus(string orderId, int isCompleted, ApplicationUser orderer);
     }
 }

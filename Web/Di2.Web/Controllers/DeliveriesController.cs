@@ -30,8 +30,8 @@
         private readonly ICloudinaryService cloudinaryService;
 
         public DeliveriesController(
-            IDeliveriesService deliveriesService, 
-            IMaterialsService materialsService, 
+            IDeliveriesService deliveriesService,
+            IMaterialsService materialsService,
             UserManager<ApplicationUser> userManager,
             IOrderService orderService,
             ICategoriesService categoriesService,
@@ -63,7 +63,7 @@
         [Authorize]
         public async Task<IActionResult> Order(OrderInputModel input)
         {
-            if (this.CheckDeliveredQty(input.MaterialId,input.Quantity)==null)
+            if (this.CheckDeliveredQty(input.MaterialId, input.Quantity) == null)
             {
                 //return this.ValidationProblem();
                 this.ModelState.AddModelError("Quantity", "Too much qty!");
@@ -78,19 +78,26 @@
                 var category = this.materialsService.GetById(input.MaterialId).Category;
                 var catEng = this.categoriesService.GetByNameBg<CategoryViewModel>(category.Name).NameEng;
                 var user = await this.userManager.GetUserAsync(this.User);
-                foreach (var file in files.Where(x=>x.Length>0))
+                if (category.Id == 1)
                 {
-                    pic = await this.cloudinaryService.UploadPictureAsync(file, input.MaterialName);
-                    customerImages.Add(pic);
-                }
-                    
-                //var customerImages = await this.cloudinaryService.UploadPictureAsync
-                await this.orderService.CreateOrder(input, user.Id,customerImages);
+                    foreach (var file in files.Where(x => x.Length > 0))
+                    {
+                        pic = await this.cloudinaryService.UploadPictureAsync(file, input.MaterialName);
+                        customerImages.Add(pic);
+                    }
 
+                    //var customerImages = await this.cloudinaryService.UploadPictureAsync
+                    await this.orderService.CreateOrder(input, user.Id, customerImages);
+                }
+
+                else
+                {
+                    await this.orderService.CreateOrder(input, user.Id, customerImages = null);
+                }
                 return this.RedirectToAction("ByName", "Categories", new { name = catEng });
             }
-                //return this.View(input);
-            return this.RedirectToAction("ById","Deliveries",new { materialId = input.MaterialId});
+            //return this.View(input);
+            return this.RedirectToAction("ById", "Deliveries", new { materialId = input.MaterialId });
         }
 
         [AcceptVerbs("Get", "Post")]

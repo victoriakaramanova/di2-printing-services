@@ -3,6 +3,7 @@ using Di2.Data.Models.Enums;
 using Di2.Services.Mapping;
 using Di2.Web.ViewModels.Materials.ViewModels;
 using Di2.Web.ViewModels.Orders.InputModels;
+using Di2.Web.ViewModels.Pictures;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -54,6 +55,8 @@ namespace Di2.Web.ViewModels.Orders.ViewModels
         public DateTime ModifiedOn { get; set; }
 
         public string ReceiptId { get; set; }
+
+        public ICollection<PictureViewModel> Pictures { get; set; }
     }
 }
 

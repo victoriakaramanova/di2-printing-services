@@ -32,7 +32,7 @@ namespace Di2.Web.Controllers
             var viewModel = new OrdersViewModel
             {
                 Orders = this.orderService
-                .GetAll<OrderViewModel>()
+                .GetAll<OrderViewModel>().Distinct()
                 .Where(x => x.StatusId == (int)OrderStatus.Created).ToList(),
 
             };

@@ -92,7 +92,7 @@
                     </div>
                     @if (Model.CategoryId == 1)
                     {
-                        <input type="file" asp-for="@Model.PicturesFormFiles" id="picturesFormFiles" name="picturesFormFiles" class="form-control" multiple />
+                        <input type="file" asp-for="@Model.PicturesFormFiles" id="picturesFormFiles" name="picturesFormFiles" onchange="trigger()" class="form-control" multiple />
                         @*<span asp-validation-for="Image" class="text-danger"></span>*@
                     }
                     
@@ -110,7 +110,7 @@
                         @* @Model.Cost*@
                         <label asp-for="@Model.AvgPrice"></label>
                         <h5><input asp-for="@Model.AvgPrice" id="price" style="border:none" readonly="readonly" /></h5>
-                        <div id="total">Сума: @Model.AvgPrice.ToString("F2")</div>
+                        <h4 id="total">Сума: @Model.AvgPrice.ToString("F2")</h4>
                         <input type="hidden" name="MaterialId" value="@Model.MaterialId" />
                         <div class="product-quantity" style="display:inline-block;margin-right:10px">
                             <div class="pro-qty">
@@ -131,82 +131,32 @@
 
 @section Scripts{
     <script>
+        function trigger() {
+            let totalPrice = 0;
+            let qty = +$('#Quantity').val();
+            let price = +$('#price').val();
+            if ($('#picturesFormFiles').get(0).files.length > 0) {
+                //price = (price * 1.12).toFixed(2);
+                +$('#price').val((price * 1.12).toFixed(2));
+
+                totalPrice = (qty * price * 1.12);
+
+                $('#total').text('Сума: ' + totalPrice.toFixed(2));
+            }
+        }
+
         function sendQty() {
             //debugger;
             let totalPrice = 0;
             let qty = +$('#Quantity').val();
             let price = +$('#price').val();
-            totalPrice = (qty * price).toFixed(2);
-            $('#total').text('Сума: ' + totalPrice);
+            
+                //totalPrice = (qty * price).toFixed(2);
+
+                totalPrice = (qty * price);
+
+            $('#total').text('Сума: ' + totalPrice.toFixed(2));
         }
-
-        function initializeDragAndDropArea() {
-            if (typeof (window["FileReader"]) == "undefined") {
-                return;
-            }
-
-            var dragAndDropArea = $("#dragAndDropArea");
-
-            if (dragAndDropArea.length == 0) {
-                return;
-            }
-
-            dragAndDropArea[0].ondragover = function () {
-                dragAndDropArea.addClass("drag-and-drop-area-dragging");
-                return false;
-            };
-
-            dragAndDropArea[0].ondragleave = function () {
-                dragAndDropArea.removeClass("drag-and-drop-area-dragging");
-                return false;
-            };
-
-            dragAndDropArea[0].ondrop = function (event) {
-                dragAndDropArea.removeClass("drag-and-drop-area-dragging");
-
-                var formData = new FormData();
-
-                for (var i = 0; i != event.dataTransfer.files.length; i++) {
-                    formData.append("files", event.dataTransfer.files[i]);
-                }
-
-                $.ajax(
-                    {
-                        url: "api/uploader",
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        type: "POST",
-                        success: function (data) {
-                            alert("Files Uploaded!");
-                        }
-                    }
-                );
-
-                return false;
-            }
-        }
-
-        $(document).ready(
-            function () {
-                initializeDragAndDropArea();
-            }
-        );
-
-        @*$('#placeOrder').validate({
-            rules: {
-                //required: true,
-                remote: {
-                    url: '/Deliveries/CheckDeliveredQty',
-                    type: 'post',
-                    data: {
-                        quantity: function () {
-                            return $('#Quantity').val();
-                        }
-                    }
-                }
-            }
-        })*@
     </script>
 
 }

@@ -1,18 +1,19 @@
-﻿using Di2.Data.Models;
-using Di2.Data.Models.Enums;
-using Di2.Services.Data;
-using Di2.Web.ViewModels.Orders.ViewModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-
-namespace Di2.Web.Areas.Administration.Controllers
+﻿namespace Di2.Web.Areas.Administration.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
+
+    using Di2.Data.Models;
+    using Di2.Data.Models.Enums;
+    using Di2.Services.Data;
+    using Di2.Web.ViewModels.Orders.ViewModels;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+
     public class OrdersController : AdministrationController
     {
         private readonly IOrderService orderService;
@@ -32,12 +33,12 @@ namespace Di2.Web.Areas.Administration.Controllers
             var viewModel = new ListCompleteViewModel
             {
                 Orders = this.orderService
-                .GetAll<CompleteViewModel>()
+                .GetAll<CompleteViewModel>().Distinct()
                 .Where(x => x.StatusId != (int)OrderStatus.Sent && x.StatusId!=(int)OrderStatus.Created)
                 .OrderBy(x => x.IssuedOn)
                 .ToList(),
             };
-            
+
             return this.View(viewModel);
         }
 
@@ -49,7 +50,7 @@ namespace Di2.Web.Areas.Administration.Controllers
             var viewModel = new ListCompleteViewModel
             {
                 Orders = this.orderService
-                .GetAll<CompleteViewModel>()
+                .GetAll<CompleteViewModel>().Distinct()
                 .Where(x => x.StatusId == (int)OrderStatus.Sent)
                 .OrderBy(x=>x.IssuedOn)
                 .ToList(),
@@ -65,7 +66,7 @@ namespace Di2.Web.Areas.Administration.Controllers
             var viewModel = new OrdersViewModel
             {
                 Orders = this.orderService
-                .GetAll<OrderViewModel>()
+                .GetAll<OrderViewModel>().Distinct()
                 .Where(x => x.StatusId == (int)OrderStatus.Created)
                 .OrderBy(x=>x.IssuedOn).ToList(),
             };

@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -48,7 +49,7 @@ namespace Di2.Services.Data
             this.pictureService = pictureService;
         }
 
-        public async Task<int> CreateOrder(OrderInputModel input, string userId, List<string> customerImages)
+        public async Task<int> CreateOrder(OrderInputModel input, string userId, List<string> customerImages = null)
         {
             var image = this.materialsRepository.All()
                 .Where(x => x.Id == input.MaterialId)
@@ -81,7 +82,17 @@ namespace Di2.Services.Data
             };
             //order.OrderStatus = OrderStatus.Sent;
             await this.ordersRepository.AddAsync(order);
-            await this.pictureService.Upload(input.PicturesFormFiles, order.Id);
+            if (material.CategoryId == 1)
+            {
+                await this.pictureService.Upload(input.PicturesFormFiles, order.Id);
+                /*if (order.Pictures.Count > 0)
+                {
+                    order.AvgPrice = input.AvgPrice * 1.12m;
+                    order.TotalPrice = input.AvgPrice * (decimal)input.Quantity;
+                    this.ordersRepository.Update(order);
+                }*/
+            }
+
             int result =
                 await this.ordersRepository.SaveChangesAsync();
             return result;
@@ -92,7 +103,6 @@ namespace Di2.Services.Data
             IQueryable<Order> query = this.ordersRepository.All();
             query.Select(x => x.ModifiedOn);
             return query.To<T>().ToList();
-
         }
 
         public async Task UpdateOrder(OrdersViewModel input)
@@ -159,6 +169,7 @@ namespace Di2.Services.Data
                 order.ReceiptId = receiptId;
                 this.ordersRepository.Update(order);
             }
+
             var result = await this.ordersRepository.SaveChangesAsync();
             return result;
         }
@@ -275,7 +286,7 @@ namespace Di2.Services.Data
 
             sb.AppendLine(@"</tbody>
                 </ table > ");
-            await this.sender.SendEmailAsync(GlobalConstants.SystemEmail, GlobalConstants.SystemName, user.Email, $"Поръчка по разписка " + receiptId, $"Здравейте, {user.UserName}, Получихме от Вас следната поръчка:" + sb.ToString() +$"Общо: {orders.Sum(x=>x.AvgPrice*(decimal)x.Quantity).ToString("f2")} лв" +$"Ще Ви уведомим, когато е готова. Поздрави - {GlobalConstants.SystemName}");
+            await this.sender.SendEmailAsync(GlobalConstants.SystemEmail, GlobalConstants.SystemName, user.Email, $"Поръчка по разписка " + receiptId, $"Здравейте, {user.UserName}, Получихме от Вас следната поръчка:" + sb.ToString() + $" за общо {orders.Sum(x => x.AvgPrice * (decimal)x.Quantity).ToString("f2")} лв" + $"Ще Ви уведомим, когато е готова. Поздрави - {GlobalConstants.SystemName}");
         }
     }
 }

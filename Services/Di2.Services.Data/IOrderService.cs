@@ -10,7 +10,7 @@ namespace Di2.Services.Data
 {
     public interface IOrderService
     {
-        Task<int> CreateOrder(OrderInputModel input, string userId, List<string> customerImages);
+        Task<int> CreateOrder(OrderInputModel input, string userId, List<string> customerImages=null);
 
         List<T> GetAll<T>();
 
