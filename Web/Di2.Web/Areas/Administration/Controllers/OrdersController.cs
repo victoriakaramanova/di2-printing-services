@@ -52,7 +52,7 @@
                 Orders = this.orderService
                 .GetAll<CompleteViewModel>().Distinct()
                 .Where(x => x.StatusId == (int)OrderStatus.Sent)
-                .OrderBy(x=>x.IssuedOn)
+                .OrderBy(x => x.IssuedOn)
                 .ToList(),
             };
             return this.View(viewModel);
@@ -68,7 +68,7 @@
                 Orders = this.orderService
                 .GetAll<OrderViewModel>().Distinct()
                 .Where(x => x.StatusId == (int)OrderStatus.Created)
-                .OrderBy(x=>x.IssuedOn).ToList(),
+                .OrderBy(x => x.IssuedOn).ToList(),
             };
             return this.View(viewModel);
         }
@@ -79,13 +79,13 @@
         {
             await this.orderService.UpdateOrder(input);
             await this.orderService.CompleteOrder(input);
-
+            var deliveryAddress = input.DeliveryAddress;
             var user = await this.userManager.GetUserAsync(this.User);
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var receiptId = await this.orderService.CreateReceipt(userId);
+            var receiptId = await this.orderService.CreateReceipt(userId,deliveryAddress);
             await this.orderService.AssignReceiptToOrders(receiptId);
             await this.orderService.SendOrderReceiptMailCustomer(userId, receiptId);
-            return this.RedirectToAction(nameof(this.Details),"Orders", new { id = receiptId } );
+            return this.RedirectToAction(nameof(this.Details), "Orders", new { id = receiptId } );
         }
 
         [HttpPost]
@@ -104,14 +104,16 @@
         public IActionResult Details(string id)
         {
             var orders = this.orderService.GetReceiptOrders<OrderViewModel>(id);
-
+            var aggregateOrder = this.orderService.GetById<OrdersViewModel>(id);
+            var deliveryAddress = aggregateOrder.DeliveryAddress;
             var recipientName = this.orderService.GetRecipientName(id);
             var viewModel = new ReceiptViewModel
             {
                 Id = id,
                 IssuedOn = DateTime.UtcNow,
                 RecipientName = recipientName,
-                Orders = orders.Where(x=>x.ReceiptId==id),
+                Orders = orders.Where(x=>x.ReceiptId == id),
+                DeliveryAddress = deliveryAddress,
             };
 
             if (viewModel == null)

@@ -2,7 +2,7 @@
 
 namespace Di2.Data.Migrations
 {
-    public partial class _070520202 : Migration
+    public partial class _1405 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -43,8 +43,14 @@
     <div class="form-holder w-25">
         <h3 class="text-left">Издадена на</h3>
     </div>
-    <div class="price-holder w-75 text-right">
+    <div class="price-holder w-25 text-right">
         @Model.IssuedOn
+    </div>
+    <div class="form-holder w-auto">
+        <h3 class="text-left">Адрес за доставка</h3>
+    </div>
+    <div class="form-holder w-auto">
+        @Model.DeliveryAddress
     </div>
 </div>
 <div class="finish-order-holder w-50 mx-auto d-flex justify-content-between">

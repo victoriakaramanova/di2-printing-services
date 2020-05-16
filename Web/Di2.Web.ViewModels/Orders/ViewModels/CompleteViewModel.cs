@@ -44,6 +44,8 @@ namespace Di2.Web.ViewModels.Orders.ViewModels
 
         public int StatusId { get; set; }
 
+        public string DeliveryAddress { get; set; }
+
         public string SwitchValue => this.StatusId == 1 ?
          "v-switcher v-switcher-mode--tri v-switcher-state--active"
          : this.StatusId == -1

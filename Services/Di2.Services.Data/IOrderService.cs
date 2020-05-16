@@ -20,7 +20,7 @@ namespace Di2.Services.Data
 
         IEnumerable<T> GetReceiptOrders<T>(string receiptId);
 
-        Task<string> CreateReceipt(string recipientId);
+        Task<string> CreateReceipt(string recipientId, string deliveryAddress);
 
         T GetById<T>(string id);
 

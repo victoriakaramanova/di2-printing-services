@@ -36,6 +36,8 @@ namespace Di2.Data.Models
 
         public ApplicationUser Orderer { get; set; }
 
+        public string DeliveryAddress { get; set; }
+
         public int StatusId { get; set; }
 
         public OrderStatus OrderStatus { get; set; }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Di2.Data.Models
 {
-    public class Receipt: BaseDeletableModel<string>
+    public class Receipt : BaseDeletableModel<string>
     {
         public Receipt()
         {
@@ -19,5 +19,7 @@ namespace Di2.Data.Models
         public string RecipientId { get; set; }
 
         public ApplicationUser Recipient { get; set; }
+
+        public string DeliveryAddress { get; set; }
     }
 }

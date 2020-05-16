@@ -1,24 +1,24 @@
-﻿namespace Di2.Web.Controllers
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using Di2.Data.Models;
-    using Di2.Services.Data;
-    using Di2.Web.ViewModels.Categories.ViewModels;
-    using Di2.Web.ViewModels.Deliveries;
-    using Di2.Web.ViewModels.Orders.InputModels;
-    using Di2.Web.ViewModels.Orders.ViewModels;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Identity;
-    using Di2.Services.Mapping;
-    //using Microsoft.AspNet.Identity;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.VisualStudio.Web.CodeGenerators.Mvc;
-    using Di2.Services;
-    using Microsoft.AspNetCore.Http;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Di2.Data.Models;
+using Di2.Services.Data;
+using Di2.Web.ViewModels.Categories.ViewModels;
+using Di2.Web.ViewModels.Deliveries;
+using Di2.Web.ViewModels.Orders.InputModels;
+using Di2.Web.ViewModels.Orders.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Di2.Services.Mapping;
+//using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc;
+using Di2.Services;
+using Microsoft.AspNetCore.Http;
 
+namespace Di2.Web.Controllers
+{
     [Route("[controller]/[action]")]
     public class DeliveriesController : BaseController
     {
@@ -55,6 +55,7 @@
             {
                 return this.NotFound();
             }
+
             //return this.RedirectToAction(nameof(this.ById), new { id = materialId});
             return this.View(viewModel);
         }
@@ -78,24 +79,24 @@
                 var category = this.materialsService.GetById(input.MaterialId).Category;
                 var catEng = this.categoriesService.GetByNameBg<CategoryViewModel>(category.Name).NameEng;
                 var user = await this.userManager.GetUserAsync(this.User);
-                if (category.Id == 1)
+                if (category.Id == 1 && files != null)
                 {
                     foreach (var file in files.Where(x => x.Length > 0))
                     {
                         pic = await this.cloudinaryService.UploadPictureAsync(file, input.MaterialName);
                         customerImages.Add(pic);
                     }
-
-                    //var customerImages = await this.cloudinaryService.UploadPictureAsync
-                    await this.orderService.CreateOrder(input, user.Id, customerImages);
                 }
 
-                else
+                await this.orderService.CreateOrder(input, user.Id, customerImages = null);
+                /*else
                 {
                     await this.orderService.CreateOrder(input, user.Id, customerImages = null);
-                }
+                }*/
+
                 return this.RedirectToAction("ByName", "Categories", new { name = catEng });
             }
+
             //return this.View(input);
             return this.RedirectToAction("ById", "Deliveries", new { materialId = input.MaterialId });
         }

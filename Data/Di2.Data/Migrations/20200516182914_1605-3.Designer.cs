@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Di2.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200502213205_2")]
-    partial class _2
+    [Migration("20200516182914_1605-3")]
+    partial class _16053
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -69,6 +69,11 @@ namespace Di2.Data.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -365,6 +370,9 @@ namespace Di2.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("DeliveryAddress")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -494,6 +502,38 @@ namespace Di2.Data.Migrations
                     b.ToTable("OrderSuppliers");
                 });
 
+            modelBuilder.Entity("Di2.Data.Models.Picture", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OrderId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("Pictures");
+                });
+
             modelBuilder.Entity("Di2.Data.Models.PriceList", b =>
                 {
                     b.Property<int>("MaterialId")
@@ -550,6 +590,9 @@ namespace Di2.Data.Migrations
 
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("DeliveryAddress")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -966,6 +1009,13 @@ namespace Di2.Data.Migrations
                     b.HasOne("Di2.Data.Models.PriceList", null)
                         .WithMany("OrderSuppliers")
                         .HasForeignKey("PriceListMaterialId", "PriceListSupplierId");
+                });
+
+            modelBuilder.Entity("Di2.Data.Models.Picture", b =>
+                {
+                    b.HasOne("Di2.Data.Models.Order", "Order")
+                        .WithMany("Pictures")
+                        .HasForeignKey("OrderId");
                 });
 
             modelBuilder.Entity("Di2.Data.Models.PriceList", b =>

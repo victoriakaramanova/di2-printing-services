@@ -29,6 +29,7 @@
         </div>
     }
 </div>
+
 <hr class="hr-2 bg-dark w-100">
 <div class="finish-order-holder w-50 mx-auto d-flex justify-content-between">
     <div class="form-holder w-25">
@@ -43,10 +44,18 @@
     <div class="form-holder w-25">
         <h3 class="text-left">Издадена на</h3>
     </div>
-    <div class="price-holder w-75 text-right">
+    <div class="price-holder w-25 text-right">
         <time datetime="@Model.IssuedOn.ToString("O")">@Model.IssuedOn.ToString("dd.MM.yyyy HH:mm")</time>
     </div>
+    <div class="form-holder w-auto">
+        <h3 class="text-left">Адрес за доставка</h3>
+    </div>
+    <div class="form-holder w-auto">
+        @Model.DeliveryAddress
+    </div>
 </div>
+
+@*<input type="text" value="@Model.Orders.Select(x=>x.Orderer.Address).FirstOrDefault()" />*@
 <div class="finish-order-holder w-50 mx-auto d-flex justify-content-between">
     <div class="form-holder w-25">
         <h3 class="text-left">Получател</h3>

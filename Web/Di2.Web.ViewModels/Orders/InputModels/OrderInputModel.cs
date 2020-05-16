@@ -42,6 +42,8 @@ namespace Di2.Web.ViewModels.Orders.InputModels
 
         public int StatusId { get; set; }
 
+        public string DeliveryAddress { get; set; }
+
         //public OrderStatus OrderStatus { get; set; }
 
         public List<IFormFile> PicturesFormFiles { get; set; }

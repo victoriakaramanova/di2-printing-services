@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Di2.Web.ViewModels.Orders.ViewModels
 {
-    public class ReceiptViewModel : IMapFrom<Order>,IMapFrom<Receipt>
+    public class ReceiptViewModel : IMapFrom<Order>, IMapFrom<Receipt>
     {
         public string Id { get; set; }
 
@@ -20,5 +20,6 @@ namespace Di2.Web.ViewModels.Orders.ViewModels
 
         public ApplicationUser Recipient { get; set; }
 
+        public string DeliveryAddress { get; set; }
     }
 }

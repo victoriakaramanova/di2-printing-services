@@ -78,11 +78,12 @@ namespace Di2.Services.Data
                 IssuedOn = DateTime.UtcNow,
                 TotalPrice = input.AvgPrice * (decimal)input.Quantity,
                 OrdererId = userId,
+                //DeliveryAddresss = input.DeliveryAddress,
                 //CustomerImages = customerImages,
             };
             //order.OrderStatus = OrderStatus.Sent;
             await this.ordersRepository.AddAsync(order);
-            if (material.CategoryId == 1)
+            if (material.CategoryId == 1 && input.PicturesFormFiles!=null)
             {
                 await this.pictureService.Upload(input.PicturesFormFiles, order.Id);
                 /*if (order.Pictures.Count > 0)
@@ -136,19 +137,21 @@ namespace Di2.Services.Data
                     throw new ArgumentException(nameof(dbOrder));
                 }
 
+                dbOrder.DeliveryAddress = input.DeliveryAddress == null ? dbOrder.Orderer.Address : input.DeliveryAddress;
                 dbOrder.StatusId = (int)OrderStatus.Sent;
                 this.ordersRepository.Update(dbOrder);
                 await this.ordersRepository.SaveChangesAsync();
             }
         }
 
-        public async Task<string> CreateReceipt(string recipientId)
+        public async Task<string> CreateReceipt(string recipientId,string deliveryAddress)
         {
             var receipt = new Receipt
             {
                 Id = Guid.NewGuid().ToString(),
                 IssuedOn = DateTime.UtcNow,
                 RecipientId = recipientId,
+                DeliveryAddress = deliveryAddress,
             };
             await this.receiptsRepository.AddAsync(receipt);
             await this.receiptsRepository.SaveChangesAsync();

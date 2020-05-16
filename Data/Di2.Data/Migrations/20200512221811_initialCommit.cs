@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Di2.Data.Migrations
 {
-    public partial class initial : Migration
+    public partial class initialCommit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -484,6 +484,29 @@ namespace Di2.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Pictures",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedOn = table.Column<DateTime>(nullable: true),
+                    Url = table.Column<string>(nullable: true),
+                    OrderId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pictures", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Pictures_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OrderSuppliers",
                 columns: table => new
                 {
@@ -794,6 +817,16 @@ namespace Di2.Data.Migrations
                 columns: new[] { "PriceListMaterialId", "PriceListSupplierId" });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Pictures_IsDeleted",
+                table: "Pictures",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Pictures_OrderId",
+                table: "Pictures",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PriceLists_IsDeleted",
                 table: "PriceLists",
                 column: "IsDeleted");
@@ -893,7 +926,7 @@ namespace Di2.Data.Migrations
                 name: "Deliveries");
 
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "Pictures");
 
             migrationBuilder.DropTable(
                 name: "Settings");
@@ -908,13 +941,16 @@ namespace Di2.Data.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Receipts");
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "SubCategories");
 
             migrationBuilder.DropTable(
                 name: "OrderSuppliers");
+
+            migrationBuilder.DropTable(
+                name: "Receipts");
 
             migrationBuilder.DropTable(
                 name: "PriceLists");

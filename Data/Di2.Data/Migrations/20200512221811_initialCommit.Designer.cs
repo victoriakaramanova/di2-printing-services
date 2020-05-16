@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Di2.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200502203508_initial")]
-    partial class initial
+    [Migration("20200512221811_initialCommit")]
+    partial class initialCommit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -494,6 +494,38 @@ namespace Di2.Data.Migrations
                     b.ToTable("OrderSuppliers");
                 });
 
+            modelBuilder.Entity("Di2.Data.Models.Picture", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OrderId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("Pictures");
+                });
+
             modelBuilder.Entity("Di2.Data.Models.PriceList", b =>
                 {
                     b.Property<int>("MaterialId")
@@ -966,6 +998,13 @@ namespace Di2.Data.Migrations
                     b.HasOne("Di2.Data.Models.PriceList", null)
                         .WithMany("OrderSuppliers")
                         .HasForeignKey("PriceListMaterialId", "PriceListSupplierId");
+                });
+
+            modelBuilder.Entity("Di2.Data.Models.Picture", b =>
+                {
+                    b.HasOne("Di2.Data.Models.Order", "Order")
+                        .WithMany("Pictures")
+                        .HasForeignKey("OrderId");
                 });
 
             modelBuilder.Entity("Di2.Data.Models.PriceList", b =>

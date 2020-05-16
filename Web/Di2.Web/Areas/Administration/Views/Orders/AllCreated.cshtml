@@ -47,6 +47,7 @@ else
                     </div>
                 }
             </div>
+            <input type="text" asp-for="@Model.DeliveryAddress" class="w-auto" value="@Model.Orders.Select(x=>x.Orderer.Address).FirstOrDefault()" />
         }
         <hr class="hr-4 bg-info" />
         <input type="submit" class="btn btn-primary" value="Поръчай" />

@@ -42,7 +42,7 @@ namespace Di2.Services.Data
             if (isCompleted == 0)
             {
                 order.StatusId = (int)OrderStatus.Completed;
-                await this.sender.SendEmailAsync(GlobalConstants.SystemEmail, GlobalConstants.SystemName, orderer.Email, $"Ваша поръчка по разписка " + order.ReceiptId, $"Здравейте, {orderer.UserName}, Поръчката Ви " + order.Id + $" на {order.MaterialName}, {order.Quantity} за {order.TotalPrice.ToString("f2")} лв е готова. Поздрави - {GlobalConstants.SystemName}");
+                await this.sender.SendEmailAsync(GlobalConstants.SystemEmail, GlobalConstants.SystemName, orderer.Email, $"Ваша поръчка по разписка " + order.ReceiptId, $"Здравейте, {orderer.UserName}, {Environment.NewLine}Поръчката Ви " + order.Id + $" на {order.MaterialName}, {order.Quantity} броя за {order.TotalPrice.ToString("f2")} лв с доставка на адрес: {order.DeliveryAddress} е готова.{Environment.NewLine}Поздрави - {GlobalConstants.SystemName}");
             }
             else
                 if (isCompleted == 1)
@@ -54,6 +54,7 @@ namespace Di2.Services.Data
                 order.StatusId = (int)OrderStatus.Canceled;
                 await this.sender.SendEmailAsync(GlobalConstants.SystemEmail, GlobalConstants.SystemName, orderer.Email, $"Отказ на Ваша поръчка по разписка " + order.ReceiptId, $"Здравейте, {orderer.UserName}, Поръчката Ви " + order.Id + $" на {order.MaterialName}, {order.Quantity} за {order.TotalPrice.ToString("f2")} лв е отказана. Моля потърсете ни за подробности. Поздрави - {GlobalConstants.SystemName}");
             }
+
             this.ordersRepository.Update(order);
             await this.ordersRepository.SaveChangesAsync();
 

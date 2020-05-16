@@ -3,7 +3,7 @@ namespace Di2.Data.Models
 {
     using System;
     using System.Collections.Generic;
-
+    using System.ComponentModel.DataAnnotations;
     using Di2.Data.Common.Models;
 
     using Microsoft.AspNetCore.Identity;
@@ -25,6 +25,10 @@ namespace Di2.Data.Models
             this.Deliveries = new HashSet<Delivery>();
             this.Orders = new HashSet<Order>();
         }
+
+        [Required]
+        [MaxLength(100)]
+        public string Address { get; set; }
 
         // Audit info
         public DateTime CreatedOn { get; set; }
