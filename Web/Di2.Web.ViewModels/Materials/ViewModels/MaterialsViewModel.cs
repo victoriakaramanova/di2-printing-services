@@ -20,6 +20,8 @@
 
         public Category Category { get; set; }
 
+        public int SubCategoryId { get; set; }
+
         public string SubCategoryName { get; set; }
 
         public string Image { get; set; }

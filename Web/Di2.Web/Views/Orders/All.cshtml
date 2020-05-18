@@ -63,7 +63,7 @@ else
                     </h6>
                     <h6 class="col-md-1 text-left">@Model.Orders[i].AvgPrice</h6>
                     <h6 class="col-md-1 text-left">
-                        <input type="number" asp-for="@Model.Orders[i].TotalPrice" readonly="readonly" />
+                        <input type="number" asp-for="@Model.Orders[i].TotalPrice" readonly="readonly" style="text-align:left" />
                         <span asp-validation-for="@Model.Orders[i].TotalPrice" class="text-danger"></span>
                     </h6>
                     @foreach (var pic in @Model.Orders[i].Pictures)

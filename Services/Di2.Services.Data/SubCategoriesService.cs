@@ -66,9 +66,9 @@
 
         public T GetById<T>(int id)
         {
-            var post = this.subCategoriesRepository.All().Where(x => x.Id == id)
+            var subCategory = this.subCategoriesRepository.All().Where(x => x.Id == id)
                 .To<T>().FirstOrDefault();
-            return post;
+            return subCategory;
         }
 
         public int GetCount()

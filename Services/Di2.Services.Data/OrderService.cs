@@ -171,6 +171,7 @@ namespace Di2.Services.Data
             {
                 order.ReceiptId = receiptId;
                 this.ordersRepository.Update(order);
+                await this.ordersRepository.SaveChangesAsync();
             }
 
             var result = await this.ordersRepository.SaveChangesAsync();
@@ -186,6 +187,16 @@ namespace Di2.Services.Data
             query = query.Where(x => x.StatusId == (int)OrderStatus.Sent);
             //var elapsedTime = DateTime.UtcNow.Subtract(receipt.IssuedOn);
             //query = query.Where(elapsedTime<TimeSpan.FromSeconds(3));
+            return query.To<T>().ToList();
+        }
+
+        public IEnumerable<T> GetReceiptOrdersByReceiptId<T>(string receiptId,string userId)
+        {
+            Receipt receipt = this.receiptsRepository.All()
+               .Where(x => x.Id == receiptId).FirstOrDefault();
+            IQueryable<Order> query = this.ordersRepository.All()
+                .Where(x => x.Receipt.RecipientId == userId);
+            query = query.Where(x => x.StatusId == (int)OrderStatus.Sent);
             return query.To<T>().ToList();
         }
 
@@ -247,6 +258,7 @@ namespace Di2.Services.Data
                 }
 
                 dbOrder.StatusId = (int)OrderStatus.Completed;
+                dbOrder.DeliveryAddress = input.DeliveryAddress == null ? dbOrder.Orderer.Address : input.DeliveryAddress;
                 this.ordersRepository.Update(dbOrder);
                 await this.ordersRepository.SaveChangesAsync();
             }
@@ -289,7 +301,7 @@ namespace Di2.Services.Data
 
             sb.AppendLine(@"</tbody>
                 </ table > ");
-            await this.sender.SendEmailAsync(GlobalConstants.SystemEmail, GlobalConstants.SystemName, user.Email, $"Поръчка по разписка " + receiptId, $"Здравейте, {user.UserName}, Получихме от Вас следната поръчка:" + sb.ToString() + $" за общо {orders.Sum(x => x.AvgPrice * (decimal)x.Quantity).ToString("f2")} лв" + $"Ще Ви уведомим, когато е готова. Поздрави - {GlobalConstants.SystemName}");
+            await this.sender.SendEmailAsync(GlobalConstants.SystemEmail, GlobalConstants.SystemName, user.Email, $"Поръчка по разписка " + receiptId, $"Здравейте, {user.UserName}, \nПолучихме от Вас следната поръчка:" + sb.ToString() + $" за общо {orders.Sum(x => x.AvgPrice * (decimal)x.Quantity).ToString("f2")} лв" + $"Ще Ви уведомим, когато е готова.\nПоздрави - {GlobalConstants.SystemName}");
         }
     }
 }

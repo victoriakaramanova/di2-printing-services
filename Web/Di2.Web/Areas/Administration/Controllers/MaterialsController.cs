@@ -83,6 +83,10 @@
         public IActionResult All()
         {
             var allMaterials = this.materialsService.GetAllMaterials<MaterialsViewModel>();
+            foreach (var item in allMaterials)
+            {
+                item.SubCategoryName = this.subCategoriesService.GetById<SubCategoryViewModel>(item.SubCategoryId).Name;
+            }
 
             return this.View(allMaterials);
         }
