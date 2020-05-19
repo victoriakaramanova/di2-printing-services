@@ -11,5 +11,9 @@ namespace Di2.Services.Data
         int GetStatus(string orderId);
 
         Task<int> ChangeOrderStatus(string orderId, int isCompleted, ApplicationUser orderer);
+
+        bool IsAvailableQtyEnough(Order order);
+
+        Task DecreaseDeliveriesAsync(Order order);
     }
 }

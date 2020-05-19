@@ -60,6 +60,7 @@
                 Image = material.Image,
                 CategoryId = materialCategoryId.Value,
                 SubCategoryId = material.SubCategoryId.Value,
+                RemainingQuantity = input.Quantity,
                 Quantity = input.Quantity,
                 SupplierUnitPrice = input.UnitPrice,
                 Cost = input.TotalPrice,

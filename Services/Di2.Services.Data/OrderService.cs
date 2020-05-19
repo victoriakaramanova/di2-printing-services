@@ -1,23 +1,24 @@
-﻿using Di2.Common;
-using Di2.Data.Common.Repositories;
-using Di2.Data.Models;
-using Di2.Data.Models.Enums;
-using Di2.Services.Mapping;
-using Di2.Services.Messaging;
-using Di2.Web.ViewModels.Orders.InputModels;
-using Di2.Web.ViewModels.Orders.ViewModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Di2.Services.Data
+﻿namespace Di2.Services.Data
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Security.Cryptography.X509Certificates;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    using Di2.Common;
+    using Di2.Data.Common.Repositories;
+    using Di2.Data.Models;
+    using Di2.Data.Models.Enums;
+    using Di2.Services.Mapping;
+    using Di2.Services.Messaging;
+    using Di2.Web.ViewModels.Orders.InputModels;
+    using Di2.Web.ViewModels.Orders.ViewModels;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
+
     public class OrderService : IOrderService
     {
         private readonly IDeletableEntityRepository<Order> ordersRepository;

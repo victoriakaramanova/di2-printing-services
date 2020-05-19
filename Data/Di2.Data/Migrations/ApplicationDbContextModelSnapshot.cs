@@ -272,6 +272,9 @@ namespace Di2.Data.Migrations
                     b.Property<double>("Quantity")
                         .HasColumnType("float");
 
+                    b.Property<double>("RemainingQuantity")
+                        .HasColumnType("float");
+
                     b.Property<int>("SubCategoryId")
                         .HasColumnType("int");
 

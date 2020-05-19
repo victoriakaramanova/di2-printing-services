@@ -44,6 +44,7 @@ namespace Di2.Data.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
+                    Address = table.Column<string>(maxLength: 100, nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
@@ -254,7 +255,8 @@ namespace Di2.Data.Migrations
                     IsDeleted = table.Column<bool>(nullable: false),
                     DeletedOn = table.Column<DateTime>(nullable: true),
                     IssuedOn = table.Column<DateTime>(nullable: false),
-                    RecipientId = table.Column<string>(nullable: true)
+                    RecipientId = table.Column<string>(nullable: true),
+                    DeliveryAddress = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -381,6 +383,7 @@ namespace Di2.Data.Migrations
                     AvgPrice = table.Column<decimal>(nullable: false),
                     TotalPrice = table.Column<decimal>(nullable: false),
                     OrdererId = table.Column<string>(nullable: true),
+                    DeliveryAddress = table.Column<string>(nullable: true),
                     StatusId = table.Column<int>(nullable: false),
                     OrderStatus = table.Column<int>(nullable: false),
                     ReceiptId = table.Column<string>(nullable: true),
@@ -586,7 +589,8 @@ namespace Di2.Data.Migrations
                     SupplierUnitPrice = table.Column<decimal>(nullable: false),
                     UnitPrice = table.Column<decimal>(nullable: false),
                     Cost = table.Column<decimal>(nullable: false),
-                    UserId = table.Column<string>(nullable: true)
+                    UserId = table.Column<string>(nullable: true),
+                    RemainingQuantity = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {

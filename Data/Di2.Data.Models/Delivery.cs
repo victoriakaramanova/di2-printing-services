@@ -17,15 +17,15 @@ namespace Di2.Data.Models
 
         public string MaterialName { get; set; }
 
-         public string Description { get; set; }
+        public string Description { get; set; }
 
-         public string ExtraInfo { get; set; }
+        public string ExtraInfo { get; set; }
 
         public int CategoryId { get; set; }
 
         //public virtual Category Category { get; set; }
 
-         public int SubCategoryId { get; set; }
+        public int SubCategoryId { get; set; }
 
         //public virtual SubCategory SubCategory { get; set; }
 
@@ -45,5 +45,6 @@ namespace Di2.Data.Models
 
         public virtual ApplicationUser User { get; set; }
 
+        public double RemainingQuantity { get; set; }
     }
 }

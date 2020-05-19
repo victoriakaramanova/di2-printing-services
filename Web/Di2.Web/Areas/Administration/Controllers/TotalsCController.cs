@@ -39,6 +39,12 @@
             var order = this.ordersRepository.All().FirstOrDefault(x => x.Id == input.OrderId);
             var ordererId = order.OrdererId;
             var orderer = await this.userManager.FindByIdAsync(ordererId);
+            if (!this.totalsCustomerService.IsAvailableQtyEnough(order))
+            {
+                return this.ValidationProblem();
+            }
+
+            await this.totalsCustomerService.DecreaseDeliveriesAsync(order);
             var statusId = await this.totalsCustomerService.ChangeOrderStatus(input.OrderId, input.IsCompleted, orderer);
             return statusId;
         }
