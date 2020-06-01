@@ -84,7 +84,7 @@ else
         function sendStatus(orderId, i) {
             var token = $(`#checkForm-${i} input[name = __RequestVerificationToken]`).val();
             let myInput = Number($(`#switcher-${i}`).val());
-            //debugger
+            debugger
             switch (myInput.toString()) {
                 case '-1': $(`#switcher-${i}`).removeClass();
                     $(`#switcher-${i}`).addClass('v-switcher v-switcher-mode--tri v-switcher-state--passive');
@@ -98,7 +98,7 @@ else
                     break;
             }
             var json = { orderId: orderId, isCompleted: myInput };
-            //debugger
+            debugger
             $.ajax({
                 url: "/api/administration/totalsc",
                 type: "POST",
@@ -107,7 +107,7 @@ else
                 dataType: "json",
                 headers: { 'X-CSRF-TOKEN': token },
                 success: function (data) {
-                    //debugger
+                    debugger
                     if (data.toString() == "1") {
                         $(`#statusId-${i}`).html("Sent")
                     } else if (data.toString() == -1) {

@@ -46,7 +46,7 @@ namespace Di2.Services.Data
             if (isCompleted == 0)
             {
                 order.StatusId = (int)OrderStatus.Completed;
-                await this.sender.SendEmailAsync(GlobalConstants.SystemEmail, GlobalConstants.SystemName, orderer.Email, $"Ваша поръчка по разписка " + order.ReceiptId, $"Здравейте, {orderer.UserName}, {Environment.NewLine}Поръчката Ви " + order.Id + $" на {order.MaterialName}, {order.Quantity} броя за {order.TotalPrice.ToString("f2")} лв с доставка на адрес: {order.DeliveryAddress} е готова.{Environment.NewLine}Поздрави - {GlobalConstants.SystemName}");
+                await this.sender.SendEmailAsync(GlobalConstants.SystemEmail, GlobalConstants.SystemName, orderer.Email, $"Готова поръчка по разписка " + order.ReceiptId, $"Здравейте, {orderer.UserName}, {Environment.NewLine}Поръчката Ви {order.Id}/{order.IssuedOn} на {order.MaterialName}, {order.Quantity} броя за {order.TotalPrice.ToString("f2")} лв с доставка на адрес: {order.DeliveryAddress} е готова.{Environment.NewLine}Поздрави, {GlobalConstants.SystemName}");
             }
             else
                 if (isCompleted == 1)
@@ -56,7 +56,7 @@ namespace Di2.Services.Data
             else
             {
                 order.StatusId = (int)OrderStatus.Canceled;
-                await this.sender.SendEmailAsync(GlobalConstants.SystemEmail, GlobalConstants.SystemName, orderer.Email, $"Отказ на Ваша поръчка по разписка " + order.ReceiptId, $"Здравейте, {orderer.UserName}, Поръчката Ви " + order.Id + $" на {order.MaterialName}, {order.Quantity} за {order.TotalPrice.ToString("f2")} лв е отказана. Моля потърсете ни за подробности. Поздрави - {GlobalConstants.SystemName}");
+                await this.sender.SendEmailAsync(GlobalConstants.SystemEmail, GlobalConstants.SystemName, orderer.Email, $"Отказ на Ваша поръчка по разписка " + order.ReceiptId, $"Здравейте, {orderer.UserName}, Поръчката Ви {order.Id}/{order.IssuedOn} на {order.MaterialName}, {order.Quantity} за {order.TotalPrice.ToString("f2")} лв е отказана. Моля потърсете ни за подробности. Поздрави, {GlobalConstants.SystemName}");
             }
 
             this.ordersRepository.Update(order);
@@ -88,7 +88,7 @@ namespace Di2.Services.Data
             }
         }
 
-        public async Task DecreaseDeliveriesAsync(Order order)
+        public async Task<double> DecreaseDeliveriesAsync(Order order)
         {
             var availableQty = this.deliveriesRepository.All()
                 .Where(x => x.MaterialId == order.MaterialId)
@@ -101,19 +101,29 @@ namespace Di2.Services.Data
                 {
                     interimQty -= item.RemainingQuantity;
                     item.RemainingQuantity = 0;
+                    this.deliveriesRepository.Delete(item);
                     // order.Quantity -= item.RemainingQuantity;
                     this.deliveriesRepository.Update(item);
                 }
                 else
                 {
                     item.RemainingQuantity -= interimQty;
-                    interimQty = 0;
-                    this.deliveriesRepository.Update(item);
+                    if (item.RemainingQuantity == 0)
+                    {
+                        //item.IsDeleted = true;
+                        this.deliveriesRepository.Delete(item);
+                    }
+
+                        interimQty = 0;
+                        this.deliveriesRepository.Update(item);
                     //await this.deliveriesRepository.SaveChangesAsync();
                 }
             }
 
             await this.deliveriesRepository.SaveChangesAsync();
+            return this.deliveriesRepository.All()
+                .Where(x => x.MaterialId == order.MaterialId)
+                .Sum(x => x.RemainingQuantity);
         }
     }
 }

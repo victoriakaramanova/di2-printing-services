@@ -302,7 +302,7 @@
 
             sb.AppendLine(@"</tbody>
                 </ table > ");
-            await this.sender.SendEmailAsync(GlobalConstants.SystemEmail, GlobalConstants.SystemName, user.Email, $"Поръчка по разписка " + receiptId, $"Здравейте, {user.UserName}, \nПолучихме от Вас следната поръчка:" + sb.ToString() + $" за общо {orders.Sum(x => x.AvgPrice * (decimal)x.Quantity).ToString("f2")} лв" + $"Ще Ви уведомим, когато е готова.\nПоздрави - {GlobalConstants.SystemName}");
+            await this.sender.SendEmailAsync(GlobalConstants.SystemEmail, GlobalConstants.SystemName, user.Email, $"Поръчка по разписка " + receiptId, $"Здравейте, {user.UserName}, \nПолучихме от Вас следната поръчка" + sb.ToString() + $" за общо {orders.Sum(x => x.AvgPrice * (decimal)x.Quantity).ToString("f2")} лв. Ще Ви уведомим, когато е готова.\nПоздрави, {GlobalConstants.SystemName}");
         }
     }
 }

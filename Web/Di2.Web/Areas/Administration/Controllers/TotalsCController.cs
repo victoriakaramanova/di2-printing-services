@@ -41,7 +41,7 @@
             var orderer = await this.userManager.FindByIdAsync(ordererId);
             if (!this.totalsCustomerService.IsAvailableQtyEnough(order))
             {
-                return this.ValidationProblem();
+                return this.View("InsufficientQuantityError");
             }
 
             await this.totalsCustomerService.DecreaseDeliveriesAsync(order);

@@ -109,7 +109,6 @@
                     };*/
 
                     emailSuppliers.Add(orderSupplier);
-
                 }
             }
 

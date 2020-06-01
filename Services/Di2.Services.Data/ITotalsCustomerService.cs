@@ -14,6 +14,6 @@ namespace Di2.Services.Data
 
         bool IsAvailableQtyEnough(Order order);
 
-        Task DecreaseDeliveriesAsync(Order order);
+        Task<double> DecreaseDeliveriesAsync(Order order);
     }
 }

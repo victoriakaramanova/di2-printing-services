@@ -148,7 +148,7 @@
                 Id = id,
                 IssuedOn = DateTime.UtcNow,
                 RecipientName = recipientName,
-                Orders = orders.Where(x=>x.ReceiptId == id),
+                Orders = orders.Where(x => x.ReceiptId == id),
                 DeliveryAddress = deliveryAddress,
             };
 

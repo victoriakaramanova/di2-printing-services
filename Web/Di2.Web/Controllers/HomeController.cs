@@ -1,9 +1,17 @@
 ﻿namespace Di2.Web.Controllers
 {
+    using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
-    using System.Threading.Tasks;
     using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Text;
+    using System.Threading.Tasks;
+
     using CloudinaryDotNet;
     using CloudinaryDotNet.Actions;
     using Di2.Common;
@@ -12,18 +20,11 @@
     using Di2.Services.Messaging;
     using Di2.Web.ViewModels;
     using Di2.Web.ViewModels.Home;
+    using Di2.Web.ViewModels.Materials.ViewModels;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Sandbox;
-    using System.Text;
-    using Di2.Web.ViewModels.Materials.ViewModels;
-    using System;
-    using System.Net.Http;
-    using System.Net;
-    using System.Linq;
-    using Microsoft.AspNetCore.Authorization;
-    using System.ComponentModel;
-    using System.ComponentModel.DataAnnotations;
 
     public class HomeController : BaseController
     {

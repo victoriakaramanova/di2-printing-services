@@ -94,7 +94,7 @@
                             d.CategoryId,
                             d.Material.SubCategoryId,
                         }
-                        into m 
+                        into m
                         select new CategoryProductsViewModel
                         {
                             MaterialId = m.Key.MaterialId,
@@ -154,7 +154,7 @@
             var availableQuantity = this.deliveriesRepository.All()
                 .Where(x => x.MaterialId == materialId)
                 .Sum(x => x.Quantity);
-            var enough = availableQuantity > quantity ? true : false;
+            var enough = availableQuantity >= quantity ? true : false;
             return enough;
         }
     }
