@@ -1,24 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Di2.Data.Models;
-using Di2.Services.Data;
-using Di2.Web.ViewModels.Categories.ViewModels;
-using Di2.Web.ViewModels.Deliveries;
-using Di2.Web.ViewModels.Orders.InputModels;
-using Di2.Web.ViewModels.Orders.ViewModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Di2.Services.Mapping;
-//using Microsoft.AspNet.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc;
-using Di2.Services;
-using Microsoft.AspNetCore.Http;
-
-namespace Di2.Web.Controllers
+﻿namespace Di2.Web.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using Di2.Data.Models;
+    using Di2.Services;
+    using Di2.Services.Data;
+    using Di2.Services.Mapping;
+    using Di2.Web.ViewModels.Categories.ViewModels;
+    using Di2.Web.ViewModels.Deliveries;
+    using Di2.Web.ViewModels.Orders.InputModels;
+    using Di2.Web.ViewModels.Orders.ViewModels;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Identity;
+    //using Microsoft.AspNet.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.VisualStudio.Web.CodeGenerators.Mvc;
+
     [Route("[controller]/[action]")]
     public class DeliveriesController : BaseController
     {
@@ -51,6 +52,7 @@ namespace Di2.Web.Controllers
         {
             var viewModel = this.deliveriesService
                 .GetByMaterialId<CategoryProductsViewModel>(materialId);
+            //viewModel.AvailableQuantity = viewModel.Quantity;
             if (viewModel == null)
             {
                 return this.NotFound();
@@ -66,8 +68,9 @@ namespace Di2.Web.Controllers
         {
             if (this.CheckDeliveredQty(input.MaterialId, input.Quantity) == null)
             {
-                //return this.ValidationProblem();
-                this.ModelState.AddModelError("Quantity", "Too much qty!");
+                this.ModelState.AddModelError(string.Empty, "Въведете по-малко количество или се свържете с нас, за да уточним подробностите!");
+                return this.View("ById", new CategoryProductsViewModel { MaterialId = input.MaterialId });
+                //return this.RedirectToAction("ById", "Deliveries", new { materialId = input.MaterialId });
             }
 
             List<IFormFile> files = input.PicturesFormFiles;

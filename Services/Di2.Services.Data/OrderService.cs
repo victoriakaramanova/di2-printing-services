@@ -84,7 +84,7 @@
             };
             //order.OrderStatus = OrderStatus.Sent;
             await this.ordersRepository.AddAsync(order);
-            if (material.CategoryId == 1 && input.PicturesFormFiles!=null)
+            if (material.CategoryId == 1 && input.PicturesFormFiles != null)
             {
                 await this.pictureService.Upload(input.PicturesFormFiles, order.Id);
                 /*if (order.Pictures.Count > 0)
@@ -107,7 +107,23 @@
             return query.To<T>().ToList();
         }
 
-        public async Task UpdateOrder(OrdersViewModel input)
+        public double GetAvlQtyPerProduct(int materialId)
+        {
+            return this.deliveriesRepository.All()
+                .Where(x => x.MaterialId == materialId)
+                .Sum(x => x.RemainingQuantity);
+        }
+
+        public async Task UpdOrder(OrderViewModel input)
+        {
+            var dbOrder = await this.ordersRepository.All()
+                    .Where(x => x.Id == input.Id).FirstOrDefaultAsync();
+            dbOrder.Quantity = input.Quantity;
+            dbOrder.TotalPrice = (decimal)input.Quantity * dbOrder.AvgPrice;
+            this.ordersRepository.Update(dbOrder);
+        }
+
+        public async Task<int> UpdateOrder(OrdersViewModel input)
         {
             Order dbOrder;
             double inputQty;
@@ -118,12 +134,23 @@
                 inputQty = order.Quantity;
                 if (dbOrder.Quantity != inputQty)
                 {
+                    var availableQuantity = this.deliveriesRepository.All()
+                        .Where(x => x.MaterialId == dbOrder.MaterialId)
+                        .Sum(x => x.RemainingQuantity);
+                    if (inputQty > availableQuantity)
+                    {
+                        return 0;
+                    }
+
                     dbOrder.Quantity = inputQty;
                     dbOrder.TotalPrice = (decimal)order.Quantity * dbOrder.AvgPrice;
                     this.ordersRepository.Update(dbOrder);
-                    await this.ordersRepository.SaveChangesAsync();
+                    var result = await this.ordersRepository.SaveChangesAsync();
+                    return result;
                 }
             }
+
+            return 1;
         }
 
         public async Task CompleteOrder(OrdersViewModel input)
@@ -186,8 +213,6 @@
             IQueryable<Order> query = this.ordersRepository.All()
                 .Where(x => x.OrdererId == receipt.RecipientId);
             query = query.Where(x => x.StatusId == (int)OrderStatus.Sent);
-            //var elapsedTime = DateTime.UtcNow.Subtract(receipt.IssuedOn);
-            //query = query.Where(elapsedTime<TimeSpan.FromSeconds(3));
             return query.To<T>().ToList();
         }
 

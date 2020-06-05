@@ -1,4 +1,4 @@
-﻿namespace Di2.Web.Infrastructure
+﻿namespace Di2.Web.Infrastructure.Attributes
 {
     using System;
     using System.Collections.Generic;

@@ -60,6 +60,7 @@ else
                     <h6 class="col-md-1 text-left">
                         <input type="number" asp-for="@Model.Orders[i].Quantity" style="border:none; width:100%;background-color: rgba(70, 35, 122, 0.1)" onchange="sendQty()" />
                         <span asp-validation-for="@Model.Orders[i].Quantity" class="text-danger"></span>
+                      @*  @Html.ValidationMessage("MessageError")*@
                     </h6>
                     <h6 class="col-md-1 text-left">@Model.Orders[i].AvgPrice</h6>
                     <h6 class="col-md-1 text-left">
@@ -73,6 +74,7 @@ else
                                  src="@pic.Url" />
                         </div>
                     }
+                    <h6>@Model.Orders[i].AvailableQuantity</h6>
                 </div>
             }
             <hr class="hr-4 bg-info" />

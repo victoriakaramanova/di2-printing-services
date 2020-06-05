@@ -115,8 +115,10 @@
                         <div class="product-quantity" style="display:inline-block;margin-right:10px">
                             <div class="pro-qty">
                                 @*<label asp-for="@Model.Quantity"></label>*@
-                                <input class="qtybtn" name="Quantity" id="Quantity" type="number" value="1" onchange="sendQty()" />
+                                <input class="qtybtn" name="Quantity" id="Quantity" type="number" value="1" onchange="sendQty(@Model.MaterialId)" />
                                 <span asp-validation-for="Quantity" class="text-danger"> </span>
+                                @Html.ValidationSummary(false,"", new { @class="text-danger"})
+                                @*@this.ViewData.ModelState["CustomError"].Errors[0].ErrorMessage*@
                             </div>
                         </div>
                         @*<a href="#" class="primary-btn pc-btn">Добави</a>*@
@@ -145,7 +147,7 @@
             }
         }
 
-        function sendQty() {
+        function sendQty(materialId) {
             //debugger;
             let totalPrice = 0;
             let qty = +$('#Quantity').val();
@@ -156,6 +158,9 @@
                 totalPrice = (qty * price);
 
             $('#total').text('Сума: ' + totalPrice.toFixed(2));
+
+            var json = { materialId: +materialId, qty: qty };
+            $.ajax()
         }
     </script>
 

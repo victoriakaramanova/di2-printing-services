@@ -17,7 +17,7 @@ namespace Di2.Web.ViewModels.Orders.InputModels
         [Required]
         public int MaterialId { get; set; }
 
-        [Remote(action:"CheckDeliveredQty",controller:"Deliveries",AdditionalFields ="materialId",ErrorMessage ="Order less qty",HttpMethod ="post")]
+        [Remote(action: "CheckDeliveredQty", controller: "Deliveries", AdditionalFields ="materialId", ErrorMessage ="Order less qty", HttpMethod ="post")]
         [Range(1,int.MaxValue, ErrorMessage = "Въведете положително число!")]
         [Display(Name = "Количество")]
         public double Quantity { get; set; }

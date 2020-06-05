@@ -61,9 +61,9 @@
                 headers: { 'X-CSRF-TOKEN': token },
                 success: function (data) {
                     //debugger
-                    if (data.toString() == 1) {
+                    if (data.toString() == "1") {
                         $(`#statusId-${i}`).html("Sent")
-                    } else if (data.toString() == -1) {
+                    } else if (data.toString() == "-1") {
                         $(`#statusId-${i}`).html("Canceled")
                     }
                     else $(`#statusId-${i}`).html("Completed");

@@ -1,6 +1,7 @@
 ﻿using Di2.Data.Models;
 using Di2.Data.Models.Enums;
 using Di2.Services.Mapping;
+using Di2.Web.Infrastructure.Attributes;
 using Di2.Web.ViewModels.Materials.ViewModels;
 using Di2.Web.ViewModels.Orders.InputModels;
 using Di2.Web.ViewModels.Pictures;
@@ -11,7 +12,7 @@ using System.Text;
 
 namespace Di2.Web.ViewModels.Orders.ViewModels
 {
-    public class OrderViewModel:IMapFrom<Order>,IMapTo<Order>, IMapTo<OrderInputModel>
+    public class OrderViewModel : IMapFrom<Order>, IMapTo<Order>, IMapFrom<OrderInputModel>
     {
         public string Id { get; set; }
 
@@ -31,6 +32,7 @@ namespace Di2.Web.ViewModels.Orders.ViewModels
         public DateTime IssuedOn { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "Въведете положително число!")]
+        [ValidateOrderQuantity("AvailableQuantity")]
         public double Quantity { get; set; }
 
         public decimal AvgPrice { get; set; }
@@ -51,5 +53,8 @@ namespace Di2.Web.ViewModels.Orders.ViewModels
         public Receipt Receipt { get; set; }
 
         public ICollection<PictureViewModel> Pictures { get; set; }
+
+        public double AvailableQuantity { get; set; }
+
     }
 }

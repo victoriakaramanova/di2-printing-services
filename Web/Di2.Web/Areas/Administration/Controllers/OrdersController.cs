@@ -22,7 +22,7 @@
         private readonly IDeletableEntityRepository<Receipt> receiptsRepository;
 
         public OrdersController(
-            IOrderService orderService, 
+            IOrderService orderService,
             UserManager<ApplicationUser> userManager,
             IDeletableEntityRepository<Order> ordersRepository,
             IDeletableEntityRepository<Receipt> receiptsRepository)

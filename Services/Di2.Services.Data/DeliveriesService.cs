@@ -108,7 +108,8 @@
                             Quantity = m.Sum(x => x.Quantity),
                             //UnitPrice = m.Sum(x => x.UnitPrice) / (decimal)m.Sum(x => x.Quantity),
                             Cost = m.Sum(x => x.Cost),
-                            AvgPrice = m.Sum(x => x.Cost) / (decimal)m.Sum(x=>x.Quantity),
+                            AvgPrice = m.Sum(x => x.Cost) / (decimal)m.Sum(x => x.Quantity),
+                            
                         };
             //.FirstOrDefault(x => x.CategoryId == categoryId)
 
@@ -144,6 +145,7 @@
                             Quantity = m.Sum(x => x.Quantity),
                             Cost = m.Sum(x => x.Cost),
                             AvgPrice = m.Sum(x => x.Cost) * (decimal)(1 + GlobalConstants.StandardMarkup) / (decimal)m.Sum(x => x.Quantity),
+                            AvailableQuantity = m.Sum(x => x.RemainingQuantity),
                         };
             query = query.Where(x => x.MaterialId == materialId);
             return query.To<T>().FirstOrDefault();
@@ -153,7 +155,7 @@
         {
             var availableQuantity = this.deliveriesRepository.All()
                 .Where(x => x.MaterialId == materialId)
-                .Sum(x => x.Quantity);
+                .Sum(x => x.RemainingQuantity);
             var enough = availableQuantity >= quantity ? true : false;
             return enough;
         }
