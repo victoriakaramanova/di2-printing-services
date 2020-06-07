@@ -109,14 +109,13 @@
                             //UnitPrice = m.Sum(x => x.UnitPrice) / (decimal)m.Sum(x => x.Quantity),
                             Cost = m.Sum(x => x.Cost),
                             AvgPrice = m.Sum(x => x.Cost) / (decimal)m.Sum(x => x.Quantity),
-                            
+                            AvailableQuantity = m.Sum(x => x.RemainingQuantity),
                         };
             //.FirstOrDefault(x => x.CategoryId == categoryId)
 
-            query = query.Where(x => x.CategoryId == categoryId);
+            query = query.Where(x => x.CategoryId == categoryId && x.AvailableQuantity > 0);
             return query.To<T>().ToList();
         }
-
 
         public T GetByMaterialId<T>(int materialId)
         {

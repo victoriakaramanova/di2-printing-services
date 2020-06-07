@@ -18,7 +18,6 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
-    
     public class CategoriesController : AdministrationController
     {
         private readonly ICategoriesService categoriesService;

@@ -18,7 +18,6 @@ namespace Di2.Web.ViewModels.Orders.ViewModels
 
         public int MaterialId { get; set; }
 
-        //public MaterialsViewModel Material { get; set; }
         public string MaterialName { get; set; }
 
         public string Description { get; set; }
@@ -32,7 +31,7 @@ namespace Di2.Web.ViewModels.Orders.ViewModels
         public DateTime IssuedOn { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "Въведете положително число!")]
-        [ValidateOrderQuantity("AvailableQuantity")]
+        //[ValidateOrderQuantity("AvailableQuantity")]
         public double Quantity { get; set; }
 
         public decimal AvgPrice { get; set; }
