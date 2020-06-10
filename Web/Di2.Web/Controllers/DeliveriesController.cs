@@ -66,12 +66,12 @@
         [Authorize]
         public async Task<IActionResult> Order(OrderInputModel input)
         {
-            if (this.CheckDeliveredQty(input.MaterialId, input.Quantity) == null)
+            /*if (this.CheckDeliveredQty(input.MaterialId, input.Quantity) == null)
             {
                 this.ModelState.AddModelError(string.Empty, "Въведете по-малко количество или се свържете с нас, за да уточним подробностите!");
                 return this.View("ById", new CategoryProductsViewModel { MaterialId = input.MaterialId });
                 //return this.RedirectToAction("ById", "Deliveries", new { materialId = input.MaterialId });
-            }
+            }*/
 
             List<IFormFile> files = input.PicturesFormFiles;
             List<string> customerImages = new List<string>();
@@ -100,8 +100,13 @@
                 return this.RedirectToAction("ByName", "Categories", new { name = catEng });
             }
 
-            //return this.View(input);
-            return this.RedirectToAction("ById", "Deliveries", new { materialId = input.MaterialId });
+            var viewModel = this.deliveriesService
+                .GetByMaterialId<CategoryProductsViewModel>(input.MaterialId);
+            if (viewModel == null)
+            {
+                return this.NotFound();
+            }
+            return this.View("ById", viewModel);
         }
 
         [AcceptVerbs("Get", "Post")]

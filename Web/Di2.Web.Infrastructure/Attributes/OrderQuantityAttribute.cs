@@ -6,13 +6,13 @@ using System.Text;
 
 namespace Di2.Web.Infrastructure.Attributes
 {
-    public class ValidateOrderQuantityAttribute : ValidationAttribute
+    public class OrderQuantityAttribute : ValidationAttribute
     {
         private const string ValidationOrderQuantityErrorMessage = "Въведете по-малко количество или се свържете с НАС!";
 
         private readonly string availableQuantity;
 
-        public ValidateOrderQuantityAttribute(string availableQuantity)
+        public OrderQuantityAttribute(string availableQuantity)
         {
             this.availableQuantity = availableQuantity;
         }
