@@ -15,6 +15,8 @@
 
         List<T> GetAll<T>();
 
+        List<T> GetAllCreated<T>(string userId);
+
         double GetAvlQtyPerProduct(int materialId);
 
         Task<int> UpdateOrder(OrdersViewModel input);

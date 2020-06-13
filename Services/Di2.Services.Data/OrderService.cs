@@ -103,7 +103,14 @@
         public List<T> GetAll<T>()
         {
             IQueryable<Order> query = this.ordersRepository.All();
-            query.Select(x => x.ModifiedOn);
+            //query.Select(x => x.ModifiedOn);
+            return query.To<T>().ToList();
+        }
+
+        public List<T> GetAllCreated<T>(string userId)
+        {
+            IQueryable<Order> query = this.ordersRepository.All()
+                .Where(x => x.StatusId == 2 && x.OrdererId == userId);
             return query.To<T>().ToList();
         }
 
@@ -211,8 +218,8 @@
             Receipt receipt = this.receiptsRepository.All()
                 .Where(x => x.Id == receiptId).FirstOrDefault();
             IQueryable<Order> query = this.ordersRepository.All()
-                .Where(x => x.OrdererId == receipt.RecipientId);
-            query = query.Where(x => x.StatusId == (int)OrderStatus.Sent);
+                .Where(x => x.OrdererId == receipt.RecipientId);// && x.StatusId == 1);
+            query = query.Where(x => x.StatusId == 1);
             return query.To<T>().ToList();
         }
 
@@ -222,7 +229,7 @@
                .Where(x => x.Id == receiptId).FirstOrDefault();
             IQueryable<Order> query = this.ordersRepository.All()
                 .Where(x => x.Receipt.RecipientId == userId);
-            query = query.Where(x => x.StatusId == (int)OrderStatus.Sent);
+            query = query.Where(x => x.StatusId == 2);
             return query.To<T>().ToList();
         }
 

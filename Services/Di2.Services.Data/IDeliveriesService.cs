@@ -17,6 +17,6 @@ namespace Di2.Services.Data
 
         IEnumerable<T> GetAllProducts<T>(int categoryId);
 
-        bool GetDeliveredQuantityPerProduct(int materialId, double quantity);
+        double GetDeliveredQuantityPerProduct(int materialId);
     }
 }

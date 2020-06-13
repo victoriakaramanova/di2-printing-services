@@ -31,7 +31,7 @@ namespace Di2.Web.ViewModels.Orders.ViewModels
         public DateTime IssuedOn { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "Въведете положително число!")]
-        //[ValidateOrderQuantity("AvailableQuantity")]
+        [OrderQuantity("AvailableQuantity")]
         public double Quantity { get; set; }
 
         public decimal AvgPrice { get; set; }
@@ -51,9 +51,8 @@ namespace Di2.Web.ViewModels.Orders.ViewModels
 
         public Receipt Receipt { get; set; }
 
-        public ICollection<PictureViewModel> Pictures { get; set; }
+        public HashSet<PictureViewModel> Pictures { get; set; }
 
         public double AvailableQuantity { get; set; }
-
     }
 }

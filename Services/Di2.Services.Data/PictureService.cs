@@ -1,26 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-
-using CloudinaryDotNet;
-using CloudinaryDotNet.Actions;
-using Di2.Data.Common.Repositories;
-using Di2.Data.Models;
-using Di2.Data;
-using Microsoft.AspNetCore.Http;
-using CloudinaryDotNet;
-using CloudinaryDotNet.Actions;
-using System.Collections.Concurrent;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using Di2.Services.Mapping;
-
-namespace Di2.Services.Data
+﻿namespace Di2.Services.Data
 {
+    using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    using CloudinaryDotNet;
+    using CloudinaryDotNet.Actions;
+    using Di2.Data;
+    using Di2.Data.Common.Repositories;
+    using Di2.Data.Models;
+    using Di2.Services.Mapping;
+    using Di2.Web.ViewModels.Pictures;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.EntityFrameworkCore;
+
     public class PictureService : IPictureService
     {
-
         private readonly IDeletableEntityRepository<Picture> picturesRepository;
         private readonly Cloudinary cloudinary;
 
@@ -59,13 +57,12 @@ namespace Di2.Services.Data
                 await this.picturesRepository.AddAsync(pictureToAdd);
                 await this.picturesRepository.SaveChangesAsync();
             }
+
             return uploadResults;
         }
 
         public void Delete(string orderId)
             => this.cloudinary.DeleteResourcesByPrefix($"{orderId}/");
-
-        
 
         public async Task<T> GetPictureById<T>(string pictureId)
             => await this.picturesRepository
@@ -80,7 +77,7 @@ namespace Di2.Services.Data
 
             var pictureToRemove = this.picturesRepository
                 .All()
-                .Where(x=>x.Id==pictureId).FirstOrDefault();
+                .Where(x => x.Id == pictureId).FirstOrDefault();
 
             if (pictureToRemove == null)
             {
@@ -89,6 +86,13 @@ namespace Di2.Services.Data
 
             this.picturesRepository.Delete(pictureToRemove);
             await this.picturesRepository.SaveChangesAsync();
+        }
+
+        public HashSet<PictureViewModel> GetAllPictures<T>(string orderId)
+        {
+            IQueryable<Picture> query = this.picturesRepository
+            .All().Where(x => x.OrderId == orderId);
+            return query.To<PictureViewModel>().ToHashSet();
         }
     }
 }

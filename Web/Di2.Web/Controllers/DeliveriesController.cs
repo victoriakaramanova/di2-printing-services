@@ -76,7 +76,8 @@
             List<IFormFile> files = input.PicturesFormFiles;
             List<string> customerImages = new List<string>();
             string pic;
-            //OrderViewModel viewModel = input.To<OrderViewModel>();
+
+            // OrderViewModel viewModel = input.To<OrderViewModel>();
             if (this.ModelState.IsValid)
             {
                 var category = this.materialsService.GetById(input.MaterialId).Category;
@@ -109,7 +110,7 @@
             return this.View("ById", viewModel);
         }
 
-        [AcceptVerbs("Get", "Post")]
+        /*[AcceptVerbs("Get", "Post")]
         public IActionResult CheckDeliveredQty(int materialId, double quantity)
         {
             var comparison = this.deliveriesService.GetDeliveredQuantityPerProduct(materialId, quantity);
@@ -119,6 +120,6 @@
             }
 
             return this.Ok();//this.Json(true);
-        }
+        }*/
     }
 }

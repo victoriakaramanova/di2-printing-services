@@ -131,7 +131,7 @@
         {
             var user = this.userManager.GetUserAsync(this.User);
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var orders = this.orderService.GetReceiptOrdersByReceiptId<OrderViewModel>(id,userId);
+            var orders = this.orderService.GetReceiptOrdersByReceiptId<FinalOrderViewModel>(id,userId);
             Receipt receipt = this.receiptsRepository.All()
                 .Where(x => x.Id == id).FirstOrDefault();
             /*IQueryable<Order> query = this.ordersRepository.All()

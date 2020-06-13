@@ -1,4 +1,5 @@
 ﻿using CloudinaryDotNet.Actions;
+using Di2.Web.ViewModels.Pictures;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,7 @@ namespace Di2.Services.Data
         Task Delete(string itemId, string pictureId);
 
         Task<T> GetPictureById<T>(string pictureId);
+
+        HashSet<PictureViewModel> GetAllPictures<T>(string orderId);
     }
 }

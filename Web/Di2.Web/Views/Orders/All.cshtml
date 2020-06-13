@@ -58,9 +58,8 @@ else
                         @Model.Orders[i].MaterialName
                     </h6>
                     <h6 class="col-md-1 text-left">
-                        <input type="number" asp-for="@Model.Orders[i].Quantity" style="border:none; width:100%;background-color: rgba(70, 35, 122, 0.1)" onchange="sendQty()" />
-                        <span asp-validation-for="@Model.Orders[i].Quantity" class="text-danger"></span>
-                      @*  @Html.ValidationMessage("MessageError")*@
+                        <input type="number" asp-for="@Model.Orders[i].Quantity" style="border:none; width:100%;background-color: rgba(70, 35, 122, 0.03)" onchange="sendQty()" />
+                        <span asp-validation-for="@Model.Orders[i].Quantity" name="Quantity" class="text-danger"></span>
                     </h6>
                     <h6 class="col-md-1 text-left">@Model.Orders[i].AvgPrice</h6>
                     <h6 class="col-md-1 text-left">
@@ -74,15 +73,15 @@ else
                                  src="@pic.Url" />
                         </div>
                     }
-                    <h6>@Model.Orders[i].AvailableQuantity</h6>
+                    <input type="hidden" asp-for="@Model.Orders[i].AvailableQuantity" />
                 </div>
             }
             <hr class="hr-4 bg-info" />
-            <div class="col-md-2 text-left">Адрес за получаане</div>
-                <input type="text" asp-for="@Model.DeliveryAddress" class="w-auto" value="@Model.Orders.Select(x=>x.Orderer.Address).FirstOrDefault()" />
-        <h2 class="text-dark text-right" id="total-price">ОБЩО: @Model.Orders.Sum(x => x.AvgPrice * (decimal)x.Quantity).ToString("F2")</h2>
+            <div class="col-md-3 text-left">Адрес за получаане</div>
+            <input type="text" asp-for="@Model.DeliveryAddress" class="text-left" value="@Model.Orders.Select(x=>x.Orderer.Address).FirstOrDefault()" />
+            <h2 class="text-dark text-right" id="total-price">ОБЩО: @Model.Orders.Sum(x => x.AvgPrice * (decimal)x.Quantity).ToString("F2")</h2>
 
-                <input type="submit" class="btn btn-primary" value="Поръчай" />
+            <input type="submit" class="btn btn-primary" value="Поръчай" />
         </form>
     </div>
 }
@@ -105,4 +104,5 @@ else
             $('#total-price').text('ОБЩО: ' + bigTotal.toFixed(2));
         }
     </script>
+
 }

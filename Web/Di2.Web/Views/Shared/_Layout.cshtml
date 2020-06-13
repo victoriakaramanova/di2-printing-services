@@ -61,42 +61,43 @@
     </nav>
 
 
-    <div class="container">
+    <div class="container-fluid body-content">
         <partial name="_CookieConsentPartial" />
         <main role="main" class="pb-3">
 
             @this.RenderBody()
-            
+
         </main>
-    </div>
 
-    <footer class="border-top footer text-muted site-footer">
-        <div class="container">
-            <div class="site-wrapper">
 
-                <div class="info">
-                    <div>@GlobalConstants.SystemName Trade &copy; @DateTime.Now.Year</div>
-                    <div><a asp-area="" asp-controller="Home" asp-action="Privacy">Политика на конфиденциалност</a></div>
+        <footer class="border-top footer text-muted site-footer">
+            <div class="container">
+                <div class="site-wrapper">
+
+                    <div class="info">
+                        <div>@GlobalConstants.SystemName Trade &copy; @DateTime.Now.Year</div>
+                        <div><a asp-area="" asp-controller="Home" asp-action="Privacy">Политика на конфиденциалност</a></div>
+                    </div>
+                    <section class="contact-details">
+
+                        <ul class="social">
+                            <li>
+                                <a href="/Contacts/Index">
+                                    <i class="fas fa-phone fa-2x"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/Contacts/Index">
+                                    <i class="fas fa-envelope fa-2x"></i>
+                                </a>
+                            </li>
+                        </ul>
+
+                    </section>
                 </div>
-                <section class="contact-details">
-
-                    <ul class="social">
-                        <li>
-                            <a href="/Contacts/Index">
-                                <i class="fas fa-phone fa-2x"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/Contacts/Index">
-                                <i class="fas fa-envelope fa-2x"></i>
-                            </a>
-                        </li>
-                    </ul>
-
-                </section>
             </div>
-        </div>
-    </footer>
+        </footer>
+    </div>
 
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>

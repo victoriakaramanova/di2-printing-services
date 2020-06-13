@@ -150,13 +150,13 @@
             return query.To<T>().FirstOrDefault();
         }
 
-        public bool GetDeliveredQuantityPerProduct(int materialId, double quantity)
+        public double GetDeliveredQuantityPerProduct(int materialId)
         {
             var availableQuantity = this.deliveriesRepository.All()
                 .Where(x => x.MaterialId == materialId)
                 .Sum(x => x.RemainingQuantity);
-            var enough = availableQuantity >= quantity ? true : false;
-            return enough;
+            //var enough = availableQuantity >= quantity ? true : false;
+            return availableQuantity;
         }
     }
 }

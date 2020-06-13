@@ -1,17 +1,17 @@
-﻿using Di2.Services.Data;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Di2.Web.ViewModels.Orders.ViewModels;
-using Di2.Common;
-using Microsoft.AspNetCore.Http;
-using System.Net;
-
-namespace Di2.Web.Controllers
+﻿namespace Di2.Web.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Threading.Tasks;
+
+    using Di2.Common;
+    using Di2.Services.Data;
+    using Di2.Web.ViewModels.Orders.ViewModels;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+
     public class PicturesController : BaseController
     {
         private readonly IOrderService orderService;
@@ -45,7 +45,5 @@ namespace Di2.Web.Controllers
                 return this.NotFound();
             }
         }
-
-        
     }
 }
