@@ -121,14 +121,14 @@
                 .Sum(x => x.RemainingQuantity);
         }
 
-        public async Task UpdOrder(OrderViewModel input)
+        /*public async Task UpdOrder(OrderViewModel input)
         {
             var dbOrder = await this.ordersRepository.All()
                     .Where(x => x.Id == input.Id).FirstOrDefaultAsync();
             dbOrder.Quantity = input.Quantity;
             dbOrder.TotalPrice = (decimal)input.Quantity * dbOrder.AvgPrice;
             this.ordersRepository.Update(dbOrder);
-        }
+        }*/
 
         public async Task<int> UpdateOrder(OrdersViewModel input)
         {
@@ -167,12 +167,13 @@
             {
                 dbOrder = this.ordersRepository.All()
                     .Where(x => x.Id == order.Id).FirstOrDefault();
+                var ordererAddress = this.userManager.FindByIdAsync(dbOrder.OrdererId).Result.Address;
                 if (dbOrder == null || dbOrder.StatusId != (int)OrderStatus.Created)
                 {
                     throw new ArgumentException(nameof(dbOrder));
                 }
 
-                dbOrder.DeliveryAddress = input.DeliveryAddress == null ? dbOrder.Orderer.Address : input.DeliveryAddress;
+                dbOrder.DeliveryAddress = input.DeliveryAddress == null ? ordererAddress : input.DeliveryAddress;
                 dbOrder.StatusId = (int)OrderStatus.Sent;
                 this.ordersRepository.Update(dbOrder);
                 await this.ordersRepository.SaveChangesAsync();
@@ -213,13 +214,13 @@
             return result;
         }
 
-        public IEnumerable<T> GetReceiptOrders<T>(string receiptId)
+        public IEnumerable<T> GetReceiptOrders<T>(string receiptId, int state)
         {
             Receipt receipt = this.receiptsRepository.All()
                 .Where(x => x.Id == receiptId).FirstOrDefault();
             IQueryable<Order> query = this.ordersRepository.All()
                 .Where(x => x.OrdererId == receipt.RecipientId);// && x.StatusId == 1);
-            query = query.Where(x => x.StatusId == 1);
+            query = query.Where(x => x.StatusId == state);
             return query.To<T>().ToList();
         }
 

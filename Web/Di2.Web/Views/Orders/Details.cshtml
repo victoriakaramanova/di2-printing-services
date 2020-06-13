@@ -4,7 +4,7 @@
     ViewData["Title"] = "Детайли за поръчката";
 }
 
-<div class="finish-order-holder w-50 mx-auto d-flex justify-content-between">
+<div class="finish-order-holder w-75 mx-auto d-flex justify-content-between">
     <div class="form-holder w-25">
         <h5 class="text-left">Разписка №</h5>
     </div>
@@ -13,61 +13,88 @@
     </div>
 </div>
 
-<hr class="hr-2 bg-dark w-75">
-<div class="products-holder w-50 mx-auto">
-    @foreach (var order in Model.Orders)
-    {
-        <div class="product d-flex justify-content-between">
-            <div class="product-name w-50">
-                <h5>@order.MaterialName</h5>
-            </div>
+<div class="products-holder w-75 mx-auto">
+    <div class="product d-flex justify-content-between">
+        <div class="product-name w-25">
+            Материал
+        </div>
+        <div class="product-quantity-and-price d-flex justify-content-between w-75">
             <div class="product-quantity-and-price d-flex justify-content-between w-75">
-                <h5>@order.Id</h5>
-                <h5 class="text-left">@order.AvgPrice</h5>
-                <h5 class="text-left">@order.Quantity</h5>
-                <h5 class="text-left">@order.TotalPrice</h5>
+                Номер на поръчка
+            </div>
+            <div class="product-quantity-and-price d-flex justify-content-between w-25">
+                Единична цена
+            </div>
+            <div class="product-quantity-and-price d-flex justify-content-between w-25">
+                Количество
+            </div>
+            <div class="product-quantity-and-price d-flex justify-content-between w-25">
+                Крайна цена
             </div>
         </div>
+    </div>
+</div>
+    <hr class="hr-2 bg-dark w-75">
+    <div class="products-holder w-75 mx-auto">
+        @foreach (var order in Model.Orders)
+        {
+            <div class="product d-flex justify-content-between">
+                <div class="product-name w-25">
+                    <h6>@order.MaterialName</h6>
+                </div>
+                <div class="product-quantity-and-price d-flex justify-content-between w-75">
+                    <h6>@order.Id</h6>
+                    <div>
+                        <h6 class="product-quantity-and-price d-flex justify-content-between w-25">@order.AvgPrice.ToString("f2")</h6>
+                    </div>
+                    <div>
+                        <h6 class="product-quantity-and-price d-flex justify-content-between w-25">@order.Quantity</h6>
+                    </div>
+                    <div>
+                        <h6 class="product-quantity-and-price d-flex justify-content-between w-25">@order.TotalPrice.ToString("f2")</h6>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <hr class="hr-2 bg-dark w-75">
+    <div class="finish-order-holder w-75 mx-auto d-flex justify-content-between">
+        <div class="form-holder w-25">
+            <h3 class="text-left">Общо</h3>
+        </div>
+        <div class="price-holder w-75 text-left">
+            <h6>@Model.Orders.Sum(x => x.AvgPrice * (decimal)x.Quantity).ToString("F2")</h6>
+        </div>
+    </div>
+    <hr class="hr-2 bg-dark w-75">
+    <div class="finish-order-holder w-75 mx-auto d-flex justify-content-between">
+        <div class="form-holder w-25">
+            <h5 class="text-left">Издадена на</h5>
+        </div>
+        <div class="price-holder w-25 text-left">
+            <time datetime="@Model.IssuedOn.ToString("O")">@Model.IssuedOn.ToString("dd.MM.yyyy HH:mm")</time>
+        </div>
+        <div class="form-holder w-auto">
+            <h5 class="text-left">Адрес за доставка</h5>
+        </div>
+        <div class="form-holder w-auto">
+            @Model.DeliveryAddress
+        </div>
+    </div>
+
+    @*<input type="text" value="@Model.Orders.Select(x=>x.Orderer.Address).FirstOrDefault()" />*@
+    <div class="finish-order-holder w-50 mx-auto d-flex justify-content-between">
+        <div class="form-holder w-25">
+            <h5 class="text-left">Получател</h5>
+        </div>
+        <div class="price-holder w-75 text-left">
+            @Model.RecipientName
+        </div>
+    </div>
+
+    @section Scripts{
+        <script src="~/lib/moment/min/moment-with-locales.min.js" asp-append-version="true"></script>
     }
-</div>
-
-<hr class="hr-2 bg-dark w-75">
-<div class="finish-order-holder w-50 mx-auto d-flex justify-content-between">
-    <div class="form-holder w-25">
-        <h3 class="text-left">Общо</h3>
-    </div>
-    <div class="price-holder w-50 text-right">
-        @Model.Orders.Sum(x => x.AvgPrice * (decimal)x.Quantity).ToString("F2")
-    </div>
-</div>
-<hr class="hr-2 bg-dark w-100">
-<div class="finish-order-holder w-50 mx-auto d-flex justify-content-between">
-    <div class="form-holder w-25">
-        <h3 class="text-left">Издадена на</h3>
-    </div>
-    <div class="price-holder w-25 text-right">
-        <time datetime="@Model.IssuedOn.ToString("O")">@Model.IssuedOn.ToString("dd.MM.yyyy HH:mm")</time>
-    </div>
-    <div class="form-holder w-auto">
-        <h3 class="text-left">Адрес за доставка</h3>
-    </div>
-    <div class="form-holder w-auto">
-        @Model.DeliveryAddress
-    </div>
-</div>
-
-@*<input type="text" value="@Model.Orders.Select(x=>x.Orderer.Address).FirstOrDefault()" />*@
-<div class="finish-order-holder w-50 mx-auto d-flex justify-content-between">
-    <div class="form-holder w-25">
-        <h3 class="text-left">Получател</h3>
-    </div>
-    <div class="price-holder w-75 text-right">
-        @Model.RecipientName
-    </div>
-</div>
-
-@section Scripts{
-    <script src="~/lib/moment/min/moment-with-locales.min.js" asp-append-version="true"></script>
-}
 
 

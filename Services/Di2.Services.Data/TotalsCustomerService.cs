@@ -43,20 +43,20 @@ namespace Di2.Services.Data
             // StringBuilder sb = new StringBuilder();
             // var user = this.ordersRepository.All().FirstOrDefault(x=>x.Orderer.Email==ordererEmail)
 
-            if (isCompleted == 0)
+            if (isCompleted == 0 && this.IsAvailableQtyEnough(order))
             {
                 order.StatusId = (int)OrderStatus.Completed;
                 await this.sender.SendEmailAsync(GlobalConstants.SystemEmail, GlobalConstants.SystemName, orderer.Email, $"Готова поръчка по разписка " + order.ReceiptId, $"Здравейте, {orderer.UserName}, {Environment.NewLine}Поръчката Ви {order.Id}/{order.IssuedOn} на {order.MaterialName}, {order.Quantity} броя за {order.TotalPrice.ToString("f2")} лв с доставка на адрес: {order.DeliveryAddress} е готова.{Environment.NewLine}Поздрави, {GlobalConstants.SystemName}");
             }
             else
-                if (isCompleted == 1)
-            {
-                order.StatusId = (int)OrderStatus.Sent;
-            }
-            else
+                if (isCompleted == -1)
             {
                 order.StatusId = (int)OrderStatus.Canceled;
                 await this.sender.SendEmailAsync(GlobalConstants.SystemEmail, GlobalConstants.SystemName, orderer.Email, $"Отказ на Ваша поръчка по разписка " + order.ReceiptId, $"Здравейте, {orderer.UserName}, Поръчката Ви {order.Id}/{order.IssuedOn} на {order.MaterialName}, {order.Quantity} за {order.TotalPrice.ToString("f2")} лв е отказана. Моля потърсете ни за подробности. Поздрави, {GlobalConstants.SystemName}");
+            }
+            else
+            {
+                order.StatusId = (int)OrderStatus.Sent;
             }
 
             this.ordersRepository.Update(order);

@@ -164,7 +164,7 @@
         [HttpGet]
         public IActionResult Details(string id)
         {
-            IEnumerable<FinalOrderViewModel> orders = this.orderService.GetReceiptOrders<FinalOrderViewModel>(id);
+            IEnumerable<FinalOrderViewModel> orders = this.orderService.GetReceiptOrders<FinalOrderViewModel>(id, (int)OrderStatus.Sent);
             var aggregateOrder = this.orderService.GetById<OrdersViewModel>(id);
             var deliveryAddress = aggregateOrder.DeliveryAddress;
             var recipientName = this.orderService.GetRecipientName(id);

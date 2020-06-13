@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+
     using Di2.Data.Common.Repositories;
     using Di2.Data.Models;
     using Di2.Services.Data;
@@ -23,7 +24,7 @@
         private readonly IDeletableEntityRepository<Order> ordersRepository;
 
         public TotalsCController(
-            ITotalsCustomerService totalsCustomerService, 
+            ITotalsCustomerService totalsCustomerService,
             UserManager<ApplicationUser> userManager,
             IDeletableEntityRepository<Order> ordersRepository)
         {
@@ -39,13 +40,16 @@
             var order = this.ordersRepository.All().FirstOrDefault(x => x.Id == input.OrderId);
             var ordererId = order.OrdererId;
             var orderer = await this.userManager.FindByIdAsync(ordererId);
-            if (!this.totalsCustomerService.IsAvailableQtyEnough(order))
+            
+            var statusId = await this.totalsCustomerService.ChangeOrderStatus(input.OrderId, input.IsCompleted, orderer);
+            
+           
+            if (!this.totalsCustomerService.IsAvailableQtyEnough(order) && input.IsCompleted != -1)
             {
                 return this.View("InsufficientQuantityError");
             }
 
             await this.totalsCustomerService.DecreaseDeliveriesAsync(order);
-            var statusId = await this.totalsCustomerService.ChangeOrderStatus(input.OrderId, input.IsCompleted, orderer);
             return statusId;
         }
     }

@@ -37,7 +37,7 @@ else
                 <div class="col-md-1 text-left">@Model.Orders[i].AvgPrice</div>
                 <div class="col-md-1 text-left" style="text-align:left">@Model.Orders[i].TotalPrice</div>
                 <div class="col-md-2 text-left">@Model.Orders[i].IssuedOn</div>
-                <div class="col-md-2 text-left">@Model.Orders[i].Orderer.UserName</div>
+                <div class="col-md-2 text-left">@Model.Orders[i].Orderer</div>
                 <div class="col-md-1 text-left">@Model.Orders[i].Id</div>
                 @foreach (var pic in @Model.Orders[i].Pictures)
                 {
@@ -47,7 +47,7 @@ else
                     </div>
                 }
             </div>
-            <input type="text" asp-for="@Model.DeliveryAddress" class="w-auto" value="@Model.Orders.Select(x=>x.Orderer.Address).FirstOrDefault()" />
+            <input type="text" asp-for="@Model.DeliveryAddress" class="w-auto" value="@Model.DeliveryAddress" />
         }
         <hr class="hr-4 bg-info" />
         <input type="submit" class="btn btn-primary" value="Поръчай" />

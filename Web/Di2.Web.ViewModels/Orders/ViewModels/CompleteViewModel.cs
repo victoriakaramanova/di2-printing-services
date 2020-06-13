@@ -1,23 +1,25 @@
-﻿using Di2.Data.Models;
-using Di2.Data.Models.Enums;
-using Di2.Services.Mapping;
-using Di2.Web.ViewModels.Materials.ViewModels;
-using Di2.Web.ViewModels.Orders.InputModels;
-using Di2.Web.ViewModels.Pictures;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-
-namespace Di2.Web.ViewModels.Orders.ViewModels
+﻿namespace Di2.Web.ViewModels.Orders.ViewModels
 {
-    public class CompleteViewModel : IMapFrom<Order>, IMapTo<Order>//, IMapTo<OrderInputModel>
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.Text;
+
+    using Di2.Data.Models;
+    using Di2.Data.Models.Enums;
+    using Di2.Services.Mapping;
+    using Di2.Web.Infrastructure.Attributes;
+    using Di2.Web.ViewModels.Materials.ViewModels;
+    using Di2.Web.ViewModels.Orders.InputModels;
+    using Di2.Web.ViewModels.Pictures;
+
+    public class CompleteViewModel : IMapFrom<Order>, IMapTo<Order>, IMapFrom<OrderInputModel> // , IMapTo<OrderInputModel>
     {
         public string Id { get; set; }
 
         public int MaterialId { get; set; }
 
-        //public MaterialsViewModel Material { get; set; }
+        // public MaterialsViewModel Material { get; set; }
         public string MaterialName { get; set; }
 
         public string Description { get; set; }
@@ -30,17 +32,16 @@ namespace Di2.Web.ViewModels.Orders.ViewModels
 
         public DateTime IssuedOn { get; set; }
 
-        [Range(1, int.MaxValue, ErrorMessage = "Въведете положително число!")]
+        //[OrderQuantity("AvailableQuantity")]
         public double Quantity { get; set; }
 
         public decimal AvgPrice { get; set; }
 
-        [Required]
         public decimal TotalPrice { get; set; }
 
         public string OrdererId { get; set; }
 
-        public ApplicationUser Orderer { get; set; }
+        public string Orderer { get; set; }
 
         public int StatusId { get; set; }
 
@@ -58,7 +59,8 @@ namespace Di2.Web.ViewModels.Orders.ViewModels
 
         public string ReceiptId { get; set; }
 
-        public ICollection<PictureViewModel> Pictures { get; set; }
+        public HashSet<PictureViewModel> Pictures { get; set; }
+
+        public double AvailableQuantity { get; set; }
     }
 }
-

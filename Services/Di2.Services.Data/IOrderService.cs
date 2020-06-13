@@ -21,11 +21,11 @@
 
         Task<int> UpdateOrder(OrdersViewModel input);
 
-        Task UpdOrder(OrderViewModel input);
+        //Task UpdOrder(OrderViewModel input);
 
         Task CompleteOrder(OrdersViewModel input);
 
-        IEnumerable<T> GetReceiptOrders<T>(string receiptId);
+        IEnumerable<T> GetReceiptOrders<T>(string receiptId, int state);
 
         IEnumerable<T> GetReceiptOrdersByReceiptId<T>(string receiptId, string userId);
 

@@ -4,12 +4,14 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
+    using System.Security.Cryptography.X509Certificates;
     using System.Threading.Tasks;
     using Di2.Data.Common.Repositories;
     using Di2.Data.Models;
     using Di2.Data.Models.Enums;
     using Di2.Services.Data;
     using Di2.Web.ViewModels.Orders.ViewModels;
+    using Di2.Web.ViewModels.Pictures;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -20,17 +22,23 @@
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IDeletableEntityRepository<Order> ordersRepository;
         private readonly IDeletableEntityRepository<Receipt> receiptsRepository;
+        private readonly IDeliveriesService deliveriesService;
+        private readonly IPictureService pictureService;
 
         public OrdersController(
             IOrderService orderService,
             UserManager<ApplicationUser> userManager,
             IDeletableEntityRepository<Order> ordersRepository,
-            IDeletableEntityRepository<Receipt> receiptsRepository)
+            IDeletableEntityRepository<Receipt> receiptsRepository,
+            IDeliveriesService deliveriesService,
+            IPictureService pictureService)
         {
             this.orderService = orderService;
             this.userManager = userManager;
             this.ordersRepository = ordersRepository;
             this.receiptsRepository = receiptsRepository;
+            this.deliveriesService = deliveriesService;
+            this.pictureService = pictureService;
         }
 
         //[Authorize]
@@ -40,11 +48,34 @@
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var viewModel = new ListCompleteViewModel
             {
-                Orders = this.orderService
-                .GetAll<CompleteViewModel>().Distinct()
-                .Where(x => x.StatusId != (int)OrderStatus.Sent && x.StatusId!=(int)OrderStatus.Created)
+                Orders = this.ordersRepository.All()
+                .Where(x => x.StatusId != (int)OrderStatus.Sent && x.StatusId != (int)OrderStatus.Created)
+                .AsEnumerable()
+                .Select(x => new CompleteViewModel
+                {
+                    Id = x.Id,
+                    IssuedOn = x.IssuedOn,
+                    MaterialId = x.MaterialId,
+                    MaterialName = x.MaterialName,
+                    Quantity = x.Quantity,
+                    AvgPrice = x.AvgPrice,
+                    TotalPrice = x.TotalPrice,
+                    AvailableQuantity = this.deliveriesService.GetDeliveredQuantityPerProduct(x.MaterialId),
+                    OrdererId = x.OrdererId,
+                    Orderer = this.userManager.FindByIdAsync(x.OrdererId).Result.UserName,
+                    Pictures = this.pictureService.GetAllPictures<PictureViewModel>(x.Id),
+                    DeliveryAddress = x.DeliveryAddress,
+                    ReceiptId = x.ReceiptId,
+                    StatusId = x.StatusId,
+                })
+                //.GetAll<CompleteViewModel>().Distinct()
                 .OrderBy(x => x.IssuedOn)
                 .ToList(),
+                /*Orders = this.orderService
+                .GetAll<CompleteViewModel>().Distinct()
+                .Where(x => x.StatusId != (int)OrderStatus.Sent && x.StatusId != (int)OrderStatus.Created)
+                .OrderBy(x => x.IssuedOn)
+                .ToList(),*/
             };
 
             return this.View(viewModel);
@@ -57,12 +88,35 @@
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var viewModel = new ListCompleteViewModel
             {
-                Orders = this.orderService
-                .GetAll<CompleteViewModel>().Distinct()
+                Orders = this.ordersRepository.All()
                 .Where(x => x.StatusId == (int)OrderStatus.Sent)
+                .AsEnumerable()
+                .Select(x => new CompleteViewModel
+                {
+                    Id = x.Id,
+                    IssuedOn = x.IssuedOn,
+                    MaterialId = x.MaterialId,
+                    MaterialName = x.MaterialName,
+                    Quantity = x.Quantity,
+                    AvgPrice = x.AvgPrice,
+                    TotalPrice = x.TotalPrice,
+                    AvailableQuantity = this.deliveriesService.GetDeliveredQuantityPerProduct(x.MaterialId),
+                    OrdererId = x.OrdererId,
+                    Orderer = this.userManager.FindByIdAsync(x.OrdererId).Result.UserName,
+                    Pictures = this.pictureService.GetAllPictures<PictureViewModel>(x.Id),
+                    DeliveryAddress = x.DeliveryAddress,
+                    ReceiptId = x.ReceiptId,
+                    StatusId = x.StatusId, 
+                })
+                //.GetAll<CompleteViewModel>().Distinct()
                 .OrderBy(x => x.IssuedOn)
                 .ToList(),
             };
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View();
+            }
             return this.View(viewModel);
         }
 
@@ -73,10 +127,28 @@
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var viewModel = new OrdersViewModel
             {
-                Orders = this.orderService
-                .GetAll<OrderViewModel>().Distinct()
-                .Where(x => x.StatusId == (int)OrderStatus.Created)
-                .OrderBy(x => x.IssuedOn).ToList(),
+                Orders = this.ordersRepository.All()
+                    .Where(x => x.StatusId == 2)
+                    .AsEnumerable()
+                    .Select(x => new OrderViewModel
+                    {
+                        Id = x.Id,
+                        MaterialId = x.MaterialId,
+                        MaterialName = x.MaterialName,
+                        Quantity = x.Quantity,
+                        AvgPrice = x.AvgPrice,
+                        TotalPrice = x.TotalPrice,
+                        AvailableQuantity = this.deliveriesService.GetDeliveredQuantityPerProduct(x.MaterialId),
+                        Image = x.Image,
+                        IssuedOn = x.IssuedOn,
+                        OrdererId = x.OrdererId,
+                        Orderer = x.Orderer,
+                        Pictures = this.pictureService.GetAllPictures<PictureViewModel>(x.Id),
+                    }).OrderBy(x => x.IssuedOn)
+                    .ToList(),
+                //.GetAll<OrderViewModel>()
+                //.Where(x => x.StatusId == (int)OrderStatus.Created)
+                //.OrderBy(x => x.IssuedOn).ToList(),
             };
             return this.View(viewModel);
         }
@@ -126,12 +198,12 @@
         }
 
         [HttpGet]
-        // [Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult Details(string id)
         {
             var user = this.userManager.GetUserAsync(this.User);
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var orders = this.orderService.GetReceiptOrdersByReceiptId<FinalOrderViewModel>(id,userId);
+            //var orders = this.orderService.GetReceiptOrdersByReceiptId<FinalOrderViewModel>(id,userId);
             Receipt receipt = this.receiptsRepository.All()
                 .Where(x => x.Id == id).FirstOrDefault();
             /*IQueryable<Order> query = this.ordersRepository.All()
@@ -141,14 +213,17 @@
 
             // var aggregateOrder = this.orderService.GetById<OrdersViewModel>(id);
 
+            IEnumerable<FinalOrderViewModel> orders = this.orderService.GetReceiptOrders<FinalOrderViewModel>(id, (int)OrderStatus.Sent);
+            
             var deliveryAddress = receipt.DeliveryAddress;//aggregateOrder.DeliveryAddress;
             var recipientName = this.orderService.GetRecipientName(id);
             var viewModel = new ReceiptViewModel
             {
                 Id = id,
                 IssuedOn = DateTime.UtcNow,
-                RecipientName = recipientName,
-                Orders = orders.Where(x => x.ReceiptId == id),
+                //RecipientName = recipientName,
+            Orders = orders,
+                //orders.Where(x => x.ReceiptId == id),
                 DeliveryAddress = deliveryAddress,
             };
 
